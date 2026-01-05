@@ -148,11 +148,13 @@ namespace FIA_Biosum_Manager
     private ProgressBarBasic.ProgressBarBasic progressBarBasic1;
     private Label lblVOLTSGRS;
     private Label label21;
+        private FIA_Biosum_Manager.frmDialog m_frmTreeVolumeExport;
 
         private int m_intError = 0;
         private ComboBox cboDiaHtCd;
         private Label label22;
         private string m_strError;
+        private Button btnExport;
         private SQLite.ADO.DataMgr m_oDataMgr = new SQLite.ADO.DataMgr();
 
         public frmFCSTreeVolumeEdit()
@@ -309,6 +311,7 @@ namespace FIA_Biosum_Manager
             this.btnLoad = new System.Windows.Forms.Button();
             this.cmbDatasource = new System.Windows.Forms.ComboBox();
             this.btnLinkTableTest = new System.Windows.Forms.Button();
+            this.btnExport = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -319,9 +322,9 @@ namespace FIA_Biosum_Manager
             // 
             this.btnTreeVolBatch.Location = new System.Drawing.Point(387, 293);
             this.btnTreeVolBatch.Name = "btnTreeVolBatch";
-            this.btnTreeVolBatch.Size = new System.Drawing.Size(208, 21);
+            this.btnTreeVolBatch.Size = new System.Drawing.Size(150, 21);
             this.btnTreeVolBatch.TabIndex = 2;
-            this.btnTreeVolBatch.Text = "Batch Calculate Volume And Biomass";
+            this.btnTreeVolBatch.Text = "Batch Calculate Grid";
             this.btnTreeVolBatch.UseVisualStyleBackColor = true;
             this.btnTreeVolBatch.Click += new System.EventHandler(this.btnTreeVolBatch_Click);
             // 
@@ -335,7 +338,7 @@ namespace FIA_Biosum_Manager
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(856, 467);
+            this.panel1.Size = new System.Drawing.Size(932, 467);
             this.panel1.TabIndex = 3;
             // 
             // progressBarBasic1
@@ -815,11 +818,13 @@ namespace FIA_Biosum_Manager
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnExport);
             this.groupBox1.Controls.Add(this.btnEdit);
             this.groupBox1.Controls.Add(this.btnLoad);
             this.groupBox1.Controls.Add(this.cmbDatasource);
             this.groupBox1.Controls.Add(this.btnLinkTableTest);
             this.groupBox1.Controls.Add(this.btnTreeVolBatch);
+
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(886, 321);
@@ -860,18 +865,29 @@ namespace FIA_Biosum_Manager
             // 
             // btnLinkTableTest
             // 
-            this.btnLinkTableTest.Location = new System.Drawing.Point(601, 293);
+            this.btnLinkTableTest.Location = new System.Drawing.Point(719, 292);
             this.btnLinkTableTest.Name = "btnLinkTableTest";
-            this.btnLinkTableTest.Size = new System.Drawing.Size(249, 21);
+            this.btnLinkTableTest.Size = new System.Drawing.Size(150, 21);
             this.btnLinkTableTest.TabIndex = 3;
-            this.btnLinkTableTest.Text = "Test FCS_TREE.BIOSUM_CALC Workflow";
+            this.btnLinkTableTest.Text = "Test Fics Workflow";
             this.btnLinkTableTest.UseVisualStyleBackColor = true;
             this.btnLinkTableTest.Click += new System.EventHandler(this.btnLinkTableTest_Click);
+            // 
+            // btnExport
+            // 
+            this.btnExport.Location = new System.Drawing.Point(553, 293);
+            this.btnExport.Name = "btnExport";
+            this.btnExport.Size = new System.Drawing.Size(150, 21);
+            this.btnExport.TabIndex = 8;
+            this.btnExport.Text = "Export Grid Values";
+            this.btnExport.UseVisualStyleBackColor = true;
+            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
+
             // 
             // frmFCSTreeVolumeEdit
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(856, 467);
+            this.ClientSize = new System.Drawing.Size(932, 467);
             this.Controls.Add(this.panel1);
             this.Name = "frmFCSTreeVolumeEdit";
             this.Text = "Tree Volume and Biomass Calculator Troubleshooter";
@@ -1252,10 +1268,9 @@ namespace FIA_Biosum_Manager
     {
         LoadDefaultSingleRecordValues();
     }
-
     private void btnTreeVolBatch_Click(object sender, EventArgs e)
     {
-        if (m_strGridTableSource.Trim().Length == 0) return;
+            if (m_strGridTableSource.Trim().Length == 0) return;
             if (m_strGridTableSource.Equals(m_strSampleTvbcTable))
             {
                 RunBatchTvbc_Start();
@@ -1263,9 +1278,9 @@ namespace FIA_Biosum_Manager
             else
             {
                 RunBatch_Start();
-            }       
+            }
     }
-    private void RunBatch_Start()
+        private void RunBatch_Start()
     {
         btnCancel.Visible = true;
         btnCancel.Invalidate();
@@ -1295,6 +1310,16 @@ namespace FIA_Biosum_Manager
             frmMain.g_oDelegate.m_oThread = new Thread(new ThreadStart(this.RunBatchTvbc_Main));
             frmMain.g_oDelegate.m_oThread.IsBackground = true;
             frmMain.g_oDelegate.m_oThread.Start();
+        }
+       private void btnExport_Click(object sender, EventArgs e)
+        {
+            this.m_frmTreeVolumeExport = new frmDialog();
+            this.m_frmTreeVolumeExport.MaximizeBox = true;
+            this.m_frmTreeVolumeExport.MinimizeBox = false;
+            this.m_frmTreeVolumeExport.BackColor = System.Drawing.SystemColors.Control;
+            this.m_frmTreeVolumeExport.Text = "Export Tree Volume and Biomass Results";
+            this.m_frmTreeVolumeExport.Initialize_Tree_Volume_Export_User_Control(this);
+            this.m_frmTreeVolumeExport.Show();
         }
 
         private void RunBatch_Main()
@@ -2588,6 +2613,7 @@ namespace FIA_Biosum_Manager
         btnLoad.Top = btnEdit.Top;
         btnTreeVolBatch.Top = btnEdit.Top;
         btnLinkTableTest.Top = btnEdit.Top;
+            btnExport.Top = btnEdit.Top;
         uc_gridview1.Height = cmbDatasource.Top - uc_gridview1.Top - 5;
         uc_gridview1.Width = groupBox1.Width - (uc_gridview1.Left * 2) - 5;
 
