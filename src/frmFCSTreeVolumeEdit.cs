@@ -307,11 +307,11 @@ namespace FIA_Biosum_Manager
             this.txtCountyCd = new System.Windows.Forms.TextBox();
             this.btnTreeVolSingle = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnExport = new System.Windows.Forms.Button();
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnLoad = new System.Windows.Forms.Button();
             this.cmbDatasource = new System.Windows.Forms.ComboBox();
             this.btnLinkTableTest = new System.Windows.Forms.Button();
-            this.btnExport = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -824,13 +824,23 @@ namespace FIA_Biosum_Manager
             this.groupBox1.Controls.Add(this.cmbDatasource);
             this.groupBox1.Controls.Add(this.btnLinkTableTest);
             this.groupBox1.Controls.Add(this.btnTreeVolBatch);
-
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(886, 321);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Tree Volumes And Biomass Batch Test";
+            // 
+            // btnExport
+            // 
+            this.btnExport.Enabled = false;
+            this.btnExport.Location = new System.Drawing.Point(553, 293);
+            this.btnExport.Name = "btnExport";
+            this.btnExport.Size = new System.Drawing.Size(150, 21);
+            this.btnExport.TabIndex = 8;
+            this.btnExport.Text = "Export Grid Values";
+            this.btnExport.UseVisualStyleBackColor = true;
+            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
             // 
             // btnEdit
             // 
@@ -872,17 +882,6 @@ namespace FIA_Biosum_Manager
             this.btnLinkTableTest.Text = "Test Fics Workflow";
             this.btnLinkTableTest.UseVisualStyleBackColor = true;
             this.btnLinkTableTest.Click += new System.EventHandler(this.btnLinkTableTest_Click);
-            // 
-            // btnExport
-            // 
-            this.btnExport.Location = new System.Drawing.Point(553, 293);
-            this.btnExport.Name = "btnExport";
-            this.btnExport.Size = new System.Drawing.Size(150, 21);
-            this.btnExport.TabIndex = 8;
-            this.btnExport.Text = "Export Grid Values";
-            this.btnExport.UseVisualStyleBackColor = true;
-            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
-
             // 
             // frmFCSTreeVolumeEdit
             // 
@@ -1288,6 +1287,7 @@ namespace FIA_Biosum_Manager
         groupBox1.Enabled = false;
         groupBox2.Enabled = false;
         groupBox3.Enabled = false;
+            btnExport.Enabled = false;
         frmMain.g_oDelegate.InitializeThreadEvents();
         frmMain.g_oDelegate.m_oEventStopThread.Reset();
         frmMain.g_oDelegate.m_oEventThreadStopped.Reset();
@@ -1304,6 +1304,7 @@ namespace FIA_Biosum_Manager
             groupBox1.Enabled = false;
             groupBox2.Enabled = false;
             groupBox3.Enabled = false;
+            btnExport.Enabled = false;
             frmMain.g_oDelegate.InitializeThreadEvents();
             frmMain.g_oDelegate.m_oEventStopThread.Reset();
             frmMain.g_oDelegate.m_oEventThreadStopped.Reset();
@@ -1983,7 +1984,8 @@ namespace FIA_Biosum_Manager
         frmMain.g_oDelegate.SetControlPropertyValue(groupBox1, "Enabled", true);
         frmMain.g_oDelegate.SetControlPropertyValue(groupBox2, "Enabled", true);
         frmMain.g_oDelegate.SetControlPropertyValue(groupBox3, "Enabled", true);
-        frmMain.g_oDelegate.SetStatusBarPanelTextValue(frmMain.g_sbpInfo.Parent, 1, "Ready");
+            frmMain.g_oDelegate.SetControlPropertyValue(btnExport, "Enabled", true);
+            frmMain.g_oDelegate.SetStatusBarPanelTextValue(frmMain.g_sbpInfo.Parent, 1, "Ready");
     }
     private void UpdateThermPercent(int p_intMin, int p_intMax, int p_intValue)
     {
