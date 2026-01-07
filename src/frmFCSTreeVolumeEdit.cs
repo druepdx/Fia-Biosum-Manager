@@ -157,6 +157,8 @@ namespace FIA_Biosum_Manager
         private Button btnExport;
         private SQLite.ADO.DataMgr m_oDataMgr = new SQLite.ADO.DataMgr();
 
+
+
         public frmFCSTreeVolumeEdit()
         {
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer |
@@ -902,11 +904,31 @@ namespace FIA_Biosum_Manager
 
     }
 
-    #endregion
+        #endregion
 
-       
-  
-    private void LoadDefaultSingleRecordValues()
+        public string GridTableSource
+        {
+            get { return this.m_strGridTableSource; }
+        }
+        public string GridDatabaseSource
+        {
+            get { return this.m_strSelectedDBFile; }
+        }
+        public DataTable GridDataTable
+        {
+            get {
+                if (uc_gridview1 != null && uc_gridview1.m_ds != null)
+                {
+                    return uc_gridview1.m_ds.Tables[0];
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        private void LoadDefaultSingleRecordValues()
     {
         this.txtActualHt.Text = "80";
         this.txtCountyCd.Text = "87";
