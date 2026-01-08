@@ -135,7 +135,9 @@ namespace FIA_Biosum_Manager
                     while (dataMgr.m_DataReader.Read())
                     {
                         string strSql = Convert.ToString(dataMgr.m_DataReader["sql"]);
-                        strCreateTableSql = strSql.Replace(strSourceTable, txtTableName.Text.Trim());                        
+                        string strRenameTableSql = strSql.Replace(strSourceTable, txtTableName.Text.Trim());
+                        //@ToDo: Put this in to handle field name translation from FICS. Can remove when we disable FICS
+                        strCreateTableSql = strRenameTableSql.Replace("_calc", "");
                     }
                     dataMgr.m_DataReader.Close();
                 }
@@ -168,6 +170,12 @@ namespace FIA_Biosum_Manager
 
                         // 3. Adapt the destination table with data from your source DataTable
                         IList<object> lstItem = new List<object>();
+                        IList<string> sourceColumnNames = new List<string>();
+                        for (int i = 0; i < m_frmParent.GridDataTable.Columns.Count; i++)
+                        {
+                            sourceColumnNames.Add(m_frmParent.GridDataTable.Columns[i].ColumnName.ToUpper());
+                        }
+                        
                         System.Data.SQLite.SQLiteTransaction destTransaction = conn.BeginTransaction();
                         foreach (DataRow row in m_frmParent.GridDataTable.Rows)
                         {
@@ -176,7 +184,14 @@ namespace FIA_Biosum_Manager
                             lstItem.Clear();
                             for (int i = 0; i < destinationTable.Columns.Count; i++)
                             {
-                                lstItem.Add(row[destinationTable.Columns[i].ColumnName]);
+                                if (sourceColumnNames.Contains(destinationTable.Columns[i].ColumnName.ToUpper()))
+                                {
+                                    lstItem.Add(row[destinationTable.Columns[i].ColumnName]);
+                                }
+                                else
+                                {
+                                    lstItem.Add(null);
+                                }
                             }
                             object[] rowArray = lstItem.ToArray();
                             destinationRow.ItemArray = rowArray;

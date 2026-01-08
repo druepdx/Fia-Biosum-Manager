@@ -225,12 +225,12 @@ namespace FIA_Biosum_Manager
             {
                 cmbDatasource.Items.Clear();
                 cmbDatasource.Items.Add("Tree Sample");
-                if (bHasTvbcData)
-                {
-                    cmbDatasource.Items.Add("Tree Sample TVBC");
-                }
             }
-        LoadDefaultSingleRecordValues();
+            if (bHasTvbcData)
+            {
+                cmbDatasource.Items.Add("Tree Sample TVBC");
+            }
+            LoadDefaultSingleRecordValues();
     }
      /// <summary>
     /// Required designer variable.
@@ -2120,15 +2120,15 @@ namespace FIA_Biosum_Manager
             this.Width,
             this.Top);
         frmMain.g_sbpInfo.Text = "Loading FVS Out Tree Table Data...Stand By";
-            m_strSelectedDBFile = $@"{frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim()}{Tables.FVS.DefaultFVSTreeListDbFile}";
+            m_strSelectedDBFile = m_strTempDBFile;
             var strFvsTreeTable = this.cmbDatasource.Text; //e.g., FVS_CutTree
             var strFiaTreeSpeciesRefTableLink = Tables.ProcessorScenarioRun.DefaultFiaTreeSpeciesRefTableName;
 
-            using (System.Data.SQLite.SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection(m_oDataMgr.GetConnectionString(m_strTempDBFile)))
+            using (System.Data.SQLite.SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection(m_oDataMgr.GetConnectionString(m_strSelectedDBFile)))
             {
                 conn.Open();
                 // Attach FVSOUT_TREE_LIST.db to populate worktables
-                m_oDataMgr.m_strSQL = $@"ATTACH DATABASE '{m_strSelectedDBFile}' AS TREES";
+                m_oDataMgr.m_strSQL = $@"ATTACH DATABASE '{frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim()}{Tables.FVS.DefaultFVSTreeListDbFile}' AS TREES";
                 m_oDataMgr.SqlNonQuery(conn, m_oDataMgr.m_strSQL);
 
                 // Attach master.db to populate worktables
@@ -2380,15 +2380,15 @@ namespace FIA_Biosum_Manager
           this.Width,
           this.Top);
 
-            m_strSelectedDBFile = m_oQueries.m_oDataSource.getFullPathAndFile(Datasource.TableTypes.Tree);
+            m_strSelectedDBFile = m_strTempDBFile;
             //
             //CREATE TREE TABLE WORK TABLE
             //
-            using (System.Data.SQLite.SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection(m_oDataMgr.GetConnectionString(m_strTempDBFile)))
+            using (System.Data.SQLite.SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection(m_oDataMgr.GetConnectionString(m_strSelectedDBFile)))
             {
                 conn.Open();
                 // Attach master.db to populate worktables
-                m_oDataMgr.m_strSQL = $@"ATTACH DATABASE '{m_strSelectedDBFile}' AS TREES";
+                m_oDataMgr.m_strSQL = $@"ATTACH DATABASE '{m_oQueries.m_oDataSource.getFullPathAndFile(Datasource.TableTypes.Tree)}' AS TREES";
                 m_oDataMgr.SqlNonQuery(conn, m_oDataMgr.m_strSQL);
 
                 if (m_oDataMgr.TableExist(conn, "tree_work_table"))
@@ -2443,20 +2443,20 @@ namespace FIA_Biosum_Manager
                 //    "THEN roughcull ELSE 0 END END END AS totalcull " +
                 //    "FROM Tree_Work_Table";
                 m_oDataMgr.m_strSQL = Queries.VolumeAndBiomass.FIAPlotInput.BuildInputTableForVolumeCalculation_Step4(
-                    "cull_total_work_table", "Tree_Work_Table");
+                    "cull_total_work_table", "tree_work_table");
                 m_oDataMgr.m_strSQL = m_oDataMgr.m_strSQL.Replace("tre_cn", "id");
                 if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 2)
                     frmMain.g_oUtils.WriteText(frmMain.g_oFrmMain.frmProject.uc_project1.m_strDebugFile, m_oDataMgr.m_strSQL + "\r\n\r\n");
                 m_oDataMgr.SqlNonQuery(conn, m_oDataMgr.m_strSQL);
                 m_oDataMgr.m_strSQL = Queries.VolumeAndBiomass.FIAPlotInput.PNWRS.BuildInputTableForVolumeCalculation_Step5(
-                    "cull_total_work_table", "Tree_Work_Table");
+                    "cull_total_work_table", "tree_work_table");
                 m_oDataMgr.m_strSQL = m_oDataMgr.m_strSQL.Replace("tre_cn", "id");
                 if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 2)
                     frmMain.g_oUtils.WriteText(frmMain.g_oFrmMain.frmProject.uc_project1.m_strDebugFile, m_oDataMgr.m_strSQL + "\r\n\r\n");
                 m_oDataMgr.SqlNonQuery(conn, m_oDataMgr.m_strSQL);
 
                 m_oDataMgr.m_strSQL = Queries.VolumeAndBiomass.FIAPlotInput.PNWRS.BuildInputTableForVolumeCalculation_Step6(
-                    "cull_total_work_table", "Tree_Work_Table");
+                    "cull_total_work_table", "tree_work_table");
                 m_oDataMgr.m_strSQL = m_oDataMgr.m_strSQL.Replace("tre_cn", "id");
                 m_oDataMgr.m_strSQL = m_oDataMgr.m_strSQL.Replace("dia", "dbh");
                 if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 2)
@@ -2520,9 +2520,9 @@ namespace FIA_Biosum_Manager
                    "ecosubcd, " +
                    "stdorgcd " +
              //END: ADDED BIOSUM_VOLUME COLUMNS
-             "FROM Tree_Work_Table", m_oQueries.m_oFIAPlot.m_strTreeTable);
+             "FROM tree_work_table", m_oQueries.m_oFIAPlot.m_strTreeTable);
 
-        m_strGridTableSource = "Tree_Work_Table";
+        m_strGridTableSource = "tree_work_table";
         frmMain.g_oFrmMain.DeactivateStandByAnimation();
         frmMain.g_sbpInfo.Text = "Ready";
         if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 1)
