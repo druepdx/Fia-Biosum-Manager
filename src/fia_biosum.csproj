@@ -366,12 +366,6 @@
     <Compile Include="txtNumeric.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="uc_contact_edit.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="uc_contact_list.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="uc_datasource.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -696,12 +690,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="txtNumeric.resx">
       <DependentUpon>txtNumeric.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="uc_contact_edit.resx">
-      <DependentUpon>uc_contact_edit.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="uc_contact_list.resx">
-      <DependentUpon>uc_contact_list.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="uc_datasource.resx">
       <DependentUpon>uc_datasource.cs</DependentUpon>

@@ -32,7 +32,6 @@ namespace FIA_Biosum_Manager
 		private System.Windows.Forms.MenuItem mnuViewProject;
 		private System.Windows.Forms.MenuItem mnuViewNotes;
 		private System.Windows.Forms.MenuItem mnuViewLinks;
-		private System.Windows.Forms.MenuItem mnuViewContacts;
 		private System.Windows.Forms.MenuItem mnuHelp;
 		private System.Windows.Forms.MenuItem mnuHelpBiosummatic;
 		private System.Windows.Forms.MenuItem mnuHelpTechnicalSupport;
@@ -45,7 +44,6 @@ namespace FIA_Biosum_Manager
 		private System.Windows.Forms.ToolBarButton btnProject;
 		private System.Windows.Forms.ToolBarButton btnNotes;
 		private System.Windows.Forms.ToolBarButton btnLinks;
-		private System.Windows.Forms.ToolBarButton btnContacts;
 		private System.Windows.Forms.OpenFileDialog openFileDialog1;
 
 		public FIA_Biosum_Manager.frmDialog frmProject;
@@ -290,14 +288,12 @@ namespace FIA_Biosum_Manager
             
 
             this.btnSave.Enabled=false;
-			this.btnContacts.Enabled=false;
 			this.btnOptimizer.Enabled = false;
 			this.btnDB.Enabled=false;
 			
 			this.btnFVS.Enabled=false;
 			this.btnProcessor.Enabled=false;
 			this.panel1.Enabled=false;
-			this.btnContacts.Enabled=false;
 			this.btnNotes.Enabled=false;
 			this.btnProject.Enabled=false;
 			this.btnLinks.Enabled = false;
@@ -476,7 +472,6 @@ namespace FIA_Biosum_Manager
             this.mnuViewProject = new System.Windows.Forms.MenuItem();
             this.mnuViewNotes = new System.Windows.Forms.MenuItem();
             this.mnuViewLinks = new System.Windows.Forms.MenuItem();
-            this.mnuViewContacts = new System.Windows.Forms.MenuItem();
             this.mnuSettings = new System.Windows.Forms.MenuItem();
             this.mnuTools = new System.Windows.Forms.MenuItem();
             this.mnuToolsFCS = new System.Windows.Forms.MenuItem();
@@ -495,7 +490,6 @@ namespace FIA_Biosum_Manager
             this.btnProject = new System.Windows.Forms.ToolBarButton();
             this.btnNotes = new System.Windows.Forms.ToolBarButton();
             this.btnLinks = new System.Windows.Forms.ToolBarButton();
-            this.btnContacts = new System.Windows.Forms.ToolBarButton();
             this.ctxMenu1 = new System.Windows.Forms.ContextMenu();
             this.imgList1 = new System.Windows.Forms.ImageList(this.components);
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
@@ -618,8 +612,7 @@ namespace FIA_Biosum_Manager
             this.mnuView.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.mnuViewProject,
             this.mnuViewNotes,
-            this.mnuViewLinks,
-            this.mnuViewContacts});
+            this.mnuViewLinks});
             this.mnuView.Text = "&View";
             // 
             // mnuViewProject
@@ -639,12 +632,6 @@ namespace FIA_Biosum_Manager
             this.mnuViewLinks.Index = 2;
             this.mnuViewLinks.Text = "Project Links";
             this.mnuViewLinks.Click += new System.EventHandler(this.mnuViewLinks_Click);
-            // 
-            // mnuViewContacts
-            // 
-            this.mnuViewContacts.Index = 3;
-            this.mnuViewContacts.Text = "Project Contacts";
-            this.mnuViewContacts.Click += new System.EventHandler(this.mnuViewContacts_Click);
             // 
             // mnuSettings
             // 
@@ -733,8 +720,7 @@ namespace FIA_Biosum_Manager
             this.btnSave,
             this.btnProject,
             this.btnNotes,
-            this.btnLinks,
-            this.btnContacts});
+            this.btnLinks});
             this.tlbMain.ButtonSize = new System.Drawing.Size(52, 38);
             this.tlbMain.ContextMenu = this.ctxMenu1;
             this.tlbMain.DropDownArrows = true;
@@ -777,12 +763,6 @@ namespace FIA_Biosum_Manager
             this.btnLinks.ImageIndex = 4;
             this.btnLinks.Name = "btnLinks";
             this.btnLinks.Text = "Links";
-            // 
-            // btnContacts
-            // 
-            this.btnContacts.ImageIndex = 5;
-            this.btnContacts.Name = "btnContacts";
-            this.btnContacts.Text = "Contacts";
             // 
             // ctxMenu1
             // 
@@ -2322,9 +2302,6 @@ namespace FIA_Biosum_Manager
                 case "Links":
 					this.mnuViewLinks_Click(sender,e);
 					break;
-                case "Contacts":
-					this.mnuViewContacts_Click(sender,e);
-                    break;
 			}
 		}
 
@@ -2333,7 +2310,6 @@ namespace FIA_Biosum_Manager
 			
 			this.frmProject.uc_project_document_links1.Visible=false;
 			this.frmProject.uc_project_notes1.Visible=false;
-			this.frmProject.uc_contact_list1.Visible=false;
 			this.frmProject.uc_project1.Visible=true;
 			this.frmProject.uc_project1.m_strAction="VIEW";
 			this.frmProject.uc_project1.lblTitle.Text = "Project Properties";
@@ -2443,13 +2419,11 @@ namespace FIA_Biosum_Manager
               
 
 				btnDB.ForeColor = Color.Red;
-				this.btnContacts.Enabled=true;
 				this.btnOptimizer.Enabled = true;
 				this.btnDB.Enabled=false;
 				this.btnFVS.Enabled=true;
 				this.btnProcessor.Enabled=true;
 				this.m_pnlCurrent.Enabled=true;
-				this.btnContacts.Enabled=true;
 				this.btnNotes.Enabled=true;
 				this.btnProject.Enabled=true;
 				this.btnSave.Enabled=true;
@@ -2513,14 +2487,12 @@ namespace FIA_Biosum_Manager
 				}
               
 				btnDB.ForeColor = Color.Red;
-				frmTemp.btnContacts.Enabled=true;
 				frmTemp.btnOptimizer.Enabled = true;
 				frmTemp.btnDB.Enabled=false;
 			
 				frmTemp.btnFVS.Enabled=true;
 				frmTemp.btnProcessor.Enabled=true;
 				frmTemp.m_pnlCurrent.Enabled=true;
-				frmTemp.btnContacts.Enabled=true;
 				frmTemp.btnNotes.Enabled=true;
 				frmTemp.btnProject.Enabled=true;
 				frmTemp.btnSave.Enabled=true;
@@ -2800,7 +2772,6 @@ namespace FIA_Biosum_Manager
 			this.frmProject.uc_project_notes1.Visible=false;
 			this.frmProject.uc_project1.Visible=false;
             this.frmProject.uc_scenario1.Visible=false;
-			this.frmProject.uc_contact_list1.Visible=false;
 			this.frmProject.uc_project_document_links1.loadvalues(this.frmProject.uc_project1.txtShared.Text,this.frmProject.uc_project1.txtPersonal.Text,false);
 			this.frmProject.uc_project_document_links1.Visible=true;
 			this.frmProject.Visible = true;
@@ -3033,19 +3004,6 @@ namespace FIA_Biosum_Manager
                                 else bPromptMsg = true;
                             }
                             temp.uc_project_notes1.savevalues();
-                        }
-                        if (temp.uc_contact_list1.btnSave.Enabled == true)
-                        {
-                            if (bPromptMsg == false && p_bPrompt)
-                            {
-                                result = MessageBox.Show("Save Changes to " + child.Text.Trim() + " Y/N", "FIA Biosum", System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Question);
-                                if (result == System.Windows.Forms.DialogResult.No)
-                                {
-                                    break;
-                                }
-                                else bPromptMsg = true;
-                            }
-                            temp.uc_contact_list1.savevalues();
                         }
                         temp = null;
                     }
@@ -3456,7 +3414,6 @@ namespace FIA_Biosum_Manager
 			this.frmProject.uc_project1.Visible=false;
 			this.frmProject.uc_scenario1.Visible=false;
 			this.frmProject.uc_project_document_links1.Visible=false;
-			this.frmProject.uc_contact_list1.Visible=false;
             this.frmProject.uc_project_notes1.loadnotes();				
 			this.frmProject.uc_project_notes1.Visible=true;
 			this.frmProject.Visible = true;
@@ -3564,32 +3521,6 @@ namespace FIA_Biosum_Manager
 					
 			}
 
-		}
-
-		private void mnuViewContacts_Click(object sender, System.EventArgs e)
-		{
-			
-			this.frmProject.uc_project_notes1.Visible=false;
-			this.frmProject.uc_project1.Visible=false;
-			this.frmProject.uc_project_document_links1.Visible=false;
-			this.frmProject.uc_contact_list1.loadvalues(this.frmProject.uc_project1.txtRootDirectory.Text.Trim());
-			this.frmProject.uc_contact_list1.Visible=true;
-			this.frmProject.Visible = true;
-			if (this.frmProject.WindowState==System.Windows.Forms.FormWindowState.Minimized)
-			{
-				this.frmProject.WindowState = System.Windows.Forms.FormWindowState.Normal;
-			}
-			else
-			{
-				
-			}
-
-			this.frmProject.Focus();
-			this.frmProject.uc_contact_list1.m_oResizeForm.ControlToResize = frmProject;
-			
-			this.frmProject.uc_contact_list1.m_oResizeForm.ResizeControl();
-
-			
 		}
 
 		private void grpboxLeft_Resize(object sender, System.EventArgs e)

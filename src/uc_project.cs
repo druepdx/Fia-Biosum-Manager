@@ -934,8 +934,6 @@ namespace FIA_Biosum_Manager
 				p_dao.CreateMDB(strDestFile);
 				strConn = p_ado.getMDBConnString(strDestFile,"admin","");
 				p_ado.OpenConnection(strConn);
-				//contacts table
-				frmMain.g_oTables.m_oProject.CreateContactsTable(p_ado,p_ado.m_OleDbConnection,frmMain.g_oTables.m_oProject.DefaultProjectContactsTableName);
 				//datasource table
 				frmMain.g_oTables.m_oProject.CreateAccessDatasourceTable(p_ado,p_ado.m_OleDbConnection,Tables.Project.DefaultProjectDatasourceTableName);
 				//project table

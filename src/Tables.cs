@@ -41,35 +41,10 @@ namespace FIA_Biosum_Manager
             public string DefaultProjectLinksCategoryTableName { get { return "links_category"; } }
             public string DefaultProjectUserConfigTableDbFile { get { return @"db\project.mdb"; } }
             public string DefaultProjectUserConfigTableName { get { return "user_config"; } }
-            public string DefaultProjectContactsTableDbFile { get { return @"db\project.mdb"; } }
-            public string DefaultProjectContactsTableName { get { return "contacts"; } }
             static public string DefaultProjectDatasourceTableDbFile { get { return @"db\project.mdb"; } }
             static public string DefaultProjectDatasourceTableName { get { return "datasource"; } }
             public Project()
             {
-            }
-            public void CreateContactsTable(FIA_Biosum_Manager.ado_data_access p_oAdo, System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
-            {
-                p_oAdo.SqlNonQuery(p_oConn, CreateContactsTableSQL(p_strTableName));
-                CreateContactsTableIndexes(p_oAdo, p_oConn, p_strTableName);
-            }
-            public void CreateContactsTableIndexes(FIA_Biosum_Manager.ado_data_access p_oAdo, System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
-            {
-                p_oAdo.AddPrimaryKey(p_oConn, p_strTableName, p_strTableName + "_pk", "name");
-            }
-            public string CreateContactsTableSQL(string p_strTableName)
-            {
-                return "CREATE TABLE " + p_strTableName + " (" +
-                        "name CHAR(50)," +
-                        "process CHAR(50)," +
-                        "work_phone CHAR(20)," +
-                        "organization CHAR(75)," +
-                        "street_addr CHAR(30)," +
-                        "city CHAR(30)," +
-                        "state CHAR(2)," +
-                        "zip CHAR(9)," +
-                        "email CHAR(50))";
-
             }
             public void CreateAccessDatasourceTable(FIA_Biosum_Manager.ado_data_access p_oAdo, System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
             {
