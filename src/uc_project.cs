@@ -100,20 +100,20 @@ namespace FIA_Biosum_Manager
 		private System.Windows.Forms.Label lblDate;
 		public System.Windows.Forms.TextBox txtName;
 		private System.Windows.Forms.Label lblName;
-		private System.Windows.Forms.GroupBox grpboxProjectFiles;
-		private System.Windows.Forms.Button btnPersonalHelp;
-		private System.Windows.Forms.Button btnPersonalDirectory;
-		private System.Windows.Forms.Label lblLocal;
-		public System.Windows.Forms.TextBox txtPersonal;
-		private System.Windows.Forms.Button btnSharedHelp;
-		private System.Windows.Forms.Button btnSharedDirectory;
-		private System.Windows.Forms.Label lblShared;
-		private System.Windows.Forms.Button btnRootDirectoryHelp;
+		private System.Windows.Forms.GroupBox grpboxProjectDirectory;
+        private System.Windows.Forms.Button btnPersonalHelp;
+        private System.Windows.Forms.Button btnPersonalDirectory;
+        private System.Windows.Forms.Label lblLocal;
+        public System.Windows.Forms.TextBox txtPersonal;
+        private System.Windows.Forms.Button btnSharedHelp;
+        private System.Windows.Forms.Button btnSharedDirectory;
+        private System.Windows.Forms.Label lblShared;
+        private System.Windows.Forms.Button btnRootDirectoryHelp;
 		private System.Windows.Forms.Button btnRootDirectory;
 		private System.Windows.Forms.Label lblRootDirectory;
 		public System.Windows.Forms.TextBox txtRootDirectory;
-		public System.Windows.Forms.TextBox txtShared;
-		public System.Windows.Forms.Label lblTitle;
+        public System.Windows.Forms.TextBox txtShared;
+        public System.Windows.Forms.Label lblTitle;
 		private System.Windows.Forms.Button btnEdit;
 		public System.Windows.Forms.Button btnSave;
 		private System.Windows.Forms.Button btnCancel;
@@ -261,7 +261,7 @@ namespace FIA_Biosum_Manager
 			if (this.m_strAction=="VIEW") 
 			{
 				this.grpboxDescription.Enabled=false;
-				this.grpboxProjectFiles.Enabled=false;
+				this.grpboxProjectDirectory.Enabled=false;
 				this.grpboxProjectId.Enabled=false;
 				this.grpboxCompany.Enabled=false;
 				this.grpboxCreated.Enabled=false;
@@ -349,7 +349,7 @@ namespace FIA_Biosum_Manager
             this.lblDate = new System.Windows.Forms.Label();
             this.txtName = new System.Windows.Forms.TextBox();
             this.lblName = new System.Windows.Forms.Label();
-            this.grpboxProjectFiles = new System.Windows.Forms.GroupBox();
+            this.grpboxProjectDirectory = new System.Windows.Forms.GroupBox();
             this.btnPersonalHelp = new System.Windows.Forms.Button();
             this.btnPersonalDirectory = new System.Windows.Forms.Button();
             this.lblLocal = new System.Windows.Forms.Label();
@@ -376,7 +376,7 @@ namespace FIA_Biosum_Manager
             this.grpboxCompany.SuspendLayout();
             this.grpboxProjectId.SuspendLayout();
             this.grpboxCreated.SuspendLayout();
-            this.grpboxProjectFiles.SuspendLayout();
+            this.grpboxProjectDirectory.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -386,7 +386,7 @@ namespace FIA_Biosum_Manager
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(672, 520);
+            this.panel1.Size = new System.Drawing.Size(672, 440);
             this.panel1.TabIndex = 0;
             // 
             // groupBox1
@@ -395,7 +395,7 @@ namespace FIA_Biosum_Manager
             this.groupBox1.Controls.Add(this.grpboxCompany);
             this.groupBox1.Controls.Add(this.grpboxProjectId);
             this.groupBox1.Controls.Add(this.grpboxCreated);
-            this.groupBox1.Controls.Add(this.grpboxProjectFiles);
+            this.groupBox1.Controls.Add(this.grpboxProjectDirectory);
             this.groupBox1.Controls.Add(this.lblTitle);
             this.groupBox1.Controls.Add(this.btnEdit);
             this.groupBox1.Controls.Add(this.btnSave);
@@ -405,7 +405,7 @@ namespace FIA_Biosum_Manager
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(672, 520);
+            this.groupBox1.Size = new System.Drawing.Size(672, 440);
             this.groupBox1.TabIndex = 29;
             this.groupBox1.TabStop = false;
             // 
@@ -459,7 +459,7 @@ namespace FIA_Biosum_Manager
             this.grpboxProjectId.Size = new System.Drawing.Size(184, 48);
             this.grpboxProjectId.TabIndex = 0;
             this.grpboxProjectId.TabStop = false;
-            this.grpboxProjectId.Text = "Project Id";
+            this.grpboxProjectId.Text = "Project Workspace";
             // 
             // txtProjectId
             // 
@@ -519,26 +519,18 @@ namespace FIA_Biosum_Manager
             this.lblName.TabIndex = 0;
             this.lblName.Text = "Name";
             // 
-            // grpboxProjectFiles
+            // grpboxProjectDirectory
             // 
-            this.grpboxProjectFiles.Controls.Add(this.btnPersonalHelp);
-            this.grpboxProjectFiles.Controls.Add(this.btnPersonalDirectory);
-            this.grpboxProjectFiles.Controls.Add(this.lblLocal);
-            this.grpboxProjectFiles.Controls.Add(this.txtPersonal);
-            this.grpboxProjectFiles.Controls.Add(this.btnSharedHelp);
-            this.grpboxProjectFiles.Controls.Add(this.btnSharedDirectory);
-            this.grpboxProjectFiles.Controls.Add(this.lblShared);
-            this.grpboxProjectFiles.Controls.Add(this.btnRootDirectoryHelp);
-            this.grpboxProjectFiles.Controls.Add(this.btnRootDirectory);
-            this.grpboxProjectFiles.Controls.Add(this.lblRootDirectory);
-            this.grpboxProjectFiles.Controls.Add(this.txtRootDirectory);
-            this.grpboxProjectFiles.Controls.Add(this.txtShared);
-            this.grpboxProjectFiles.Location = new System.Drawing.Point(8, 280);
-            this.grpboxProjectFiles.Name = "grpboxProjectFiles";
-            this.grpboxProjectFiles.Size = new System.Drawing.Size(640, 152);
-            this.grpboxProjectFiles.TabIndex = 29;
-            this.grpboxProjectFiles.TabStop = false;
-            this.grpboxProjectFiles.Text = "Project Files";
+            this.grpboxProjectDirectory.Controls.Add(this.btnRootDirectoryHelp);
+            this.grpboxProjectDirectory.Controls.Add(this.btnRootDirectory);
+            this.grpboxProjectDirectory.Controls.Add(this.lblRootDirectory);
+            this.grpboxProjectDirectory.Controls.Add(this.txtRootDirectory);
+            this.grpboxProjectDirectory.Location = new System.Drawing.Point(8, 280);
+            this.grpboxProjectDirectory.Name = "grpboxProjectDirectory";
+            this.grpboxProjectDirectory.Size = new System.Drawing.Size(640, 160);
+            this.grpboxProjectDirectory.TabIndex = 29;
+            this.grpboxProjectDirectory.TabStop = false;
+            this.grpboxProjectDirectory.Text = "Project Directory";
             // 
             // btnPersonalHelp
             // 
@@ -553,7 +545,7 @@ namespace FIA_Biosum_Manager
             // 
             this.btnPersonalDirectory.Enabled = false;
             this.btnPersonalDirectory.Image = ((System.Drawing.Image)(resources.GetObject("btnPersonalDirectory.Image")));
-            this.btnPersonalDirectory.Location = new System.Drawing.Point(561, 112);
+            this.btnPersonalDirectory.Location = new System.Drawing.Point(561, 98);
             this.btnPersonalDirectory.Name = "btnPersonalDirectory";
             this.btnPersonalDirectory.Size = new System.Drawing.Size(32, 32);
             this.btnPersonalDirectory.TabIndex = 10;
@@ -561,7 +553,7 @@ namespace FIA_Biosum_Manager
             // 
             // lblLocal
             // 
-            this.lblLocal.Location = new System.Drawing.Point(16, 90);
+            this.lblLocal.Location = new System.Drawing.Point(16, 98);
             this.lblLocal.Name = "lblLocal";
             this.lblLocal.Size = new System.Drawing.Size(80, 53);
             this.lblLocal.TabIndex = 9;
@@ -572,7 +564,7 @@ namespace FIA_Biosum_Manager
             this.txtPersonal.Enabled = false;
             this.txtPersonal.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtPersonal.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.txtPersonal.Location = new System.Drawing.Point(112, 116);
+            this.txtPersonal.Location = new System.Drawing.Point(112, 103);
             this.txtPersonal.Name = "txtPersonal";
             this.txtPersonal.Size = new System.Drawing.Size(416, 23);
             this.txtPersonal.TabIndex = 8;
@@ -590,7 +582,7 @@ namespace FIA_Biosum_Manager
             // 
             this.btnSharedDirectory.Enabled = false;
             this.btnSharedDirectory.Image = ((System.Drawing.Image)(resources.GetObject("btnSharedDirectory.Image")));
-            this.btnSharedDirectory.Location = new System.Drawing.Point(561, 44);
+            this.btnSharedDirectory.Location = new System.Drawing.Point(561, 52);
             this.btnSharedDirectory.Name = "btnSharedDirectory";
             this.btnSharedDirectory.Size = new System.Drawing.Size(32, 32);
             this.btnSharedDirectory.TabIndex = 6;
@@ -598,7 +590,7 @@ namespace FIA_Biosum_Manager
             // 
             // lblShared
             // 
-            this.lblShared.Location = new System.Drawing.Point(16, 44);
+            this.lblShared.Location = new System.Drawing.Point(16, 52);
             this.lblShared.Name = "lblShared";
             this.lblShared.Size = new System.Drawing.Size(80, 40);
             this.lblShared.TabIndex = 4;
@@ -617,7 +609,7 @@ namespace FIA_Biosum_Manager
             // 
             this.btnRootDirectory.Enabled = false;
             this.btnRootDirectory.Image = ((System.Drawing.Image)(resources.GetObject("btnRootDirectory.Image")));
-            this.btnRootDirectory.Location = new System.Drawing.Point(561, 10);
+            this.btnRootDirectory.Location = new System.Drawing.Point(561, 19);
             this.btnRootDirectory.Name = "btnRootDirectory";
             this.btnRootDirectory.Size = new System.Drawing.Size(32, 32);
             this.btnRootDirectory.TabIndex = 2;
@@ -627,15 +619,15 @@ namespace FIA_Biosum_Manager
             // 
             this.lblRootDirectory.Location = new System.Drawing.Point(16, 19);
             this.lblRootDirectory.Name = "lblRootDirectory";
-            this.lblRootDirectory.Size = new System.Drawing.Size(88, 16);
+            this.lblRootDirectory.Size = new System.Drawing.Size(88, 30);
             this.lblRootDirectory.TabIndex = 0;
-            this.lblRootDirectory.Text = "Project Directory";
+            this.lblRootDirectory.Text = "Workspace Root Directory";
             // 
             // txtRootDirectory
             // 
-            this.txtRootDirectory.Anchor = System.Windows.Forms.AnchorStyles.None;
+            //this.txtRootDirectory.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.txtRootDirectory.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtRootDirectory.Location = new System.Drawing.Point(113, 16);
+            this.txtRootDirectory.Location = new System.Drawing.Point(113, 24);
             this.txtRootDirectory.Name = "txtRootDirectory";
             this.txtRootDirectory.Size = new System.Drawing.Size(416, 23);
             this.txtRootDirectory.TabIndex = 0;
@@ -644,7 +636,7 @@ namespace FIA_Biosum_Manager
             // 
             this.txtShared.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtShared.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.txtShared.Location = new System.Drawing.Point(112, 48);
+            this.txtShared.Location = new System.Drawing.Point(112, 57);
             this.txtShared.Name = "txtShared";
             this.txtShared.Size = new System.Drawing.Size(416, 23);
             this.txtShared.TabIndex = 0;
@@ -661,7 +653,7 @@ namespace FIA_Biosum_Manager
             // 
             // btnEdit
             // 
-            this.btnEdit.Location = new System.Drawing.Point(208, 440);
+            this.btnEdit.Location = new System.Drawing.Point(208, 380);
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.Size = new System.Drawing.Size(96, 32);
             this.btnEdit.TabIndex = 7;
@@ -671,7 +663,7 @@ namespace FIA_Biosum_Manager
             // btnSave
             // 
             this.btnSave.Enabled = false;
-            this.btnSave.Location = new System.Drawing.Point(304, 440);
+            this.btnSave.Location = new System.Drawing.Point(304, 380);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(96, 32);
             this.btnSave.TabIndex = 5;
@@ -681,7 +673,7 @@ namespace FIA_Biosum_Manager
             // btnCancel
             // 
             this.btnCancel.Enabled = false;
-            this.btnCancel.Location = new System.Drawing.Point(400, 440);
+            this.btnCancel.Location = new System.Drawing.Point(400, 380);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(96, 32);
             this.btnCancel.TabIndex = 6;
@@ -691,7 +683,7 @@ namespace FIA_Biosum_Manager
             // btnClose
             // 
             this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnClose.Location = new System.Drawing.Point(560, 480);
+            this.btnClose.Location = new System.Drawing.Point(560, 420);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(96, 32);
             this.btnClose.TabIndex = 8;
@@ -701,7 +693,7 @@ namespace FIA_Biosum_Manager
             // btnHelp
             // 
             this.btnHelp.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.btnHelp.Location = new System.Drawing.Point(112, 440);
+            this.btnHelp.Location = new System.Drawing.Point(112, 380);
             this.btnHelp.Name = "btnHelp";
             this.btnHelp.Size = new System.Drawing.Size(96, 32);
             this.btnHelp.TabIndex = 31;
@@ -712,7 +704,7 @@ namespace FIA_Biosum_Manager
             // 
             this.Controls.Add(this.panel1);
             this.Name = "uc_project";
-            this.Size = new System.Drawing.Size(672, 520);
+            this.Size = new System.Drawing.Size(672, 440);
             this.Resize += new System.EventHandler(this.uc_project_Resize);
             this.panel1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
@@ -724,8 +716,8 @@ namespace FIA_Biosum_Manager
             this.grpboxProjectId.PerformLayout();
             this.grpboxCreated.ResumeLayout(false);
             this.grpboxCreated.PerformLayout();
-            this.grpboxProjectFiles.ResumeLayout(false);
-            this.grpboxProjectFiles.PerformLayout();
+            this.grpboxProjectDirectory.ResumeLayout(false);
+            this.grpboxProjectDirectory.PerformLayout();
             this.ResumeLayout(false);
 
 		}
@@ -733,7 +725,7 @@ namespace FIA_Biosum_Manager
 
 		private void btnEdit_Click(object sender, System.EventArgs e)
 		{
-			this.grpboxProjectFiles.Enabled=true;
+			this.grpboxProjectDirectory.Enabled=true;
 			this.txtDate.Enabled=false;
 
 			this.grpboxCreated.Enabled=true;
@@ -753,7 +745,7 @@ namespace FIA_Biosum_Manager
 		private void btnCancel_Click(object sender, System.EventArgs e)
 		{
 			this.grpboxProjectId.Enabled=false;
-			this.grpboxProjectFiles.Enabled=false;
+			this.grpboxProjectDirectory.Enabled=false;
 			this.grpboxCreated.Enabled=false;
 			this.grpboxCompany.Enabled=false;
 			this.grpboxDescription.Enabled=false;
@@ -801,7 +793,48 @@ namespace FIA_Biosum_Manager
 				this.txtProjectId.Focus();
 				return;
 			}
-
+			string[] arrForbiddenChars = { "<", ">", ":", "\"", "/", "\\", "|", "?", "*" };
+			bool bNameError = false;
+			foreach (string character in arrForbiddenChars)
+            {
+				if (this.txtProjectId.Text.Contains(character))
+                {
+					bNameError = true;
+					break;
+                }
+            }
+			if (bNameError)
+            {
+				MessageBox.Show("Project Id cannot contain any of the following characters: " +
+					"< > : \" / \\ | ? *");
+				this.txtProjectId.Focus();
+				return;
+            }
+			string[] arrReservedNames = {"CON", "PRN", "AUX", "NUL", "COM0", "COM1",
+			"COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
+			"LPT0", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9"};
+			foreach (string name in arrReservedNames)
+            {
+				if (this.txtProjectId.Text.ToUpper() == name)
+                {
+					bNameError = true;
+					break;
+                }
+            }
+			if (bNameError)
+            {
+				MessageBox.Show("Project Id cannot be any of the following names: " +
+					"CON, PRN, AUX, NUL, COM0-COM9, LPT0-LPT9");
+				this.txtProjectId.Focus();
+				return;
+            }
+			if (this.txtProjectId.Text[0] == ' ' || this.txtProjectId.Text[0] == '.' ||
+				this.txtProjectId.Text[this.txtProjectId.Text.Length-1] == ' ' || this.txtProjectId.Text[this.txtProjectId.Text.Length - 1] == '.')
+            {
+				MessageBox.Show("Project Id cannot contain leading or trailing spaces or periods");
+				this.txtProjectId.Focus();
+				return;
+            }
 
 			//project root directory
 			if (this.txtRootDirectory.Text.Length == 0 ) 
@@ -1313,7 +1346,7 @@ namespace FIA_Biosum_Manager
 			this.btnSave.Enabled=false;
 			this.btnCancel.Enabled=false;
 			this.btnEdit.Enabled=true;
-			this.grpboxProjectFiles.Enabled=false;
+			this.grpboxProjectDirectory.Enabled=false;
 			this.grpboxCreated.Enabled=false;
 			this.grpboxCompany.Enabled=false;
 			this.grpboxDescription.Enabled=false;
@@ -1349,7 +1382,7 @@ namespace FIA_Biosum_Manager
 			this.txtName.Text = "";
 			this.txtProjectId.Text = "";
 			
-			this.txtRootDirectory.Text = this.m_oEnv.strAppDir.Substring(0,2) + "\\FIA_Biosum";
+			//this.txtRootDirectory.Text = this.m_oEnv.strAppDir.Substring(0,2) + "\\FIA_Biosum";
 			this.txtShared.Text = "";
 			this.txtPersonal.Text = "";
 			this.txtProjectId.Enabled=true;
@@ -1363,14 +1396,14 @@ namespace FIA_Biosum_Manager
 			this.btnEdit.Enabled=false;
 			this.btnSave.Enabled=true;
 			this.btnCancel.Enabled=true;
-			this.grpboxProjectFiles.Enabled=true;
+			this.grpboxProjectDirectory.Enabled=true;
 			this.grpboxCreated.Enabled=true;
 			this.grpboxCompany.Enabled=true;
 			this.grpboxDescription.Enabled=true;
 			this.grpboxProjectId.Enabled=true;
 			this.Parent.Visible = true;
 		}
-		private void grpboxProjectFiles_Enter(object sender, System.EventArgs e)
+		private void grpboxProjectDirectory_Enter(object sender, System.EventArgs e)
 		{
 		
 		}
@@ -1868,18 +1901,18 @@ namespace FIA_Biosum_Manager
 			this.grpboxCreated.Top = this.grpboxProjectId.Top;
 			this.grpboxCompany.Top = this.grpboxProjectId.Top + this.grpboxProjectId.Height + 2;
 			this.grpboxDescription.Top = this.grpboxCompany.Top + this.grpboxCompany.Height + 2;
-			this.grpboxProjectFiles.Top = this.grpboxDescription.Top + this.grpboxDescription.Height + 2;
+			this.grpboxProjectDirectory.Top = this.grpboxDescription.Top + this.grpboxDescription.Height + 2;
 			
 			this.grpboxDescription.Left = 2;
-			this.grpboxProjectFiles.Left = 2;
+			this.grpboxProjectDirectory.Left = 2;
 			this.grpboxProjectId.Left = 2;
 			this.grpboxCompany.Left = 2;
 			this.grpboxDescription.Width  = this.Width - 4;
-			this.grpboxProjectFiles.Width = this.grpboxDescription.Width;
+			this.grpboxProjectDirectory.Width = this.grpboxDescription.Width;
 			this.grpboxCompany.Width = this.grpboxDescription.Width;
 			
 
-			this.lblRootDirectory.Left = this.grpboxProjectFiles.Left + 2;
+			this.lblRootDirectory.Left = this.grpboxProjectDirectory.Left + 2;
 			this.lblShared.Left = this.lblRootDirectory.Left;
 			this.lblLocal.Left = this.lblRootDirectory.Left;
 
@@ -1887,7 +1920,7 @@ namespace FIA_Biosum_Manager
 			this.txtShared.Left = this.txtRootDirectory.Left;
 			this.txtPersonal.Left = this.txtRootDirectory.Left;
 
-			this.btnRootDirectoryHelp.Left = this.grpboxProjectFiles.Width - this.btnRootDirectoryHelp.Width - 2;
+			this.btnRootDirectoryHelp.Left = this.grpboxProjectDirectory.Width - this.btnRootDirectoryHelp.Width - 2;
 			this.btnSharedHelp.Left = this.btnRootDirectoryHelp.Left;
 			this.btnPersonalHelp.Left = this.btnRootDirectoryHelp.Left;
 
@@ -1899,7 +1932,7 @@ namespace FIA_Biosum_Manager
 			this.btnPersonalHelp.Top = this.btnPersonalDirectory.Top;
 			this.btnRootDirectoryHelp.Top = this.btnRootDirectory.Top;
 
-			this.txtRootDirectory.Width = this.grpboxProjectFiles.Width  - this.lblRootDirectory.Width  - this.btnRootDirectory.Width - this.btnRootDirectoryHelp.Width   - 15;
+			this.txtRootDirectory.Width = this.grpboxProjectDirectory.Width  - this.lblRootDirectory.Width  - this.btnRootDirectory.Width - this.btnRootDirectoryHelp.Width   - 15;
 			this.txtShared.Width = this.txtRootDirectory.Width;
 			this.txtPersonal.Width = this.txtRootDirectory.Width;
 			
@@ -1910,9 +1943,9 @@ namespace FIA_Biosum_Manager
 			this.txtCompany.Width = this.grpboxCompany.Width - 8;
 			
 
-			this.grpboxProjectFiles.Height = this.btnPersonalDirectory.Top + this.btnPersonalDirectory.Height + 4;
+			this.grpboxProjectDirectory.Height = this.btnRootDirectory.Top + this.btnRootDirectory.Height + 4;
 
-			this.btnCancel.Top = this.grpboxProjectFiles.Top + this.grpboxProjectFiles.Height + 5;
+			this.btnCancel.Top = this.grpboxProjectDirectory.Top + this.grpboxProjectDirectory.Height + 5;
 			this.btnCancel.Left = (int) (this.Width * .50) + (int) (this.btnCancel.Width / 2);
 			this.btnSave.Top = this.btnCancel.Top;
 			this.btnSave.Left = this.btnCancel.Left - this.btnCancel.Width;
