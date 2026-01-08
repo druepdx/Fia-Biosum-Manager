@@ -25,7 +25,8 @@ namespace FIA_Biosum_Manager
 		public FIA_Biosum_Manager.uc_previous_expressions uc_previous_expressions1;
         public FIA_Biosum_Manager.uc_optimizer_scenario_calculated_variables uc_core_scenario_weighted_average1;
         public FIA_Biosum_Manager.uc_optimizer_load_gis_data uc_optimizer_load_gis_data1;
-        public FIA_Biosum_Manager.txtDollarsAndCents m_txtMoney;
+		public FIA_Biosum_Manager.uc_tree_volume_export uc_tree_volume_export1;
+		public FIA_Biosum_Manager.txtDollarsAndCents m_txtMoney;
 		public FIA_Biosum_Manager.txtNumeric m_txtNumeric;
 		private System.Windows.Forms.TextBox _txtBox;
 		private FIA_Biosum_Manager.txtNumeric _txtNumeric;
@@ -272,7 +273,8 @@ namespace FIA_Biosum_Manager
                 if (this.uc_plot_input1 != null) this.ParentControl.Enabled = true;
                 if (this.uc_delete_conditions != null) this.ParentControl.Enabled = true;
                 if (this.uc_delete_packages != null) this.ParentControl.Enabled = true;
-               
+				if (this.uc_optimizer_load_gis_data1 != null) this.ParentControl.Enabled = true;
+				if (this.uc_tree_volume_export1 != null) this.ParentControl.Enabled = true;
 
 				this.Dispose();
 				return;
@@ -393,7 +395,7 @@ namespace FIA_Biosum_Manager
         public bool Initialize_Load_Gis_Data_User_Control()
         {
 
-            this.uc_optimizer_load_gis_data1 = new uc_optimizer_load_gis_data(this.m_frmMain);
+            this.uc_optimizer_load_gis_data1 = new uc_optimizer_load_gis_data();
 			if (this.uc_optimizer_load_gis_data1.bTerminateLoad)
 			{
 				return true;
@@ -405,7 +407,14 @@ namespace FIA_Biosum_Manager
 				return false;
 			}
         }
-        public void Initialize_Plot_Data_Add_Edit_User_Control()
+		public void Initialize_Tree_Volume_Export_User_Control(frmFCSTreeVolumeEdit frmTreeVolume)
+		{
+			this.uc_tree_volume_export1 = new uc_tree_volume_export(frmTreeVolume);
+			this.Controls.Add(this.uc_tree_volume_export1);
+			this.ParentControl = frmTreeVolume;
+			this.uc_tree_volume_export1.Visible = true;
+		}
+		public void Initialize_Plot_Data_Add_Edit_User_Control()
 		{
 
 			this.uc_plot_add_edit1 = new uc_plot_add_edit();

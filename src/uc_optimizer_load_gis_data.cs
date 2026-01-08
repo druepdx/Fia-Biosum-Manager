@@ -20,7 +20,7 @@ namespace FIA_Biosum_Manager
         string m_strSourceField;
         public bool bTerminateLoad = false;
 
-        public uc_optimizer_load_gis_data(frmMain p_frmMain)
+        public uc_optimizer_load_gis_data()
         {
             InitializeComponent();
             this.m_oEnv = new env();
