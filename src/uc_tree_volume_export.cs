@@ -12,12 +12,9 @@ namespace FIA_Biosum_Manager
 {
     public partial class uc_tree_volume_export : UserControl
     {
-        private GisTools m_oGisTools = new GisTools();
         private env m_oEnv;
         private Help m_oHelp;
         private string m_xpsFile = Help.DefaultTreatmentOptimizerFile;
-        string m_strMasterDb;
-        string m_strSourceField;
         public bool bTerminateLoad = false;
         private frmFCSTreeVolumeEdit m_frmParent;
         public uc_tree_volume_export(frmFCSTreeVolumeEdit frmTreeVolume)
@@ -142,6 +139,15 @@ namespace FIA_Biosum_Manager
                     dataMgr.m_DataReader.Close();
                 }
             }
+            frmMain.g_oFrmMain.ActivateStandByAnimation(
+                frmMain.g_oFrmMain.WindowState,
+                frmMain.g_oFrmMain.Left,
+                frmMain.g_oFrmMain.Height,
+                frmMain.g_oFrmMain.Width,
+                frmMain.g_oFrmMain.Top);
+            frmMain.g_sbpInfo.Text = "Exporting Tree Data...Stand by";
+            btnExport.Enabled = false;
+            BtnCancel.Enabled = false;
 
             using (System.Data.SQLite.SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection(strConn))
             {
@@ -207,8 +213,13 @@ namespace FIA_Biosum_Manager
                         // The connection can be closed after the update is complete
                     }
                 }
-            }
 
+            }
+            frmMain.g_sbpInfo.Text = "Ready";
+            frmMain.g_oFrmMain.DeactivateStandByAnimation();
+            MessageBox.Show("Grid data successfully exported to table!", "FIA Biosum");
+            btnExport.Enabled = true;
+            BtnCancel.Enabled = true;
 
         }
         private void txtTableName_TextChanged(object sender, EventArgs e)
