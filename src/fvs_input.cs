@@ -293,7 +293,7 @@ namespace FIA_Biosum_Manager
             DebugLogMessage("Inserting Site Index/Site Species\r\n", 1);
 
             string strBioSumRefDb = frmMain.g_oEnv.strApplicationDataDirectory.Trim() +
-                        frmMain.g_strBiosumDataDir + "\\" + Tables.Reference.DefaultBiosumReferenceSqliteFile;
+                        frmMain.g_strBiosumDataDir + "\\" + Tables.Reference.DefaultBiosumReferenceFile;
             if (!oDataMgr.DatabaseAttached(conn, strBioSumRefDb))
             {
                 oDataMgr.m_strSQL = "ATTACH DATABASE '" + strBioSumRefDb + "' AS ref";
@@ -362,7 +362,7 @@ namespace FIA_Biosum_Manager
             string strDWMTablesDb = frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() + "\\db\\master_aux.db";
             FIA_Biosum_Manager.Datasource oProjectDs = new Datasource();
             string strBioSumRefDb = frmMain.g_oEnv.strApplicationDataDirectory.Trim() +
-                        frmMain.g_strBiosumDataDir + "\\" + Tables.Reference.DefaultBiosumReferenceSqliteFile;
+                        frmMain.g_strBiosumDataDir + "\\" + Tables.Reference.DefaultBiosumReferenceFile;
             string strForestTypeTable = "ref.REF_FOREST_TYPE";
             string strForestTypeGroupTable = "ref.REF_FOREST_TYPE_GROUP";
 
@@ -813,7 +813,7 @@ namespace FIA_Biosum_Manager
                 bool variantFound = false;
 
                 string strRefDb = frmMain.g_oEnv.strApplicationDataDirectory.Trim() +
-                frmMain.g_strBiosumDataDir + "\\" + Tables.Reference.DefaultBiosumReferenceSqliteFile;
+                frmMain.g_strBiosumDataDir + "\\" + Tables.Reference.DefaultBiosumReferenceFile;
 
                 if (!dataMgr.DatabaseAttached(tempConn, strRefDb))
                 {
@@ -2366,7 +2366,7 @@ namespace FIA_Biosum_Manager
             env pEnv = new env();
             //open the reference db file
             string strCon = oDataMgr.GetConnectionString(frmMain.g_oEnv.strApplicationDataDirectory.Trim() +
-                frmMain.g_strBiosumDataDir + "\\" + Tables.Reference.DefaultBiosumReferenceSqliteFile);
+                frmMain.g_strBiosumDataDir + "\\" + Tables.Reference.DefaultBiosumReferenceFile);
             using (System.Data.SQLite.SQLiteConnection con = new System.Data.SQLite.SQLiteConnection(strCon))
             {
                 con.Open();

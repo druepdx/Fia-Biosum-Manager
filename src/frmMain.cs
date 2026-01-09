@@ -1313,7 +1313,7 @@ namespace FIA_Biosum_Manager
                     oFrmScenario.Text = "Treatment Optimizer: Optimization Scenario (" + oFrmOptimizerScenario.uc_scenario_open1.txtScenarioId.Text.Trim() + ")";
                     oFrmScenario.m_bScenarioOpen = true;
                     oFrmScenario.HelpChapter = "EDIT_SCENARIO";
-                    oFrmScenario.uc_datasource1.strDataSourceMDBFile = frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() + "\\" + Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableSqliteDbFile;
+                    oFrmScenario.uc_datasource1.strDataSourceMDBFile = frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() + "\\" + Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableDbFile;
                     oFrmScenario.uc_datasource1.strDataSourceTable = "scenario_datasource";
                     oFrmScenario.uc_datasource1.strScenarioId = oFrmOptimizerScenario.uc_scenario_open1.txtScenarioId.Text.Trim();
                     oFrmScenario.uc_datasource1.strProjectDirectory = frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim();
@@ -1352,7 +1352,7 @@ namespace FIA_Biosum_Manager
                     oFrmScenario.Text = "Treatment Optimizer: Optimization Scenario (" + oFrmOptimizerScenario.uc_scenario1.txtScenarioId.Text.Trim() + ")";
                     oFrmScenario.m_bScenarioOpen = true;
                     oFrmScenario.HelpChapter = "EDIT_SCENARIO";
-                    oFrmScenario.uc_datasource1.strDataSourceMDBFile = frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() + "\\" + Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableSqliteDbFile;
+                    oFrmScenario.uc_datasource1.strDataSourceMDBFile = frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() + "\\" + Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableDbFile;
                     oFrmScenario.uc_datasource1.strDataSourceTable = "scenario_datasource";
                     oFrmScenario.uc_datasource1.strScenarioId = oFrmOptimizerScenario.uc_scenario1.txtScenarioId.Text.Trim();
                     oFrmScenario.uc_datasource1.strProjectDirectory = frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim();
@@ -1526,7 +1526,7 @@ namespace FIA_Biosum_Manager
                     string strProjDir = getProjectDirectory();
                     strFullPath = new System.Text.StringBuilder(strProjDir);
                     strFullPath.Append("\\");
-                    strFullPath.Append(Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableSqliteDbFile);
+                    strFullPath.Append(Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableDbFile);
                     SQLite.ADO.DataMgr oDataMgr = new SQLite.ADO.DataMgr();
                     string strConn = oDataMgr.GetConnectionString(strFullPath.ToString());
                     long lngCount = oDataMgr.getRecordCount(strConn, "select count(*) from scenario", "scenario");
@@ -2058,7 +2058,7 @@ namespace FIA_Biosum_Manager
             string strScenarioDir = strProjDir.Trim() + "\\processor";
             strFullPath = new System.Text.StringBuilder(strScenarioDir);
             strFullPath.Append("\\");
-            string strDbFullPath = strFullPath.ToString() + Tables.ProcessorScenarioRuleDefinitions.DefaultSqliteDbFile;
+            string strDbFullPath = strFullPath.ToString() + Tables.ProcessorScenarioRuleDefinitions.DefaulDbFile;
             strFullPath.Append(Tables.ProcessorScenarioRuleDefinitions.DefaultAdditionalHarvestCostsDbFile);
             if (System.IO.File.Exists(strDbFullPath))
             {
@@ -3606,11 +3606,11 @@ namespace FIA_Biosum_Manager
         private void CheckForBiosumRefData()
         {
             string strDestFile = frmMain.g_oEnv.strApplicationDataDirectory.Trim() +
-                frmMain.g_strBiosumDataDir + "\\" + Tables.Reference.DefaultBiosumReferenceSqliteFile;
+                frmMain.g_strBiosumDataDir + "\\" + Tables.Reference.DefaultBiosumReferenceFile;
             try
             {
                 bool bCopyDatabase = true;
-                string strSourceFile = frmMain.g_oEnv.strAppDir + "\\db\\" + Tables.Reference.DefaultBiosumReferenceSqliteFile;
+                string strSourceFile = frmMain.g_oEnv.strAppDir + "\\db\\" + Tables.Reference.DefaultBiosumReferenceFile;
                 if (System.IO.File.Exists(strDestFile) == true)
                 {
                     // Check to see if the version is correct
@@ -3700,7 +3700,7 @@ namespace FIA_Biosum_Manager
             string[] arrRequiredFiles = {Tables.VolumeAndBiomass.FiaTreeVBCJar, Tables.VolumeAndBiomass.DefaultTvbcWorkDatabase,
                                          Tables.VolumeAndBiomass.TvbcTreeCalcBat};
             string strTargetPath = "";
-            try
+        try
             {
                 for (int i = 0; i < arrRequiredFiles.Length; i++)
                 {

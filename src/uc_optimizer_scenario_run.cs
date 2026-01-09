@@ -940,7 +940,7 @@ namespace FIA_Biosum_Manager
                 if (ReferenceOptimizerScenarioForm.m_oOptimizerScenarioItem.m_oProcessorScenarioItem_Collection.Item(x).Selected)
                 {
                     string strProcessorRuleDefsDb = frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() +
-                    "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaultSqliteDbFile;
+                    "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaulDbFile;
 
                     string strProcessorScenarioId = ReferenceOptimizerScenarioForm.m_oOptimizerScenarioItem.m_oProcessorScenarioItem_Collection.Item(x).ScenarioId;
 
@@ -1947,10 +1947,10 @@ namespace FIA_Biosum_Manager
                 frmMain.g_oTables.m_oOptimizerScenarioRuleDef.CreateSqliteScenarioPSitesTable(p_dataMgr, conn, Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioPSitesTableName + "_C");
                 frmMain.g_oTables.m_oOptimizerScenarioResults.CreateSqliteHarvestMethodRefTable(p_dataMgr, conn, Tables.OptimizerScenarioResults.DefaultScenarioResultsHarvestMethodRefTableName);
                 frmMain.g_oTables.m_oOptimizerScenarioResults.CreateSqliteRxPackageRefTable(p_dataMgr, conn, Tables.OptimizerScenarioResults.DefaultScenarioResultsRxPackageRefTableName);
-                frmMain.g_oTables.m_oFvs.CreateSqliteRxHarvestCostColumnTable(p_dataMgr, conn, Tables.FVS.DefaultRxHarvestCostColumnsTableName + "_C");
+                frmMain.g_oTables.m_oFvs.CreateRxHarvestCostColumnTable(p_dataMgr, conn, Tables.FVS.DefaultRxHarvestCostColumnsTableName + "_C");
 
                 // Add the ad hoc additional harvest cost columns to table
-                string strProcessorPath = ((frmMain)this._frmScenario.ParentForm).frmProject.uc_project1.m_strProjectDirectory + "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaultSqliteDbFile;
+                string strProcessorPath = ((frmMain)this._frmScenario.ParentForm).frmProject.uc_project1.m_strProjectDirectory + "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaulDbFile;
 
                 p_dataMgr.m_strSQL = "ATTACH DATABASE '" + strProcessorPath + "' AS processor_defs";
                 p_dataMgr.SqlNonQuery(conn, p_dataMgr.m_strSQL);
@@ -2264,7 +2264,7 @@ namespace FIA_Biosum_Manager
                 workConn.Open();
 
                 p_dataMgr.m_strSQL = "ATTACH DATABASE '" + frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() + "\\" + 
-                    Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableSqliteDbFile + "' AS rule_defs";
+                    Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableDbFile + "' AS rule_defs";
                 p_dataMgr.SqlNonQuery(workConn, p_dataMgr.m_strSQL);
 
                 p_dataMgr.m_strSQL = "DELETE FROM scenario_psites_work_table";
@@ -5201,7 +5201,7 @@ namespace FIA_Biosum_Manager
                 if (oItem.bSelected)
                 {
                     p_dataMgr.m_strSQL = "ATTACH DATABASE '" + frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() + "\\" +
-                    Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableSqliteDbFile + "' AS rule_defs";
+                    Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableDbFile + "' AS rule_defs";
                     p_dataMgr.SqlNonQuery(resultsConn, p_dataMgr.m_strSQL);
 
                     p_dataMgr.m_strSQL = "UPDATE tiebreaker AS a " +
@@ -5267,7 +5267,7 @@ namespace FIA_Biosum_Manager
             {
                 workConn.Open();
 
-                string strScenarioDb = frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text + "\\" + Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableSqliteDbFile;
+                string strScenarioDb = frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text + "\\" + Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableDbFile;
                 p_dataMgr.m_strSQL = "ATTACH DATABASE '" + strScenarioDb + "' AS scenario";
                 p_dataMgr.SqlNonQuery(workConn, p_dataMgr.m_strSQL);
 
@@ -6397,7 +6397,7 @@ namespace FIA_Biosum_Manager
                 if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 1)
                     frmMain.g_oUtils.WriteText(m_strDebugFile, "Copy table structure scenario_psites to scenario_psites_work_tabler\r\n");
 
-                string strRuleDefinitionsDb = frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() + "\\" + Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableSqliteDbFile;
+                string strRuleDefinitionsDb = frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() + "\\" + Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableDbFile;
                 p_dataMgr.m_strSQL = "ATTACH DATABASE '" + strRuleDefinitionsDb + "' AS rule_defs";
                 p_dataMgr.SqlNonQuery(workConn, p_dataMgr.m_strSQL);
 
@@ -7553,16 +7553,16 @@ namespace FIA_Biosum_Manager
             {
                 contextConn.Open();
 
-                p_dataMgr.m_strSQL = "ATTACH DATABASE '" + frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() + "\\" + Tables.OptimizerDefinitions.DefaultSqliteDbFile + "' AS optimizer_defs";
+                p_dataMgr.m_strSQL = "ATTACH DATABASE '" + frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() + "\\" + Tables.OptimizerDefinitions.DefaultDbFile + "' AS optimizer_defs";
                 p_dataMgr.SqlNonQuery(contextConn, p_dataMgr.m_strSQL);
 
                 p_dataMgr.m_strSQL = "ATTACH DATABASE '" + m_strProcessorResultsPathAndFile + "' AS processor_results";
                 p_dataMgr.SqlNonQuery(contextConn, p_dataMgr.m_strSQL);
 
-                p_dataMgr.m_strSQL = "ATTACH DATABASE '" + frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() + "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaultSqliteDbFile + "' AS processor_rules";
+                p_dataMgr.m_strSQL = "ATTACH DATABASE '" + frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() + "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaulDbFile + "' AS processor_rules";
                 p_dataMgr.SqlNonQuery(contextConn, p_dataMgr.m_strSQL);
 
-                p_dataMgr.m_strSQL = "ATTACH DATABASE '" + frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() + "\\" + Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableSqliteDbFile + "' AS optimizer_rules";
+                p_dataMgr.m_strSQL = "ATTACH DATABASE '" + frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() + "\\" + Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableDbFile + "' AS optimizer_rules";
                 p_dataMgr.SqlNonQuery(contextConn, p_dataMgr.m_strSQL);
 
                 p_dataMgr.m_strSQL = "ATTACH DATABASE '" + m_strHarvestMethodsPathAndFile + "' AS biosum_ref";

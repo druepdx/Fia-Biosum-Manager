@@ -686,7 +686,7 @@ namespace FIA_Biosum_Manager
 				string strId;
                     string strScenarioDB =
                         frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() +
-                        "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaultSqliteDbFile;
+                        "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaulDbFile;
                     SQLite.ADO.DataMgr oDataMgr = new SQLite.ADO.DataMgr();
                     using (System.Data.SQLite.SQLiteConnection conn =
                         new System.Data.SQLite.SQLiteConnection(oDataMgr.GetConnectionString(strScenarioDB)))

@@ -1066,7 +1066,7 @@ namespace FIA_Biosum_Manager
 
             this.m_oOptimizerScenarioTools.LoadAll(
                 frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() + "\\" +
-                Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableSqliteDbFile,
+                Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableDbFile,
                 m_oQueries, m_oOptimizerScenarioItem.ScenarioId,
                 m_oOptimizerScenarioItem_Collection);
 
@@ -3194,7 +3194,7 @@ namespace FIA_Biosum_Manager
             //scenario db connection
             string strProcessorScenarioDB =
                 frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() +
-                "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaultSqliteDbFile;
+                "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaulDbFile;
             //
             //get a list of all the scenarios
             //
@@ -3850,7 +3850,7 @@ namespace FIA_Biosum_Manager
             p_oWeightedVariableCollection.Clear();
             DataMgr p_oDataMgr = new DataMgr();
 
-            string optimizerDefDbFile = frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() + "\\" + Tables.OptimizerDefinitions.DefaultSqliteDbFile;
+            string optimizerDefDbFile = frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() + "\\" + Tables.OptimizerDefinitions.DefaultDbFile;
             using (System.Data.SQLite.SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection(p_oDataMgr.GetConnectionString(optimizerDefDbFile)))
             {
                 conn.Open();
@@ -3894,7 +3894,7 @@ namespace FIA_Biosum_Manager
             if (p_oWeightedVariable != null)
             {
                 DataMgr oDataMgr = new DataMgr();
-                string strEconConn = oDataMgr.GetConnectionString(frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() + "\\" + Tables.OptimizerDefinitions.DefaultSqliteDbFile);
+                string strEconConn = oDataMgr.GetConnectionString(frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() + "\\" + Tables.OptimizerDefinitions.DefaultDbFile);
                 using (System.Data.SQLite.SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection(strEconConn))
                 {
                     conn.Open();
@@ -4416,14 +4416,14 @@ namespace FIA_Biosum_Manager
                     {
                         if (strTableType.Equals(Datasource.TableTypes.TravelTimes))
                         {
-                            frmMain.g_oTables.m_oTravelTime.CreateSqliteTravelTimeTable(oDataMgr, conn, strTableName);
+                            frmMain.g_oTables.m_oTravelTime.CreateTravelTimeTable(oDataMgr, conn, strTableName);
                             if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 2)
                                 frmMain.g_oUtils.WriteText(strDebugFile, "Created travel_time table \r\n END: " + System.DateTime.Now.ToString() + "\r\n");
                             strTravelTimesTableName = strTableName;
                         }
                         else
                         {
-                            frmMain.g_oTables.m_oTravelTime.CreateSqliteProcessingSiteTable(oDataMgr, conn, strTableName);
+                            frmMain.g_oTables.m_oTravelTime.CreateProcessingSiteTable(oDataMgr, conn, strTableName);
                             if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 2)
                                 frmMain.g_oUtils.WriteText(strDebugFile, "Created processing_site table \r\n END: " + System.DateTime.Now.ToString() + "\r\n");
                             strPSitesTableName = strTableName;

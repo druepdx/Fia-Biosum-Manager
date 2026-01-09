@@ -157,7 +157,7 @@ namespace FIA_Biosum_Manager
             //
             strFullPath =
                 this.lblCurrentProjectRootFolder.Text.Trim() + "\\" +
-                Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableSqliteDbFile;
+                Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableDbFile;
 
              if (System.IO.File.Exists(strFullPath))
              {
@@ -177,7 +177,7 @@ namespace FIA_Biosum_Manager
             //PROCESSOR SCENARIO DATA SOURCE
             //
             strFullPath = this.lblCurrentProjectRootFolder.Text.Trim() + 
-                "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaultSqliteDbFile;
+                "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaulDbFile;
             if (System.IO.File.Exists(strFullPath))
             {
                 // Create ODBC entry for the  file processor_optimizer_rule_definitions.db

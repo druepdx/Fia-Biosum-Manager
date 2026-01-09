@@ -743,7 +743,7 @@ namespace FIA_Biosum_Manager
 
             ReferenceProcessorScenarioForm.m_oProcessorScenarioTools.LoadHarvestMethod
                 (frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() +
-                "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaultSqliteDbFile,
+                "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaulDbFile,
                 ReferenceProcessorScenarioForm.m_oProcessorScenarioItem);
 
             FIA_Biosum_Manager.ProcessorScenarioItem oItem = ReferenceProcessorScenarioForm.m_oProcessorScenarioItem;
@@ -846,7 +846,7 @@ namespace FIA_Biosum_Manager
             SQLite.ADO.DataMgr oDataMgr = new SQLite.ADO.DataMgr();
             string strScenarioDB =
                 frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() +
-                "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaultSqliteDbFile;
+                "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaulDbFile;
             oDataMgr.OpenConnection(oDataMgr.GetConnectionString(strScenarioDB));
             if (oDataMgr.m_intError != 0)
             {

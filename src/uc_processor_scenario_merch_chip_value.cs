@@ -85,7 +85,7 @@ namespace FIA_Biosum_Manager
             //
             string strScenarioMDB =
                 frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() +
-                "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaultSqliteDbFile;
+                "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaulDbFile;
             ReferenceProcessorScenarioForm.m_oProcessorScenarioTools.LoadSpeciesAndDiameterGroupDollarValues(strScenarioMDB,
                 ReferenceProcessorScenarioForm.m_oProcessorScenarioItem);
 
@@ -301,7 +301,7 @@ namespace FIA_Biosum_Manager
             SQLite.ADO.DataMgr oDataMgr = new SQLite.ADO.DataMgr();
             string strScenarioDB =
     frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() +
-    "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaultSqliteDbFile;
+    "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaulDbFile;
             oDataMgr.OpenConnection(oDataMgr.GetConnectionString(strScenarioDB));
             if (oDataMgr.m_intError != 0)
             {

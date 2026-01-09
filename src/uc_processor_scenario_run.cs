@@ -40,7 +40,7 @@ namespace FIA_Biosum_Manager
         private IList<string> m_lstAdditionalCpaColumns = null;
         private string m_strTempSqliteDbFile = null;
         string m_strScenarioDb = frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() +
-            "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaultSqliteDbFile;
+            "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaulDbFile;
         public string m_strProcessorResultsPathAndFile;
 
         private SQLite.ADO.DataMgr m_oDataMgr = new SQLite.ADO.DataMgr();
@@ -1193,7 +1193,7 @@ namespace FIA_Biosum_Manager
                     frmMain.g_oUtils.WriteText(m_strDebugFile, "Created HarvestCostsTotalAdditionalWorkTable \r\n");
 
                 string strScenarioParametersDb = frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() +
-                    "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaultSqliteDbFile;
+                    "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaulDbFile;
                 m_oDataMgr.m_strSQL = "attach database '" + strScenarioParametersDb + "' as params";
                 if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 2)
                     frmMain.g_oUtils.WriteText(m_strDebugFile, m_oDataMgr.m_strSQL + " \r\n START: " + System.DateTime.Now.ToString() + "\r\n");
@@ -1661,7 +1661,7 @@ namespace FIA_Biosum_Manager
                                         {
                                             conn.Open();
                                             string strScenarioParametersDb = frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() +
-                                                "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaultSqliteDbFile;
+                                                "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaulDbFile;
                                             m_oDataMgr.m_strSQL = "attach database '" + strScenarioParametersDb + "' as params";
                                             if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 2)
                                                 frmMain.g_oUtils.WriteText(m_strDebugFile, m_oDataMgr.m_strSQL + " \r\n START: " + System.DateTime.Now.ToString() + "\r\n");

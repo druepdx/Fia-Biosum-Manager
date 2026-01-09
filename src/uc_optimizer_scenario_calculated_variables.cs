@@ -67,7 +67,7 @@ namespace FIA_Biosum_Manager
         private bool b_FVSTableEnabled = false;
         private string m_strFvsViewTableName = "view_weights";
         string m_strCalculatedVariablesDb = frmMain.g_oFrmMain.frmProject.uc_project1.m_strProjectDirectory +
-            "\\" + Tables.OptimizerDefinitions.DefaultSqliteDbFile;
+            "\\" + Tables.OptimizerDefinitions.DefaultDbFile;
 
         const int TABLE_COUNT = 2;
         const int ECON_DETAILS_TABLE = 0;
@@ -2854,10 +2854,10 @@ namespace FIA_Biosum_Manager
         {
             DataMgr oDataMgr = new DataMgr();
             string strScenarioDir = frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim();
-            string strScenarioConn = oDataMgr.GetConnectionString(strScenarioDir + "\\" + Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableSqliteDbFile);
+            string strScenarioConn = oDataMgr.GetConnectionString(strScenarioDir + "\\" + Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableDbFile);
             string[] strPieces = LblSelectedVariable.Text.Split('.');
 
-            if (!System.IO.File.Exists(strScenarioDir + "\\" + Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableSqliteDbFile))
+            if (!System.IO.File.Exists(strScenarioDir + "\\" + Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableDbFile))
             {
                 MessageBox.Show("!!Optimizer Scenario Rule Definitions database does not exist. FVS Variables cannot be deleted!!", "FIA Biosum",
                     System.Windows.Forms.MessageBoxButtons.OK,
@@ -2996,7 +2996,7 @@ namespace FIA_Biosum_Manager
         {
             string strScenarioDir = frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim();
             DataMgr oDataMgr = new DataMgr();
-            string strScenarioConn = oDataMgr.GetConnectionString(strScenarioDir + "\\" + Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableSqliteDbFile);
+            string strScenarioConn = oDataMgr.GetConnectionString(strScenarioDir + "\\" + Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableDbFile);
 
             using (SQLiteConnection oScenarioConn = new SQLiteConnection(strScenarioConn))
             {
@@ -3504,7 +3504,7 @@ namespace FIA_Biosum_Manager
                     IList<string> lstTables = new List<string>();
 
                     string strCalculatedVariablesDb = frmMain.g_oFrmMain.frmProject.uc_project1.m_strProjectDirectory +
-                    "\\" + Tables.OptimizerDefinitions.DefaultSqliteDbFile;
+                    "\\" + Tables.OptimizerDefinitions.DefaultDbFile;
                     using (System.Data.SQLite.SQLiteConnection connCalcVariables = new System.Data.SQLite.SQLiteConnection(oDataMgr.GetConnectionString(strCalculatedVariablesDb)))
                     {
                         connCalcVariables.Open();
@@ -3859,7 +3859,7 @@ namespace FIA_Biosum_Manager
                 m_oDataMgr.AddColumn(calculateConn, strWeightsByRxCyclePostTable, "weight", "DOUBLE", "");
 
                 m_oDataMgr.m_strSQL = "ATTACH DATABASE '" + frmMain.g_oFrmMain.frmProject.uc_project1.m_strProjectDirectory + "\\" +
-                    Tables.OptimizerDefinitions.DefaultSqliteDbFile + "' AS variable_defs";
+                    Tables.OptimizerDefinitions.DefaultDbFile + "' AS variable_defs";
                 m_oDataMgr.SqlNonQuery(calculateConn, m_oDataMgr.m_strSQL);
 
 

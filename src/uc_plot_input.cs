@@ -1767,7 +1767,7 @@ namespace FIA_Biosum_Manager
 
                     if (!SQLite.TableExist(conn, this.m_strBiosumPopStratumAdjustmentFactorsTable))
                     {
-                        frmMain.g_oTables.m_oFIAPlot.CreateSQLiteBiosumPopStratumAdjustmentFactorsTable(SQLite, conn,
+                        frmMain.g_oTables.m_oFIAPlot.CreateBiosumPopStratumAdjustmentFactorsTable(SQLite, conn,
                                 frmMain.g_oTables.m_oFIAPlot.DefaultBiosumPopStratumAdjustmentFactorsTableName);
                     }
                 }
@@ -1973,7 +1973,7 @@ namespace FIA_Biosum_Manager
                             frmMain.g_oUtils.WriteText(frmMain.g_oFrmMain.frmProject.uc_project1.m_strDebugFile, SQLite.m_strSQL + "\r\n");
                         SQLite.SqlNonQuery(conn, SQLite.m_strSQL);
 
-                        string strBiosumRefDb = frmMain.g_oEnv.strAppDir + "\\db\\" + Tables.Reference.DefaultBiosumReferenceSqliteFile;
+                        string strBiosumRefDb = frmMain.g_oEnv.strAppDir + "\\db\\" + Tables.Reference.DefaultBiosumReferenceFile;
                         SQLite.m_strSQL = "ATTACH DATABASE '" + strBiosumRefDb + "' AS REF";
                         if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 2)
                             frmMain.g_oUtils.WriteText(frmMain.g_oFrmMain.frmProject.uc_project1.m_strDebugFile, SQLite.m_strSQL + "\r\n");
@@ -6209,7 +6209,7 @@ namespace FIA_Biosum_Manager
                 }
                 else
                 {
-                    frmMain.g_oTables.m_oFIAPlot.CreateSqlitePopEstnUnitTable(SQLite, conn, this.m_strPopEstUnitTable);
+                    frmMain.g_oTables.m_oFIAPlot.CreatePopEstnUnitTable(SQLite, conn, this.m_strPopEstUnitTable);
                 }
                 //pop eval table
                 if (SQLite.TableExist(conn, this.m_strPopEvalTable))
@@ -6218,7 +6218,7 @@ namespace FIA_Biosum_Manager
                 }
                 else
                 {
-                    frmMain.g_oTables.m_oFIAPlot.CreateSqlitePopEvalTable(SQLite, conn, this.m_strPopEvalTable);
+                    frmMain.g_oTables.m_oFIAPlot.CreatePopEvalTable(SQLite, conn, this.m_strPopEvalTable);
                 }
                 //pop plot stratum assignment table
                 if (SQLite.TableExist(conn, this.m_strPpsaTable))
@@ -6227,7 +6227,7 @@ namespace FIA_Biosum_Manager
                 }
                 else
                 {
-                    frmMain.g_oTables.m_oFIAPlot.CreateSqlitePopPlotStratumAssgnTable(SQLite, conn, this.m_strPpsaTable);
+                    frmMain.g_oTables.m_oFIAPlot.CreatePopPlotStratumAssgnTable(SQLite, conn, this.m_strPpsaTable);
                 }
                 //pop stratum table
                 if (SQLite.TableExist(conn, this.m_strPopStratumTable))
@@ -6236,7 +6236,7 @@ namespace FIA_Biosum_Manager
                 }
                 else
                 {
-                    frmMain.g_oTables.m_oFIAPlot.CreateSqlitePopStratumTable(SQLite, conn, this.m_strPopStratumTable);
+                    frmMain.g_oTables.m_oFIAPlot.CreatePopStratumTable(SQLite, conn, this.m_strPopStratumTable);
                 }
             }
         }

@@ -284,7 +284,7 @@ namespace FIA_Biosum_Manager
 
             DataMgr oDataMgr = new DataMgr();
             System.Collections.Generic.List<string> lstProcessorColumns = null;
-            string strProcessorDefinitionsDb = $@"{frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim()}\processor\{Tables.ProcessorScenarioRuleDefinitions.DefaultSqliteDbFile}";
+            string strProcessorDefinitionsDb = $@"{frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim()}\processor\{Tables.ProcessorScenarioRuleDefinitions.DefaulDbFile}";
             using (System.Data.SQLite.SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection(oDataMgr.GetConnectionString(strProcessorDefinitionsDb)))
             {
                 conn.Open();

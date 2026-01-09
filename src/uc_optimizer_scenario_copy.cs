@@ -66,7 +66,7 @@ namespace FIA_Biosum_Manager
             //scenario mdb connection
             string strOptimizerScenarioDB =
               frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() + "\\" +
-              Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableSqliteDbFile;
+              Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableDbFile;
             //
             //get a list of all the scenarios
             //
@@ -292,7 +292,7 @@ namespace FIA_Biosum_Manager
                 lblMsg.Show();
                 lblMsg.Refresh();
                 m_oOptimizerScenarioTools.LoadAll(frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() + "\\" +
-                Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableSqliteDbFile,
+                Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableDbFile,
                 m_oQueries, p_strScenarioId.Trim(), m_oOptimizerScenarioItem_Collection);
                 lblMsg.Hide();
             }

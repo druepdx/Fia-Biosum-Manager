@@ -933,7 +933,7 @@ namespace FIA_Biosum_Manager
             string strScenario = uc_scenario1.txtScenarioId.Text.Trim();
             this.m_oProcessorScenarioItem.ScenarioId = strScenario;
             string strScenarioMDB = frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() +
-                "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaultSqliteDbFile;
+                "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaulDbFile;
             this.m_oProcessorScenarioTools.LoadTreeDiameterGroupValues(strScenarioMDB,
                 strScenario, this.m_oProcessorScenarioItem);
             this.m_oProcessorScenarioTools.LoadTreeSpeciesGroupValues(strScenarioMDB, strScenario,
@@ -2158,7 +2158,7 @@ namespace FIA_Biosum_Manager
         {
             // Access version used a temp file with links; Trying to skip that
             string strScenarioDB = frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() +
-                "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaultSqliteDbFile;
+                "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaulDbFile;
 
             ProcessorScenarioItem oItem = new ProcessorScenarioItem();
             this.LoadGeneral(strScenarioDB, p_strScenarioId, oItem);

@@ -83,25 +83,19 @@ namespace FIA_Biosum_Manager
                     "application_version CHAR(11))";       //version 4.0
             }
 
-            public void CreateProjectTable(FIA_Biosum_Manager.ado_data_access p_oAdo, System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
+            public void CreateProjectTable(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
             {
-                p_oAdo.SqlNonQuery(p_oConn, CreateProjectTableSQL(p_strTableName));
-                CreateProjectTableIndexes(p_oAdo, p_oConn, p_strTableName);
-            }
-            public void CreateProjectTableIndexes(FIA_Biosum_Manager.ado_data_access p_oAdo, System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
-            {
-                p_oAdo.AddPrimaryKey(p_oConn, p_strTableName, p_strTableName + "_pk", "proj_id");
+                p_oDataMgr.SqlNonQuery(p_oConn, CreateProjectTableSQL(p_strTableName));
             }
             public string CreateProjectTableSQL(string p_strTableName)
             {
                 return "CREATE TABLE " + p_strTableName + " (" +
-                    "proj_id CHAR(20)," +
+                    "proj_id CHAR(20) PRIMARY KEY," +
                     "created_by CHAR(30)," +
                     "created_date CHAR(22)," +
                     "company CHAR(100)," +
                     "description CHAR(255)," +
                     "notes CHAR(255)," +
-                    "project_root_directory CHAR(255)," +
                     "application_version CHAR(11))";     
             }
 
@@ -2000,40 +1994,24 @@ namespace FIA_Biosum_Manager
         }
         public class OptimizerScenarioRuleDefinitions
         {
-            static public string DefaultScenarioFvsVariablesTieBreakerTableDbFile { get { return @"optimizer\db\scenario_optimizer_rule_definitions.mdb"; } }
             static public string DefaultScenarioFvsVariablesTieBreakerTableName { get { return "scenario_fvs_variables_tiebreaker"; } }
-            static public string DefaultScenarioFvsVariablesOptimizationTableDbFile { get { return @"optimizer\db\scenario_optimizer_rule_definitions.mdb"; } }
             static public string DefaultScenarioFvsVariablesOptimizationTableName { get { return "scenario_fvs_variables_optimization"; } }
-            static public string DefaultScenarioFvsVariablesOverallEffectiveTableDbFile { get { return @"optimizer\db\scenario_optimizer_rule_definitions.mdb"; } }
             static public string DefaultScenarioFvsVariablesOverallEffectiveTableName { get { return "scenario_fvs_variables_overall_effective"; } }
-            static public string DefaultScenarioFvsVariablesTableDbFile { get { return @"optimizer\db\scenario_optimizer_rule_definitions.mdb"; } }
             static public string DefaultScenarioFvsVariablesTableName { get { return "scenario_fvs_variables"; } }
-            static public string DefaultScenarioLastTieBreakRankTableDbFile { get { return @"optimizer\db\scenario_optimizer_rule_definitions.mdb"; } }
             static public string DefaultScenarioLastTieBreakRankTableName { get { return "scenario_last_tiebreak_rank"; } }
-            static public string DefaultScenarioPSitesTableDbFile { get { return @"optimizer\db\scenario_optimizer_rule_definitions.mdb"; } }
             static public string DefaultScenarioPSitesTableName { get { return "scenario_psites"; } }
-            static public string DefaultScenarioPlotFilterMiscTableDbFile { get { return @"optimizer\db\scenario_optimizer_rule_definitions.mdb"; } }
             static public string DefaultScenarioPlotFilterMiscTableName { get { return "scenario_plot_filter_misc"; } }
-            static public string DefaultScenarioPlotFilterTableDbFile { get { return @"optimizer\db\scenario_optimizer_rule_definitions.mdb"; } }
             static public string DefaultScenarioPlotFilterTableName { get { return "scenario_plot_filter"; } }
-            static public string DefaultScenarioMergeTableDbFile { get { return @"optimizer\db\scenario_optimizer_rule_definitions.mdb"; } }
             static public string DefaultScenarioMergeTableName { get { return "scenario_merge"; } }
-            static public string DefaultScenarioLandOwnerGroupsTableDbFile { get { return @"optimizer\db\scenario_optimizer_rule_definitions.mdb"; } }
             static public string DefaultScenarioLandOwnerGroupsTableName { get { return "scenario_land_owner_groups"; } }
-            static public string DefaultScenarioHarvestCostColumnsTableDbFile { get { return @"optimizer\db\scenario_optimizer_rule_definitions.mdb"; } }
             static public string DefaultScenarioHarvestCostColumnsTableName { get { return "scenario_harvest_cost_columns"; } }
-            static public string DefaultScenarioDatasourceTableDbFile { get { return @"optimizer\db\scenario_optimizer_rule_definitions.mdb"; } }
             static public string DefaultScenarioDatasourceTableName { get { return @"scenario_datasource"; } }
-            static public string DefaultScenarioCostsTableDbFile { get { return @"optimizer\db\scenario_optimizer_rule_definitions.mdb"; } }
             static public string DefaultScenarioCostsTableName { get { return "scenario_costs"; } }
-            static public string DefaultScenarioTableDbFile { get { return @"optimizer\db\scenario_optimizer_rule_definitions.mdb"; } }
-            static public string DefaultScenarioTableSqliteDbFile { get { return @"optimizer\db\scenario_optimizer_rule_definitions.db"; } }
+            static public string DefaultScenarioTableAccessDbFile { get { return @"optimizer\db\scenario_optimizer_rule_definitions.mdb"; } }
+            static public string DefaultScenarioTableDbFile { get { return @"optimizer\db\scenario_optimizer_rule_definitions.db"; } }
             static public string DefaultScenarioTableName { get { return "scenario"; } }
-            static public string DefaultScenarioCondFilterMiscTableDbFile { get { return @"optimizer\db\scenario_optimizer_rule_definitions.mdb"; } }
             static public string DefaultScenarioCondFilterMiscTableName { get { return "scenario_cond_filter_misc"; } }
-            static public string DefaultScenarioCondFilterTableDbFile { get { return @"optimizer\db\scenario_optimizer_rule_definitions.mdb"; } }
             static public string DefaultScenarioCondFilterTableName { get { return "scenario_cond_filter"; } }
-            static public string DefaultScenarioProcessorScenarioSelectTableDbFile { get { return @"optimizer\db\scenario_optimizer_rule_definitions.mdb"; } }
             static public string DefaultScenarioProcessorScenarioSelectTableName { get { return "scenario_processor_scenario_select"; } }
 
 
@@ -2453,12 +2431,11 @@ namespace FIA_Biosum_Manager
 
         public class OptimizerDefinitions
         {
-            static public string DefaultDbFile { get { return @"optimizer\db\optimizer_definitions.accdb"; } }
             static public string DefaultCalculatedOptimizerVariablesTableName { get { return "calculated_optimizer_variables"; } }
             static public string DefaultCalculatedEconVariablesTableName { get { return "calculated_econ_variables_definition"; } }
             static public string DefaultCalculatedFVSVariablesTableName { get { return "calculated_fvs_variables_definition"; } }
             static public string DefaultOptimizerProjectConfigTableName { get { return "project_config"; } }
-            static public string DefaultSqliteDbFile { get { return @"optimizer\db\optimizer_definitions.db"; } }
+            static public string DefaultDbFile { get { return @"optimizer\db\optimizer_definitions.db"; } }
 
 
             public void CreateCalculatedOptimizerVariableTable(FIA_Biosum_Manager.ado_data_access p_oAdo, System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
@@ -3124,11 +3101,11 @@ namespace FIA_Biosum_Manager
             /// <param name="p_oAdo"></param>
             /// <param name="p_oConn"></param>
             /// <param name="p_strTableName"></param>
-            public void CreateSQLiteRxTable(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
+            public void CreateRxTable(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
             {
-                p_oDataMgr.SqlNonQuery(p_oConn, CreateSQLiteRxTableSQL(p_strTableName));
+                p_oDataMgr.SqlNonQuery(p_oConn, CreateRxTableSQL(p_strTableName));
             }
-            public string CreateSQLiteRxTableSQL(string p_strTableName)
+            public string CreateRxTableSQL(string p_strTableName)
             {
                 return "CREATE TABLE " + p_strTableName + " (" +
                     "rx CHAR(3)," +
@@ -3138,11 +3115,11 @@ namespace FIA_Biosum_Manager
                     "CONSTRAINT " + p_strTableName + "_pk PRIMARY KEY(rx))";
             }
 
-            public void CreateSqliteRxHarvestCostColumnTable(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
+            public void CreateRxHarvestCostColumnTable(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
             {
-                p_oDataMgr.SqlNonQuery(p_oConn, CreateSqliteRxHarvestCostColumnTableSQL(p_strTableName));
+                p_oDataMgr.SqlNonQuery(p_oConn, CreateRxHarvestCostColumnTableSQL(p_strTableName));
             }
-            static public string CreateSqliteRxHarvestCostColumnTableSQL(string p_strTableName)
+            static public string CreateRxHarvestCostColumnTableSQL(string p_strTableName)
             {
                 return "CREATE TABLE " + p_strTableName + " (" +
                     "rx CHAR(3)," +
@@ -3150,11 +3127,11 @@ namespace FIA_Biosum_Manager
                     "Description CHAR(255)," +
                     "CONSTRAINT " + p_strTableName + "_pk PRIMARY KEY (RX, COLUMNNAME))";
             }
-           public void CreateSQLiteRxPackageTable(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
+           public void CreateRxPackageTable(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
             {
-                p_oDataMgr.SqlNonQuery(p_oConn, CreateSQLiteRxPackageTableSQL(p_strTableName));
+                p_oDataMgr.SqlNonQuery(p_oConn, CreateRxPackageTableSQL(p_strTableName));
             }
-            public string CreateSQLiteRxPackageTableSQL(string p_strTableName)
+            public string CreateRxPackageTableSQL(string p_strTableName)
             {
                 return "CREATE TABLE " + p_strTableName + " (" +
                     "rxpackage CHAR(3)," +
@@ -3510,7 +3487,6 @@ namespace FIA_Biosum_Manager
         }
         public class TravelTime
         {
-            public static string DefaultTravelTimeAccdbFile { get { return "gis_travel_times.accdb"; } }
             public static string DefaultTravelTimeTableName { get { return "travel_time"; } }
             public static string DefaultProcessingSiteTableName { get { return "processing_site"; } }
             public static string DefaultMasterTravelTimeDbFile { get { return "gis_travel_times_master.db"; } }
@@ -3524,42 +3500,11 @@ namespace FIA_Biosum_Manager
             public TravelTime()
             {
             }
-            public void CreateProcessingSiteTable(FIA_Biosum_Manager.ado_data_access p_oAdo, System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
+            public void CreateProcessingSiteTable(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
             {
-                p_oAdo.SqlNonQuery(p_oConn, CreateProcessingSiteTableSQL(p_strTableName));
-                CreateProcessingSiteTableIndexes(p_oAdo, p_oConn, p_strTableName);
+                p_oDataMgr.SqlNonQuery(p_oConn, CreateProcessingSiteTableSQL(p_strTableName));
             }
-            public void CreateProcessingSiteTableIndexes(FIA_Biosum_Manager.ado_data_access p_oAdo, System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
-            {
-                p_oAdo.AddPrimaryKey(p_oConn, p_strTableName, p_strTableName + "_pk", "psite_id");
-            }
-
-            // if this is updated, also need to update CreateSqliteProcessingSiteTableSQL
             public string CreateProcessingSiteTableSQL(string p_strTableName)
-            {
-                return "CREATE TABLE " + p_strTableName + " (" +
-                    "PSITE_ID INTEGER," +
-                    "NAME CHAR(100)," +
-                    "TRANCD BYTE," +
-                    "TRANCD_DEF CHAR(20)," +
-                    "BIOCD BYTE," +
-                    "BIOCD_DEF CHAR(15)," +
-                    "EXISTS_YN CHAR(1) DEFAULT 'N'," +
-                    "LAT DOUBLE," +
-                    "LON DOUBLE," +
-                    "STATE CHAR(2)," +
-                    "CITY CHAR(40)," +
-                    "MILL_TYPE CHAR(40)," +
-                    "COUNTY CHAR(40)," +
-                    "STATUS CHAR(40)," +
-                    "NOTES CHAR(50)" +
-                ")";
-            }
-            public void CreateSqliteProcessingSiteTable(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
-            {
-                p_oDataMgr.SqlNonQuery(p_oConn, CreateSqliteProcessingSiteTableSQL(p_strTableName));
-            }
-            public string CreateSqliteProcessingSiteTableSQL(string p_strTableName)
             {
                 return "CREATE TABLE " + p_strTableName + " (" +
                     "PSITE_ID INTEGER," +
@@ -3580,48 +3525,20 @@ namespace FIA_Biosum_Manager
                     "NOTES CHAR(50)," +
                     "CONSTRAINT " + p_strTableName + "_pk PRIMARY KEY (PSITE_ID))";
             }
-            public void CreateTravelTimeTable(FIA_Biosum_Manager.ado_data_access p_oAdo, System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
+            
+            public void CreateTravelTimeTable(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
             {
-                p_oAdo.SqlNonQuery(p_oConn, CreateTravelTimeTableSQL(p_strTableName));
-                CreateTravelTimeTableIndexes(p_oAdo, p_oConn, p_strTableName);
-
-
+                p_oDataMgr.SqlNonQuery(p_oConn, CreateTravelTimeTableSQL(p_strTableName));
+                CreateTravelTimeTableIndexes(p_oDataMgr, p_oConn, p_strTableName);
             }
-            public void CreateTravelTimeTableIndexes(ado_data_access p_oAdo, System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
-            {
-                p_oAdo.AddPrimaryKey(p_oConn, p_strTableName, p_strTableName + "_pk", "TRAVELTIME_ID");
-                p_oAdo.AddAutoNumber(p_oConn, p_strTableName, "TRAVELTIME_ID");
-                p_oAdo.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx1", "PSITE_ID");
-                p_oAdo.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx2", "COLLECTOR_ID");
-                p_oAdo.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx3", "RAILHEAD_ID");
-            }
-
-            public string CreateTravelTimeTableSQL(string p_strTableName)
-            {
-                return "CREATE TABLE " + p_strTableName + " (" +
-                    "TRAVELTIME_ID LONG," +
-                    "PSITE_ID INTEGER," +
-                    "BIOSUM_PLOT_ID CHAR(24)," +
-                    "COLLECTOR_ID LONG," +
-                    "RAILHEAD_ID LONG," +
-                    "TRAVEL_MODE BYTE," +
-                    "ONE_WAY_HOURS DOUBLE," +
-                    "PLOT LONG," +
-                    "STATECD INTEGER)";
-            }
-            public void CreateSqliteTravelTimeTable(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
-            {
-                p_oDataMgr.SqlNonQuery(p_oConn, CreateSqliteTravelTimeTableSQL(p_strTableName));
-                CreateSqliteTravelTimeTableIndexes(p_oDataMgr, p_oConn, p_strTableName);
-            }
-            public void CreateSqliteTravelTimeTableIndexes(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
+            public void CreateTravelTimeTableIndexes(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
             {
                 p_oDataMgr.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx1", "PSITE_ID");
                 p_oDataMgr.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx2", "COLLECTOR_ID");
                 p_oDataMgr.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx3", "RAILHEAD_ID");
             }
 
-            public string CreateSqliteTravelTimeTableSQL(string p_strTableName)
+            public string CreateTravelTimeTableSQL(string p_strTableName)
             {
                 return "CREATE TABLE " + p_strTableName + " (" +
                     "TRAVELTIME_ID INTEGER PRIMARY KEY AUTOINCREMENT," + 
@@ -3769,58 +3686,18 @@ namespace FIA_Biosum_Manager
             public string DefaultDWMFineWoodyDebrisName { get { return "DWM_FINE_WOODY_DEBRIS"; } }
             public string DefaultDWMTransectSegmentName { get { return "DWM_TRANSECT_SEGMENT"; } }
 
-            public void CreatePlotTable(FIA_Biosum_Manager.ado_data_access p_oAdo, System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
+            
+            public void CreatePlotTable(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
             {
-                p_oAdo.SqlNonQuery(p_oConn, CreatePlotTableSQL(p_strTableName));
-                CreatePlotTableIndexes(p_oAdo, p_oConn, p_strTableName);
+                p_oDataMgr.SqlNonQuery(p_oConn, CreatePlotTableSQL(p_strTableName));
+                CreatePlotTableIndexes(p_oDataMgr, p_oConn, p_strTableName);
             }
-            public void CreatePlotTableIndexes(ado_data_access p_oAdo, System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
-            {
-                p_oAdo.AddPrimaryKey(p_oConn, p_strTableName, p_strTableName + "_pk", "biosum_plot_id");
-                p_oAdo.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx1", "num_cond");
-                p_oAdo.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx2", "biosum_status_cd");
-            }
-
-            // If this is updated, also need to update CreateSqlitePlotTableSQL
-            public string CreatePlotTableSQL(string p_strTableName)
-            {
-                return "CREATE TABLE " + p_strTableName + " (" +
-                    "biosum_plot_id CHAR(24)," +
-                    "statecd INTEGER," +
-                    "invyr INTEGER," +
-                    "unitcd INTEGER," +
-                    "countycd INTEGER," +
-                    p_strTableName + " LONG," +
-                    "measyear INTEGER," +
-                    "measmon INTEGER," +
-                    "measday INTEGER," +
-                    "elev INTEGER," +
-                    "fvs_variant CHAR(2)," +
-                    "fvsloccode INTEGER," +
-                    "half_state CHAR(10)," +
-                    "subplot_count_plot BYTE," +
-                    "gis_yard_dist_ft DOUBLE," +
-                    "num_cond BYTE," +
-                    "one_cond_yn CHAR(1)," +
-                    "lat DOUBLE," +
-                    "lon DOUBLE," +
-                    "macro_breakpoint_dia INTEGER," +
-                    "precipitation DOUBLE," +
-                    "ecosubcd CHAR(7)," +
-                    "biosum_status_cd BYTE," +
-                    "cn CHAR(34))";
-            }
-            public void CreateSqlitePlotTable(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
-            {
-                p_oDataMgr.SqlNonQuery(p_oConn, CreateSqlitePlotTableSQL(p_strTableName));
-                CreateSqlitePlotTableIndexes(p_oDataMgr, p_oConn, p_strTableName);
-            }
-            public void CreateSqlitePlotTableIndexes(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
+            public void CreatePlotTableIndexes(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
             {
                 p_oDataMgr.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx1", "num_cond");
                 p_oDataMgr.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx2", "biosum_status_cd");
             }
-            public string CreateSqlitePlotTableSQL(string p_strTableName)
+            public string CreatePlotTableSQL(string p_strTableName)
             {
                 return "CREATE TABLE " + p_strTableName + " (" +
                     "biosum_plot_id CHAR(24)," +
@@ -3848,90 +3725,18 @@ namespace FIA_Biosum_Manager
                     "CONSTRAINT " + p_strTableName + "_pk PRIMARY KEY (biosum_plot_id))";
             }
 
-            public void CreateConditionTable(FIA_Biosum_Manager.ado_data_access p_oAdo, System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
+            public void CreateConditionTable(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
             {
-                p_oAdo.SqlNonQuery(p_oConn, CreateConditionTableSQL(p_strTableName));
-                CreateConditionTableIndexes(p_oAdo, p_oConn, p_strTableName);
+                p_oDataMgr.SqlNonQuery(p_oConn, CreateConditionTableSQL(p_strTableName));
+                CreateConditionTableIndexes(p_oDataMgr, p_oConn, p_strTableName);
 
             }
-            public void CreateConditionTableIndexes(ado_data_access p_oAdo, System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
-            {
-                p_oAdo.AddPrimaryKey(p_oConn, p_strTableName, p_strTableName + "_pk", "biosum_cond_id");
-                p_oAdo.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx1", "biosum_plot_id");
-                p_oAdo.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx2", "condid");
-            }
-
-            // If this is updated, also need to update CreateSqliteConditionTableSQL()
-            public string CreateConditionTableSQL(string p_strTableName)
-            {
-                return "CREATE TABLE " + p_strTableName + " (" +
-                    "biosum_cond_id CHAR(25)," +
-                    "biosum_plot_id CHAR(24)," +
-                    "invyr INTEGER," +
-                    "condid BYTE," +
-                    "condprop DOUBLE," +
-                    "cond_status_cd BYTE," +
-                    "fortypcd INTEGER," +
-                    "ground_land_class_pnw CHAR(3)," +
-                    "owncd INTEGER," +
-                    "owngrpcd INTEGER," +
-                    "reservcd BYTE," +
-                    "siteclcd BYTE," +
-                    "sibase INTEGER," +
-                    "sicond INTEGER," +
-                    "sisp INTEGER," +
-                    "slope INTEGER," +
-                    "aspect INTEGER," +
-                    "stdage INTEGER," +
-                    "stdszcd BYTE," +
-                    "habtypcd1 CHAR(10)," +
-                    "adforcd INTEGER," +
-                    "qmd_all_inch SINGLE," +
-                    "qmd_hwd_inch SINGLE," +
-                    "qmd_swd_inch SINGLE," +
-                    "acres DOUBLE," +
-                    "unitcd LONG," +
-                    "vol_loc_grp CHAR(10)," +
-                    "tpacurr DOUBLE," +
-                    "hwd_tpacurr DOUBLE," +
-                    "swd_tpacurr DOUBLE," +
-                    "ba_ft2_ac DOUBLE," +
-                    "hwd_ba_ft2_ac DOUBLE," +
-                    "swd_ba_ft2_ac DOUBLE," +
-                    "vol_ac_grs_stem_ttl_ft3 DOUBLE," +
-                    "hwd_vol_ac_grs_stem_ttl_ft3 DOUBLE," +
-                    "swd_vol_ac_grs_stem_ttl_ft3 DOUBLE," +
-                    "vol_ac_grs_ft3 DOUBLE," +
-                    "hwd_vol_ac_grs_ft3 DOUBLE," +
-                    "swd_vol_ac_grs_ft3 DOUBLE," +
-                    "volcsgrs DOUBLE," +
-                    "hwd_volcsgrs DOUBLE," +
-                    "swd_volcsgrs DOUBLE," +
-                    "gsstkcd DOUBLE," +
-                    "alstkcd DOUBLE," +
-                    "condprop_unadj DOUBLE," +
-                    "micrprop_unadj DOUBLE," +
-                    "subpprop_unadj DOUBLE," +
-                    "macrprop_unadj DOUBLE," +
-                    "cn CHAR(34)," +
-                    "biosum_status_cd BYTE, " +
-                    "model_YN CHAR(1), " +
-                    "dwm_fuelbed_typcd TEXT(3)," + 
-                    "balive DOUBLE, " +
-                    "stdorgcd INTEGER)";
-            }
-            public void CreateSqliteConditionTable(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
-            {
-                p_oDataMgr.SqlNonQuery(p_oConn, CreateSqliteConditionTableSQL(p_strTableName));
-                CreateSqliteConditionTableIndexes(p_oDataMgr, p_oConn, p_strTableName);
-
-            }
-            public void CreateSqliteConditionTableIndexes(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
+            public void CreateConditionTableIndexes(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
             {
                 p_oDataMgr.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx1", "biosum_plot_id");
                 p_oDataMgr.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx2", "condid");
             }
-            public string CreateSqliteConditionTableSQL(string p_strTableName)
+            public string CreateConditionTableSQL(string p_strTableName)
             {
                 return "CREATE TABLE " + p_strTableName + " (" +
                     "biosum_cond_id CHAR(25)," +
@@ -3988,117 +3793,13 @@ namespace FIA_Biosum_Manager
                     "stdorgcd INTEGER," + 
                     "CONSTRAINT " + p_strTableName + "_pk PRIMARY KEY (biosum_cond_id))";
             }
-            public void CreateTreeTable(FIA_Biosum_Manager.ado_data_access p_oAdo, System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
+            
+            public void CreateTreeTable(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
             {
-                p_oAdo.SqlNonQuery(p_oConn, CreateTreeTableSQL(p_strTableName));
-                CreateTreeTableIndexes(p_oAdo, p_oConn, p_strTableName);
-
+                p_oDataMgr.SqlNonQuery(p_oConn, CreateTreeTableSQL(p_strTableName));
+                CreateTreeTableIndexes(p_oDataMgr, p_oConn, p_strTableName);
             }
-            public void CreateTreeTableIndexes(ado_data_access p_oAdo, System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
-            {
-                p_oAdo.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx1", "biosum_cond_id");
-                p_oAdo.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx2", "subp");
-                p_oAdo.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx3", "tree");
-                p_oAdo.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx4", "condid");
-                p_oAdo.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx5", "idb_dmg_agent3_cd");
-                p_oAdo.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx6", "idb_severity3_cd");
-                p_oAdo.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx7", "fvs_tree_id");
-                p_oAdo.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx8", "idb_alltree_id");
-            }
-            public string CreateTreeTableSQL(string p_strTableName)
-            {
-                return "CREATE TABLE tree (" +
-                    "biosum_cond_id CHAR(25)," +
-                    "invyr INTEGER," +
-                    "statecd INTEGER," +
-                    "unitcd INTEGER," +
-                    "countycd INTEGER," +
-                    "subp BYTE," +
-                    "tree INTEGER," +
-                    "condid INTEGER," +
-                    "statuscd BYTE," +
-                    "spcd INTEGER," +
-                    "spgrpcd INTEGER," +
-                    "dia SINGLE," +
-                    "diahtcd BYTE," + //TODO: test if the new integer version in the biosum volumes section works 
-                    "ht DOUBLE," +
-                    "htcd BYTE," +
-                    "actualht DOUBLE," +
-                    "formcl BYTE," +
-                    "treeclcd BYTE," +
-                    "cr DOUBLE," +
-                    "cclcd BYTE DEFAULT 0," +
-                    "cull DOUBLE," +
-                    "roughcull DOUBLE," +
-                    "decaycd BYTE," +
-                    "stocking DOUBLE," +
-                    "tpacurr DOUBLE," +
-                    "wdldstem INTEGER," +
-                    "volcfnet DOUBLE," +
-                    "volcfgrs DOUBLE," +
-                    "volcsnet DOUBLE," +
-                    "volcsgrs DOUBLE," +
-                    "volbfnet DOUBLE," +
-                    "volbfgrs DOUBLE," +
-                    "voltsgrs DOUBLE," +
-                    "drybiot DOUBLE," +
-                    "drybiom DOUBLE," +
-                    "bhage INTEGER," +
-                    "cullbf DOUBLE," +
-                    "cullcf DOUBLE," +
-                    "cullsf DOUBLE," +
-                    "totage DOUBLE," +
-                    "mist_cl_cd INTEGER," +
-                    "agentcd INTEGER," +
-                    "damtyp1 INTEGER," +
-                    "damsev1 INTEGER," +
-                    "damtyp2 INTEGER," +
-                    "damsev2 INTEGER," +
-                    "tpa_unadj DOUBLE," +
-                    "idb_dmg_agent3_cd	INTEGER," +
-                    "idb_severity3_cd INTEGER," +
-                    "fvs_dmg_ag1 CHAR(2)," +
-                    "fvs_dmg_sv1 CHAR(2)," +
-                    "fvs_dmg_ag2 CHAR(2)," +
-                    "fvs_dmg_sv2 CHAR(2)," +
-                    "fvs_dmg_ag3 CHAR(2)," +
-                    "fvs_dmg_sv3 CHAR(2)," +
-                    "inc10yr INTEGER," +
-                    "condprop_specific DOUBLE," +
-                    //START: ADDED BIOSUM_VOLUME COLUMNS
-                    "sitree INTEGER," +
-                    "upper_dia DECIMAL(4,1)," +
-                    "upper_dia_ht DECIMAL(4,1)," + 
-                    "centroid_dia DECIMAL(4,1)," + 
-                    "centroid_dia_ht_actual DECIMAL(4,1)," +
-                    "sawht DECIMAL(2,0)," +
-                    "htdmp DECIMAL(3,1)," + 
-                    "boleht DECIMAL(3,0)," + 
-                    "cull_fld DECIMAL(2,0)," + 
-                    "culldead DECIMAL(3,0)," +
-                    "cullform DECIMAL(3,0)," +
-                    "cullmstop DECIMAL(3,0)," +
-                    "cfsnd DECIMAL(3,0)," +
-                    "bfsnd DECIMAL(3,0)," +
-                    "standing_dead_cd INTEGER," +
-                    "volcfsnd DECIMAL(13,6)," +
-                    "drybio_bole DECIMAL(13,6)," +
-                    "drybio_top DECIMAL(13,6)," +
-                    "drybio_sapling DECIMAL(13,6)," +
-                    "drybio_wdld_spp DECIMAL(13,6)," +
-                    //END: ADDED BIOSUM_VOLUME COLUMNS
-                    "fvs_tree_id CHAR(10)," +
-                    "idb_alltree_id LONG," +
-                    "cn CHAR(34)," +
-                    "biosum_status_cd BYTE)";
-
-            }
-            public void CreateSqliteTreeTable(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
-            {
-                p_oDataMgr.SqlNonQuery(p_oConn, CreateSqliteTreeTableSQL(p_strTableName));
-                CreateSqliteTreeTableIndexes(p_oDataMgr, p_oConn, p_strTableName);
-            }
-            public void CreateSqliteTreeTableIndexes(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
+            public void CreateTreeTableIndexes(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
             {
                 p_oDataMgr.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx1", "biosum_cond_id");
                 p_oDataMgr.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx2", "subp");
@@ -4106,7 +3807,7 @@ namespace FIA_Biosum_Manager
                 p_oDataMgr.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx4", "condid");
                 p_oDataMgr.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx5", "fvs_tree_id");
             }
-            public string CreateSqliteTreeTableSQL (string p_strTableName)
+            public string CreateTreeTableSQL (string p_strTableName)
             {
                 return "CREATE TABLE " + p_strTableName + "(" +
                     "biosum_cond_id CHAR(25)," +
@@ -4180,48 +3881,17 @@ namespace FIA_Biosum_Manager
                     "cn CHAR(34)," +
                     "biosum_status_cd INTEGER)";
             }
-            public void CreateSiteTreeTable(FIA_Biosum_Manager.ado_data_access p_oAdo, System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
+            
+            public void CreateSiteTreeTable(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
             {
-                p_oAdo.SqlNonQuery(p_oConn, CreateSiteTreeTableSQL(p_strTableName));
-                CreateSiteTreeTableIndexes(p_oAdo, p_oConn, p_strTableName);
-
+                p_oDataMgr.SqlNonQuery(p_oConn, CreateSiteTreeTableSQL(p_strTableName));
+                CreateSiteTreeTableIndexes(p_oDataMgr, p_oConn, p_strTableName);
             }
-            public void CreateSiteTreeTableIndexes(ado_data_access p_oAdo, System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
-            {
-                p_oAdo.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx1", "condid");
-            }
-            public string CreateSiteTreeTableSQL(string p_strTableName)
-            {
-                return "CREATE TABLE " + p_strTableName + " (" +
-                    "biosum_plot_id CHAR(24)," +
-                    "invyr INTEGER," +
-                    "condid BYTE," +
-                    "tree INTEGER," +
-                    "spcd INTEGER," +
-                    "dia SINGLE," +
-                    "ht DOUBLE," +
-                    "agedia INTEGER," +
-                    "spgrpcd INTEGER," +
-                    "sitree INTEGER," +
-                    "sibase INTEGER," +
-                    "subp BYTE," +
-                    "method INTEGER," +
-                    "sitree_est INTEGER," +
-                    "validcd BYTE," +
-                    "condlist INTEGER," +
-                    "biosum_status_cd BYTE)";
-
-            }
-            public void CreateSqliteSiteTreeTable(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
-            {
-                p_oDataMgr.SqlNonQuery(p_oConn, CreateSqliteSiteTreeTableSQL(p_strTableName));
-                CreateSqliteSiteTreeTableIndexes(p_oDataMgr, p_oConn, p_strTableName);
-            }
-            public void CreateSqliteSiteTreeTableIndexes(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
+            public void CreateSiteTreeTableIndexes(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
             {
                 p_oDataMgr.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx1", "condid");
             }
-            public string CreateSqliteSiteTreeTableSQL(string p_strTableName)
+            public string CreateSiteTreeTableSQL(string p_strTableName)
             {
                 return "CREATE TABLE " + p_strTableName + "(" +
                     "biosum_plot_id CHAR(24)," +
@@ -4241,44 +3911,17 @@ namespace FIA_Biosum_Manager
                     "condlist INTEGER," +
                     "biosum_status_cd INTEGER)";
             }
-            public void CreatePopEstnUnitTable(FIA_Biosum_Manager.ado_data_access p_oAdo, System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
+           
+            public void CreatePopEstnUnitTable(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
             {
-                p_oAdo.SqlNonQuery(p_oConn, CreatePopEstnUnitTableSQL(p_strTableName));
-                CreatePopEstnUnitTableIndexes(p_oAdo, p_oConn, p_strTableName);
+                p_oDataMgr.SqlNonQuery(p_oConn, CreatePopEstnUnitTableSQL(p_strTableName));
+                CreatePopEstnUnitTableIndexes(p_oDataMgr, p_oConn, p_strTableName);
             }
-            public void CreatePopEstnUnitTableIndexes(ado_data_access p_oAdo, System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
-            {
-                p_oAdo.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx1", "evalid");
-            }
-            public string CreatePopEstnUnitTableSQL(string p_strTableName)
-            {
-                return "CREATE TABLE " + p_strTableName + " (" +
-                    "cn CHAR(34)," +
-                    "eval_cn CHAR(34)," +
-                    "rscd DECIMAL (2,0)," +
-                    "evalid DECIMAL (6,0)," +
-                    "estn_unit INTEGER," +
-                    "estn_unit_descr CHAR(255)," +
-                    "statecd DECIMAL (4,0)," +
-                    "arealand_eu DECIMAL (12,2)," +
-                    "areatot_eu DECIMAL (12,2)," +
-                    "area_used DECIMAL (12,2)," +
-                    "area_source CHAR(50)," +
-                    "p1pntcnt_eu DECIMAL (12,0)," +
-                    "p1source CHAR(50)," +
-                    "modified_date DATE, " +
-                    "biosum_status_cd BYTE)";
-            }
-            public void CreateSqlitePopEstnUnitTable(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
-            {
-                p_oDataMgr.SqlNonQuery(p_oConn, CreateSqlitePopEstnUnitTableSQL(p_strTableName));
-                CreateSqlitePopEstnUnitTableIndexes(p_oDataMgr, p_oConn, p_strTableName);
-            }
-            public void CreateSqlitePopEstnUnitTableIndexes(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
+            public void CreatePopEstnUnitTableIndexes(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
             {
                 p_oDataMgr.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx1", "evalid");
             }
-            public string CreateSqlitePopEstnUnitTableSQL(string p_strTableName)
+            public string CreatePopEstnUnitTableSQL(string p_strTableName)
             {
                 return "CREATE TABLE " + p_strTableName + " (" +
                     "cn VARCHAR (34)," +
@@ -4298,42 +3941,18 @@ namespace FIA_Biosum_Manager
                     "modified_date DATE," +
                     "PRIMARY KEY(RSCD, EVALID, ESTN_UNIT) )";
             }
-            public void CreatePopEvalTable(FIA_Biosum_Manager.ado_data_access p_oAdo, System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
+            
+            public void CreatePopEvalTable(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
             {
-                p_oAdo.SqlNonQuery(p_oConn, CreatePopEvalTableSQL(p_strTableName));
-                CreatePopEvalTableIndexes(p_oAdo, p_oConn, p_strTableName);
+                p_oDataMgr.SqlNonQuery(p_oConn, CreatePopEvalTableSQL(p_strTableName));
+                CreatePopEvalTableIndexes(p_oDataMgr, p_oConn, p_strTableName);
             }
-            public void CreatePopEvalTableIndexes(ado_data_access p_oAdo, System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
-            {
-                p_oAdo.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx1", "evalid");
-            }
-            public string CreatePopEvalTableSQL(string p_strTableName)
-            {
-                return "CREATE TABLE " + p_strTableName + " (" +
-                    "cn CHAR(34)," +
-                    "rscd DECIMAL (2,0)," +
-                    "evalid DECIMAL (6,0)," +
-                    "eval_descr CHAR(255)," +
-                    "statecd DECIMAL (4,0)," +
-                    "location_nm CHAR(255)," +
-                    "report_year_nm CHAR(255)," +
-                    "notes MEMO," +
-                    "start_invyr DECIMAL (4,0)," +
-                    "end_invyr DECIMAL (4,0)," +
-                    "modified_date DATE, " +
-                    "biosum_status_cd BYTE)";
-            }
-            public void CreateSqlitePopEvalTable(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
-            {
-                p_oDataMgr.SqlNonQuery(p_oConn, CreateSqlitePopEvalTableSQL(p_strTableName));
-                CreateSqlitePopEvalTableIndexes(p_oDataMgr, p_oConn, p_strTableName);
-            }
-            public void CreateSqlitePopEvalTableIndexes(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
+            public void CreatePopEvalTableIndexes(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
             {
                 p_oDataMgr.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx1", "evalid");
             }
             // These data types match FIADB from which the data is loaded
-            public string CreateSqlitePopEvalTableSQL(string p_strTableName)
+            public string CreatePopEvalTableSQL(string p_strTableName)
             {
                 return "CREATE TABLE " + p_strTableName + " (" +
                     "cn VARCHAR (34)," +
@@ -4352,43 +3971,17 @@ namespace FIA_Biosum_Manager
                     "MODIFIED_DATE DATE," +
                     "PRIMARY KEY(evalid, rscd))";
             }
-            public void CreatePopPlotStratumAssgnTable(FIA_Biosum_Manager.ado_data_access p_oAdo, System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
+            
+            public void CreatePopPlotStratumAssgnTable(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
             {
-                p_oAdo.SqlNonQuery(p_oConn, CreatePopPlotStratumAssgnTableSQL(p_strTableName));
-                CreatePopPlotStratumAssgnTableIndexes(p_oAdo, p_oConn, p_strTableName);
+                p_oDataMgr.SqlNonQuery(p_oConn, CreatePopPlotStratumAssgnTableSQL(p_strTableName));
+                CreatePopPlotStratumAssgnTableIndexes(p_oDataMgr, p_oConn, p_strTableName);
             }
-            public void CreatePopPlotStratumAssgnTableIndexes(ado_data_access p_oAdo, System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
-            {
-                p_oAdo.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx1", "PLT_CN, STRATUM_CN, RSCD");
-            }
-            public string CreatePopPlotStratumAssgnTableSQL(string p_strTableName)
-            {
-                return "CREATE TABLE " + p_strTableName + " (" +
-                    "cn CHAR(34)," +
-                    "stratum_cn CHAR(34)," +
-                    "plt_cn CHAR(34)," +
-                    "statecd DECIMAL (4,0)," +
-                    "invyr INTEGER," +
-                    "unitcd INTEGER," +
-                    "countycd INTEGER," +
-                    "plot LONG," +
-                    "rscd DECIMAL (2,0)," +
-                    "evalid DECIMAL (6,0)," +
-                    "estn_unit LONG," +
-                    "stratumcd LONG," +
-                    "modified_date DATE, " +
-                    "biosum_status_cd BYTE)";
-            }
-            public void CreateSqlitePopPlotStratumAssgnTable(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
-            {
-                p_oDataMgr.SqlNonQuery(p_oConn, CreateSqlitePopPlotStratumAssgnTableSQL(p_strTableName));
-                CreateSqlitePopPlotStratumAssgnTableIndexes(p_oDataMgr, p_oConn, p_strTableName);
-            }
-            public void CreateSqlitePopPlotStratumAssgnTableIndexes(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
+            public void CreatePopPlotStratumAssgnTableIndexes(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
             {
                 p_oDataMgr.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx1", "evalid");
             }
-            public string CreateSqlitePopPlotStratumAssgnTableSQL(string p_strTableName)
+            public string CreatePopPlotStratumAssgnTableSQL(string p_strTableName)
             {
                 return "CREATE TABLE " + p_strTableName + " (" +
                     "cn VARCHAR (34)," +
@@ -4407,45 +4000,17 @@ namespace FIA_Biosum_Manager
                     "modified_date DATE, " +
                     "PRIMARY KEY(PLT_CN, STRATUM_CN, RSCD))";
             }
-            public void CreatePopStratumTable(FIA_Biosum_Manager.ado_data_access p_oAdo, System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
+            
+            public void CreatePopStratumTable(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
             {
-                p_oAdo.SqlNonQuery(p_oConn, CreatePopStratumTableSQL(p_strTableName));
-                CreatePopStratumTableIndexes(p_oAdo, p_oConn, p_strTableName);
+                p_oDataMgr.SqlNonQuery(p_oConn, CreatePopStratumTableSQL(p_strTableName));
+                CreatePopStratumTableIndexes(p_oDataMgr, p_oConn, p_strTableName);
             }
-            public void CreatePopStratumTableIndexes(ado_data_access p_oAdo, System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
-            {
-                p_oAdo.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx1", "evalid");
-            }
-            public string CreatePopStratumTableSQL(string p_strTableName)
-            {
-                return "CREATE TABLE " + p_strTableName + " (" +
-                    "cn CHAR(34)," +
-                    "estn_unit_cn CHAR(34)," +
-                    "rscd DECIMAL (2,0)," +
-                    "evalid DECIMAL (6,0)," +
-                    "estn_unit LONG," +
-                    "stratumcd LONG," +
-                    "statum_desc CHAR(255)," +
-                    "statecd DECIMAL (4,0)," +
-                    "p1pointcnt DECIMAL (12,0)," +
-                    "p2pointcnt DECIMAL (12,0)," +
-                    "expns DOUBLE," +
-                    "adj_factor_macr DECIMAL (5,4)," +
-                    "adj_factor_subp DECIMAL (5,4)," +
-                    "adj_factor_micr DECIMAL (5,4)," +
-                    "modified_date DATE, " +
-                    "biosum_status_cd BYTE)";
-            }
-            public void CreateSqlitePopStratumTable(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
-            {
-                p_oDataMgr.SqlNonQuery(p_oConn, CreateSqlitePopStratumTableSQL(p_strTableName));
-                CreateSqlitePopStratumTableIndexes(p_oDataMgr, p_oConn, p_strTableName);
-            }
-            public void CreateSqlitePopStratumTableIndexes(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
+            public void CreatePopStratumTableIndexes(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
             {
                 p_oDataMgr.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx1", "evalid");
             }
-            public string CreateSqlitePopStratumTableSQL(string p_strTableName)
+            public string CreatePopStratumTableSQL(string p_strTableName)
             {
                 return "CREATE TABLE " + p_strTableName + " (" +
                     "cn VARCHAR (34)," +
@@ -4466,49 +4031,17 @@ namespace FIA_Biosum_Manager
                     "modified_date DATE, " +
                     "PRIMARY KEY(RSCD, EVALID, ESTN_UNIT, STRATUMCD))";
             }
-            public void CreateBiosumPopStratumAdjustmentFactorsTable(FIA_Biosum_Manager.ado_data_access p_oAdo, System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
+           
+            public void CreateBiosumPopStratumAdjustmentFactorsTable(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
             {
-                p_oAdo.SqlNonQuery(p_oConn, CreateBiosumPopStratumAdjustmentFactorsTableSQL(p_strTableName));
-                CreateBiosumPopStratumAdjustmentFactorsTableIndexes(p_oAdo, p_oConn, p_strTableName);
+                p_oDataMgr.SqlNonQuery(p_oConn, CreateBiosumPopStratumAdjustmentFactorsTableSQL(p_strTableName));
+                CreateBiosumPopStratumAdjustmentFactorsTableIndexes(p_oDataMgr, p_oConn, p_strTableName);
             }
-            public void CreateBiosumPopStratumAdjustmentFactorsTableIndexes(ado_data_access p_oAdo, System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
-            {
-                p_oAdo.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx1", "rscd,evalid");
-            }
-            public string CreateBiosumPopStratumAdjustmentFactorsTableSQL(string p_strTableName)
-            {
-                return "CREATE TABLE " + p_strTableName + " (" +
-                    "stratum_cn CHAR(34)," +
-                    "rscd DECIMAL (2,0)," +
-                    "evalid DECIMAL (6,0)," +
-                    "eval_descr CHAR(255)," +
-                    "estn_unit LONG," +
-                    "estn_unit_descr CHAR(255)," +
-                    "stratumcd LONG," +
-                    "p2pointcnt_man DECIMAL (12,0)," +
-                    "double_sampling INTEGER," +
-                    "stratum_area DOUBLE," +
-                    "expns DOUBLE," +
-                    "pmh_macr DECIMAL (5,4)," +
-                    "pmh_sub DECIMAL (5,4)," +
-                    "pmh_micr DECIMAL (5,4)," +
-                    "pmh_cond DECIMAL (5,4)," +
-                    "adj_factor_macr DECIMAL (5,4)," +
-                    "adj_factor_subp DECIMAL (5,4)," +
-                    "adj_factor_micr DECIMAL (5,4)," +
-                    "biosum_status_cd BYTE)";
-            }
-
-            public void CreateSQLiteBiosumPopStratumAdjustmentFactorsTable(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
-            {
-                p_oDataMgr.SqlNonQuery(p_oConn, CreateSqliteBiosumPopStratumAdjustmentFactorsTableSQL(p_strTableName));
-                CreateSqliteBiosumPopStratumAdjustmentFactorsTableIndexes(p_oDataMgr, p_oConn, p_strTableName);
-            }
-            public void CreateSqliteBiosumPopStratumAdjustmentFactorsTableIndexes(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
+            public void CreateBiosumPopStratumAdjustmentFactorsTableIndexes(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
             {
                 p_oDataMgr.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx1", "rscd,evalid");
             }
-            public string CreateSqliteBiosumPopStratumAdjustmentFactorsTableSQL(string p_strTableName)
+            public string CreateBiosumPopStratumAdjustmentFactorsTableSQL(string p_strTableName)
             {
                 return "CREATE TABLE " + p_strTableName + " (" +
                     "stratum_cn CHAR(34)," +
@@ -4532,59 +4065,22 @@ namespace FIA_Biosum_Manager
                     "biosum_status_cd CHAR(1))";
             }
 
-            public void CreateDWMCoarseWoodyDebrisTable(FIA_Biosum_Manager.ado_data_access p_oAdo,
-                System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
-            {
-                p_oAdo.SqlNonQuery(p_oConn, CreateDWMCoarseWoodyDebrisTableSQL(p_strTableName));
-                CreateDWMCoarseWoodyDebrisTableIndexes(p_oAdo, p_oConn, p_strTableName);
-            }
-
-            public void CreateDWMCoarseWoodyDebrisTableIndexes(ado_data_access p_oAdo,
-                System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
-            {
-                p_oAdo.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx1", "biosum_cond_id");
-                p_oAdo.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx2", "plt_cn");
-            }
-
-            public string CreateDWMCoarseWoodyDebrisTableSQL(string p_strTableName)
-            {
-                return "CREATE TABLE " + p_strTableName + " (" +
-                       "biosum_cond_id text(25)" +
-                       ",biosum_status_cd BYTE" +
-                       ",CN TEXT(34)" +
-                       ",PLT_CN TEXT(34)" +
-                       ",INVYR LONG" +
-                       ",STATECD LONG" +
-                       ",COUNTYCD LONG" +
-                       ",PLOT LONG" +
-                       ",SUBP LONG" +
-                       ",TRANSECT LONG" +
-                       ",CWDID DOUBLE" +
-                       ",MEASYEAR LONG" +
-                       ",CONDID LONG" +
-                       ",SPCD LONG" +
-                       ",DECAYCD LONG" +
-                       ",TRANSDIA LONG" +
-                       ",LENGTH LONG" +
-                       ",CWD_SAMPLE_METHOD TEXT(6)" +
-                       ",INCLINATION LONG" +
-                       ")";
-            }
-            public void CreateSqliteDWMCoarseWoodyDebrisTable(SQLite.ADO.DataMgr p_oDataMgr,
+           
+            public void CreateDWMCoarseWoodyDebrisTable(SQLite.ADO.DataMgr p_oDataMgr,
                 System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
             {
-                p_oDataMgr.SqlNonQuery(p_oConn, CreateSqliteDWMCoarseWoodyDebrisTableSQL(p_strTableName));
-                CreateSqliteDWMCoarseWoodyDebrisTableIndexes(p_oDataMgr, p_oConn, p_strTableName);
+                p_oDataMgr.SqlNonQuery(p_oConn, CreateDWMCoarseWoodyDebrisTableSQL(p_strTableName));
+                CreateDWMCoarseWoodyDebrisTableIndexes(p_oDataMgr, p_oConn, p_strTableName);
             }
 
-            public void CreateSqliteDWMCoarseWoodyDebrisTableIndexes(SQLite.ADO.DataMgr p_oDataMgr,
+            public void CreateDWMCoarseWoodyDebrisTableIndexes(SQLite.ADO.DataMgr p_oDataMgr,
                 System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
             {
                 p_oDataMgr.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx1", "biosum_cond_id");
                 p_oDataMgr.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx2", "plt_cn");
             }
 
-            public string CreateSqliteDWMCoarseWoodyDebrisTableSQL(string p_strTableName)
+            public string CreateDWMCoarseWoodyDebrisTableSQL(string p_strTableName)
             {
                 return "CREATE TABLE " + p_strTableName + " (" +
                        "biosum_cond_id CHAR(25)" +
@@ -4609,61 +4105,21 @@ namespace FIA_Biosum_Manager
                        ")";
             }
 
-            public void CreateDWMFineWoodyDebrisTable(FIA_Biosum_Manager.ado_data_access p_oAdo,
-                System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
-            {
-                p_oAdo.SqlNonQuery(p_oConn, CreateDWMFineWoodyDebrisTableSQL(p_strTableName));
-                CreateDWMFineWoodyDebrisTableIndexes(p_oAdo, p_oConn, p_strTableName);
-            }
-
-            public void CreateDWMFineWoodyDebrisTableIndexes(ado_data_access p_oAdo,
-                System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
-            {
-                p_oAdo.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx1", "biosum_cond_id");
-                p_oAdo.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx2", "plt_cn");
-            }
-
-            public string CreateDWMFineWoodyDebrisTableSQL(string p_strTableName)
-            {
-                return "CREATE TABLE " + p_strTableName + " (" +
-                       "biosum_cond_id text(25)" +
-                       ",biosum_status_cd BYTE" +
-                       ",CN TEXT(34)" +
-                       ",PLT_CN TEXT(34)" +
-                       ",INVYR LONG" +
-                       ",STATECD LONG" +
-                       ",COUNTYCD LONG" +
-                       ",PLOT LONG" +
-                       ",TRANSECT LONG" +
-                       ",SUBP LONG" +
-                       ",CONDID LONG" +
-                       ",MEASYEAR LONG" +
-                       ",SMALLCT LONG" +
-                       ",MEDIUMCT LONG" +
-                       ",LARGECT LONG" +
-                       ",RSNCTCD LONG" +
-                       ",SMALL_TL_COND DOUBLE" +
-                       ",MEDIUM_TL_COND DOUBLE" +
-                       ",LARGE_TL_COND DOUBLE" +
-                       ",FWD_NONSAMPLE_REASN_CD LONG" +
-                       ",FWD_SAMPLE_METHOD TEXT(6)" +
-                       ")";
-            }
-
-            public void CreateSqliteDWMFineWoodyDebrisTable(SQLite.ADO.DataMgr p_oDataMgr,
+           
+            public void CreateDWMFineWoodyDebrisTable(SQLite.ADO.DataMgr p_oDataMgr,
                 System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
             {
-                p_oDataMgr.SqlNonQuery(p_oConn, CreateSqliteDWMFineWoodyDebrisTableSQL(p_strTableName));
-                CreateSqliteDWMFineWoodyDebrisTableIndexes(p_oDataMgr, p_oConn, p_strTableName);
+                p_oDataMgr.SqlNonQuery(p_oConn, CreateDWMFineWoodyDebrisTableSQL(p_strTableName));
+                CreateDWMFineWoodyDebrisTableIndexes(p_oDataMgr, p_oConn, p_strTableName);
             }
-            public void CreateSqliteDWMFineWoodyDebrisTableIndexes(SQLite.ADO.DataMgr p_oDataMgr,
+            public void CreateDWMFineWoodyDebrisTableIndexes(SQLite.ADO.DataMgr p_oDataMgr,
                 System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
             {
                 p_oDataMgr.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx1", "biosum_cond_id");
                 p_oDataMgr.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx2", "plt_cn");
             }
 
-            public string CreateSqliteDWMFineWoodyDebrisTableSQL(string p_strTableName)
+            public string CreateDWMFineWoodyDebrisTableSQL(string p_strTableName)
             {
                 return "CREATE TABLE " + p_strTableName + " (" +
                        "biosum_cond_id CHAR(25)" +
@@ -4690,60 +4146,22 @@ namespace FIA_Biosum_Manager
                        ")";
             }
 
-            public void CreateDWMDuffLitterFuelTable(FIA_Biosum_Manager.ado_data_access p_oAdo,
-                System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
-            {
-                p_oAdo.SqlNonQuery(p_oConn, CreateDWMDuffLitterFuelTableSQL(p_strTableName));
-                CreateDWMDuffLitterFuelTableIndexes(p_oAdo, p_oConn, p_strTableName);
-            }
-
-            public void CreateDWMDuffLitterFuelTableIndexes(ado_data_access p_oAdo, System.Data.OleDb.OleDbConnection p_oConn,
-                string p_strTableName)
-            {
-                p_oAdo.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx1", "biosum_cond_id");
-                p_oAdo.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx2", "plt_cn");
-            }
-
-            public string CreateDWMDuffLitterFuelTableSQL(string p_strTableName)
-            {
-                return "CREATE TABLE " + p_strTableName + " (" +
-                       "biosum_cond_id text(25)" +
-                       ",biosum_status_cd BYTE" +
-                       ",CN TEXT(34)" +
-                       ",PLT_CN TEXT(34)" +
-                       ",INVYR LONG" +
-                       ",STATECD LONG" +
-                       ",COUNTYCD LONG" +
-                       ",PLOT LONG" +
-                       ",TRANSECT LONG" +
-                       ",SUBP LONG" +
-                       ",MEASYEAR LONG" +
-                       ",CONDID LONG" +
-                       ",DUFFDEP DOUBLE" +
-                       ",LITTDEP DOUBLE" +
-                       ",FUELDEP DOUBLE" +
-                       ",DUFF_METHOD LONG" +
-                       ",DUFF_NONSAMPLE_REASN_CD LONG" +
-                       ",LITTER_METHOD LONG" +
-                       ",LITTER_NONSAMPLE_REASN_CD LONG" +
-                       ")";
-            }
-
-            public void CreateSqliteDWMDuffLitterFuelTable(SQLite.ADO.DataMgr p_oDataMgr,
+           
+            public void CreateDWMDuffLitterFuelTable(SQLite.ADO.DataMgr p_oDataMgr,
                 System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
             {
-                p_oDataMgr.SqlNonQuery(p_oConn, CreateSqliteDWMDuffLitterFuelTableSQL(p_strTableName));
-                CreateSqliteDWMDuffLitterFuelTableIndexes(p_oDataMgr, p_oConn, p_strTableName);
+                p_oDataMgr.SqlNonQuery(p_oConn, CreateDWMDuffLitterFuelTableSQL(p_strTableName));
+                CreateDWMDuffLitterFuelTableIndexes(p_oDataMgr, p_oConn, p_strTableName);
             }
 
-            public void CreateSqliteDWMDuffLitterFuelTableIndexes(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn,
+            public void CreateDWMDuffLitterFuelTableIndexes(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn,
                 string p_strTableName)
             {
                 p_oDataMgr.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx1", "biosum_cond_id");
                 p_oDataMgr.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx2", "plt_cn");
             }
 
-            public string CreateSqliteDWMDuffLitterFuelTableSQL(string p_strTableName)
+            public string CreateDWMDuffLitterFuelTableSQL(string p_strTableName)
             {
                 return "CREATE TABLE " + p_strTableName + " (" +
                        "biosum_cond_id CHAR(25)" +
@@ -4768,60 +4186,22 @@ namespace FIA_Biosum_Manager
                        ")";
             }
 
-            public void CreateDWMTransectSegmentTable(FIA_Biosum_Manager.ado_data_access p_oAdo,
-                System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
-            {
-                p_oAdo.SqlNonQuery(p_oConn, CreateDWMTransectSegmentTableSQL(p_strTableName));
-                CreateDWMTransectSegmentTableIndexes(p_oAdo, p_oConn, p_strTableName);
-            }
-
-            public void CreateDWMTransectSegmentTableIndexes(ado_data_access p_oAdo,
-                System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
-            {
-                p_oAdo.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx1", "biosum_cond_id");
-                p_oAdo.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx2", "plt_cn");
-            }
-
-            public string CreateDWMTransectSegmentTableSQL(string p_strTableName)
-            {
-                return "CREATE TABLE " + p_strTableName + " (" +
-                       "biosum_cond_id text(25)" +
-                       ",biosum_status_cd BYTE" +
-                       ",CN TEXT(34)" +
-                       ",PLT_CN TEXT(34)" +
-                       ",INVYR LONG" +
-                       ",STATECD LONG" +
-                       ",COUNTYCD LONG" +
-                       ",PLOT LONG" +
-                       ",SUBP LONG" +
-                       ",TRANSECT LONG" +
-                       ",SEGMNT LONG" +
-                       ",MEASYEAR LONG" +
-                       ",CONDID LONG" +
-                       ",SLOPE_BEGNDIST DOUBLE" +
-                       ",SLOPE_ENDDIST DOUBLE" +
-                       ",SLOPE LONG" +
-                       ",HORIZ_LENGTH DOUBLE" +
-                       ",HORIZ_BEGNDIST DOUBLE" +
-                       ",HORIZ_ENDDIST DOUBLE" +
-                       ")";
-            }
-
-            public void CreateSqliteDWMTransectSegmentTable(SQLite.ADO.DataMgr p_oDataMgr,
+           
+            public void CreateDWMTransectSegmentTable(SQLite.ADO.DataMgr p_oDataMgr,
                 System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
             {
-                p_oDataMgr.SqlNonQuery(p_oConn, CreateSqliteDWMTransectSegmentTableSQL(p_strTableName));
-                CreateSqliteDWMTransectSegmentTableIndexes(p_oDataMgr, p_oConn, p_strTableName);
+                p_oDataMgr.SqlNonQuery(p_oConn, CreateDWMTransectSegmentTableSQL(p_strTableName));
+                CreateDWMTransectSegmentTableIndexes(p_oDataMgr, p_oConn, p_strTableName);
             }
 
-            public void CreateSqliteDWMTransectSegmentTableIndexes(SQLite.ADO.DataMgr p_oDataMgr,
+            public void CreateDWMTransectSegmentTableIndexes(SQLite.ADO.DataMgr p_oDataMgr,
                 System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
             {
                 p_oDataMgr.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx1", "biosum_cond_id");
                 p_oDataMgr.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx2", "plt_cn");
             }
 
-            public string CreateSqliteDWMTransectSegmentTableSQL(string p_strTableName)
+            public string CreateDWMTransectSegmentTableSQL(string p_strTableName)
             {
                 return "CREATE TABLE " + p_strTableName + " (" +
                        "biosum_cond_id CHAR(25)" +
@@ -5147,26 +4527,18 @@ namespace FIA_Biosum_Manager
         public class ProcessorScenarioRuleDefinitions
         {
 
-            static public string DefaultTreeSpeciesDollarValuesDbFile { get { return @"db\scenario_processor_rule_definitions.mdb"; } }
             static public string DefaultTreeSpeciesDollarValuesTableName { get { return "scenario_tree_species_diam_dollar_values"; } }
             static public string DefaultHarvestMethodDbFile { get { return @"db\scenario_processor_rule_definitions.mdb"; } }
             static public string DefaultHarvestMethodTableName { get { return "scenario_harvest_method"; } }
-            static public string DefaultMoveInCostsDbFile { get { return @"db\scenario_processor_rule_definitions.mdb"; } }
             static public string DefaultMoveInCostsTableName { get { return "scenario_move_in_costs"; } }
-            static public string DefaultHarvestCostColumnsDbFile { get { return @"db\scenario_processor_rule_definitions.mdb"; } }
             static public string DefaultHarvestCostColumnsTableName { get { return "scenario_harvest_cost_columns"; } }
-            static public string DefaultCostRevenueEscalatorsDbFile { get { return @"db\scenario_processor_rule_definitions.mdb"; } }
             static public string DefaultCostRevenueEscalatorsTableName { get { return "scenario_cost_revenue_escalators"; } }
             static public string DefaultAdditionalHarvestCostsDbFile { get { return @"db\scenario_processor_rule_definitions.mdb"; } }
             static public string DefaultAdditionalHarvestCostsTableName { get { return "scenario_additional_harvest_costs"; } }
-            static public string DefaultTreeDiamGroupsDbFile { get { return @"\db\scenario_processor_rule_definitions.mdb"; } }
             static public string DefaultTreeDiamGroupsTableName { get { return "scenario_tree_diam_groups"; } }
-            static public string DefaultTreeSpeciesGroupsDbFile { get { return @"\db\scenario_processor_rule_definitions.mdb"; } }
             static public string DefaultTreeSpeciesGroupsTableName { get { return "scenario_tree_species_groups"; } }
-            static public string DefaultTreeSpeciesGroupsListDbFile { get { return @"\db\scenario_processor_rule_definitions.mdb"; } }
             static public string DefaultTreeSpeciesGroupsListTableName { get { return "scenario_tree_species_groups_list"; } }
-            static public string DefaultSqliteDbFile { get { return @"db\scenario_processor_rule_definitions.db"; } }
-            static public string DefaultDbFile { get { return @"\db\scenario_processor_rule_definitions.mdb"; } }
+            static public string DefaulDbFile { get { return @"db\scenario_processor_rule_definitions.db"; } }
 
 
 
@@ -5473,7 +4845,7 @@ namespace FIA_Biosum_Manager
             static public string DefaultTreeMacroPlotBreakPointDiaTableName { get { return "TreeMacroPlotBreakPointDia"; } }
             static public string DefaultBiosumReferenceVersionTableName { get { return "REF_VERSION"; } }
             static public string DefaultOpCostReferenceDbFile { get { return @"db\opcost_ref.db"; } }
-            static public string DefaultBiosumReferenceSqliteFile { get { return "biosum_ref.db"; } }
+            static public string DefaultBiosumReferenceFile { get { return "biosum_ref.db"; } }
             static public string DefaultSiteIndexEquationsTable { get { return "site_index_equations"; } }
             static public string DefaultFIATreeSpeciesTableName { get { return "FIA_TREE_SPECIES_REF"; } }
             static public string DefaultRefMasterDbFile { get { return @"db\ref_master.db"; } }
