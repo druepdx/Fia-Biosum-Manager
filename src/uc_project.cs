@@ -243,7 +243,100 @@ namespace FIA_Biosum_Manager
 			}
 			frmMain.g_sbpInfo.Text = "Ready";
 		}
-		
+
+		public void OpenProjectTableNew(string strRootDir, string strFile)
+        {
+			if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 1)
+			{
+				frmMain.g_oUtils.WriteText(m_strDebugFile, "\r\n//\r\n");
+				frmMain.g_oUtils.WriteText(m_strDebugFile, "//uc_project.OpenProjectTable \r\n");
+				frmMain.g_oUtils.WriteText(m_strDebugFile, "//\r\n");
+			}
+			if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 2)
+				frmMain.g_oUtils.WriteText(m_strDebugFile, "uc_project.OpenProjectTable: strRootDir=" + strRootDir + " strFile=" + strFile + "\r\n");
+			frmMain.g_sbpInfo.Text = "Loading Project...Stand By";
+			this.m_intError = 0;
+			this.m_strError = "";
+			if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 2)
+				frmMain.g_oUtils.WriteText(m_strDebugFile, "uc_project.OpenProjectTable: Instantiate DataMgr \r\n");
+
+			DataMgr p_dataMgr = new DataMgr();
+
+			string strFullPath = strRootDir + "\\DB\\" + strFile;
+			if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 2)
+				frmMain.g_oUtils.WriteText(m_strDebugFile, "uc_project.OpenProjectTable: strFullPath=" + strFullPath + "\r\n");
+
+			string strConn = p_dataMgr.GetConnectionString(strFullPath);
+
+			if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 2)
+				frmMain.g_oUtils.WriteText(m_strDebugFile, "uc_project.OpenProjectTable: Open DBFile with Connection String=" + strConn + "\r\n");
+
+			using (var oConn = new System.Data.SQLite.SQLiteConnection(strConn))
+            {
+				oConn.Open();
+
+				if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 2)
+					frmMain.g_oUtils.WriteText(m_strDebugFile, "uc_project.OpenProjectTable: OpenConnection error Value=" + p_dataMgr.m_intError.ToString() + "\r\n");
+
+				if (p_dataMgr.m_intError == 0)
+                {
+					try
+					{
+						bool bAppVerColumnExist = p_dataMgr.ColumnExist(oConn, "project", "application_version");
+						p_dataMgr.SqlQueryReader(oConn, "SELECT * FROM project");
+
+						p_dataMgr.m_DataReader.Read();
+						// Adding trim function to remove extra spaces
+						m_strNewProjectId = p_dataMgr.m_DataReader["proj_id"].ToString().Trim();
+						m_strNewName = p_dataMgr.m_DataReader["created_by"].ToString().Trim();
+						m_strNewDate = p_dataMgr.m_DataReader["created_date"].ToString();
+						m_strNewCompany = p_dataMgr.m_DataReader["company"].ToString().Trim();
+						m_strNewDescription = p_dataMgr.m_DataReader["description"].ToString().Trim();
+						m_strNewRootDirectory = p_dataMgr.m_DataReader["project_root_directory"].ToString();
+
+						if (bAppVerColumnExist)
+						{
+							if (p_dataMgr.m_DataReader["application_version"] != System.DBNull.Value)
+								this.m_strNewProjectVersion = p_dataMgr.m_DataReader["application_version"].ToString().Trim();
+							else
+								this.m_strNewProjectVersion = "";
+						}
+						else
+						{
+							this.m_strNewProjectVersion = "";
+						}
+					}
+					catch (Exception caught)
+					{
+						MessageBox.Show(caught.Message);
+					}
+					p_dataMgr.m_DataReader.Close();
+				}
+				else
+				{
+					this.m_intError = p_dataMgr.m_intError;
+					this.m_strError = p_dataMgr.m_strError;
+					if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 1)
+						frmMain.g_oUtils.WriteText(m_strDebugFile, "uc_project.OpenProjectTable: !!Failed to open project file!! Error=" + m_strError + "\r\n");
+				}
+			}
+			p_dataMgr = null;
+
+			if (this.m_strAction == "VIEW")
+			{
+				this.grpboxDescription.Enabled = false;
+				this.grpboxProjectDirectory.Enabled = false;
+				this.grpboxProjectId.Enabled = false;
+				this.grpboxCompany.Enabled = false;
+				this.grpboxCreated.Enabled = false;
+				this.btnEdit.Enabled = true;
+				this.btnCancel.Enabled = false;
+				this.btnSave.Enabled = false;
+
+			}
+			frmMain.g_sbpInfo.Text = "Ready";
+		}
+
 		#region Component Designer generated code
 		/// <summary> 
 		/// Required method for Designer support - do not modify 
@@ -608,7 +701,9 @@ namespace FIA_Biosum_Manager
 		}
 		public void SaveProjectProperties()
 		{
+			string strOldDestFile;
 			string strDestFile;
+			string strOldSourceFile;
 			string strSourceFile;
 			string strConn;
 			string strSQL;
@@ -731,8 +826,6 @@ namespace FIA_Biosum_Manager
 
 		
 			//check if new project
-			ado_data_access p_ado = new ado_data_access();
-			dao_data_access p_dao = new dao_data_access();
             DataMgr p_dataMgr = new DataMgr();
 			if (this.m_strAction == "NEW") 
 			{
@@ -740,8 +833,7 @@ namespace FIA_Biosum_Manager
 				//copy default project file to new project directory
 				
 
-				strSourceFile = this.m_oEnv.strAppDir + "\\db\\project.mdb";
-				strDestFile = this.txtRootDirectory.Text.Trim() + "\\db\\project.mdb";
+				strDestFile = this.txtRootDirectory.Text.Trim() + "\\db\\project.db";
 				
 				FIA_Biosum_Manager.frmTherm p_frmTherm;
 				p_frmTherm = new FIA_Biosum_Manager.frmTherm();
@@ -760,18 +852,21 @@ namespace FIA_Biosum_Manager
 				p_frmTherm.lblMsg.Refresh();
 
 
-				
 				//
 				//project file and tables
 				//
-				p_dao.CreateMDB(strDestFile);
-				strConn = p_ado.getMDBConnString(strDestFile,"admin","");
-				p_ado.OpenConnection(strConn);
-				//datasource table
-				frmMain.g_oTables.m_oProject.CreateAccessDatasourceTable(p_ado,p_ado.m_OleDbConnection,Tables.Project.DefaultProjectDatasourceTableName);
-				//project table
-				frmMain.g_oTables.m_oProject.CreateAccessProjectTable(p_ado,p_ado.m_OleDbConnection,frmMain.g_oTables.m_oProject.DefaultProjectTableName);
-				p_ado.CloseConnection(p_ado.m_OleDbConnection);
+				p_dataMgr.CreateDbFile(strDestFile);
+				strConn = p_dataMgr.GetConnectionString(strDestFile);
+				using (var oConn = new System.Data.SQLite.SQLiteConnection(strConn))
+                {
+					oConn.Open();
+
+					//datasource table
+					frmMain.g_oTables.m_oProject.CreateDatasourceTable(p_dataMgr, oConn, Tables.Project.DefaultProjectDatasourceTableName);
+					//project table
+					frmMain.g_oTables.m_oProject.CreateProjectTable(p_dataMgr, oConn, frmMain.g_oTables.m_oProject.DefaultProjectTableName);
+                }
+
 				//
 				//travel times file and tables
 				//
@@ -786,9 +881,9 @@ namespace FIA_Biosum_Manager
                 {
                     oConn.Open();
                     //processing site table
-                    frmMain.g_oTables.m_oTravelTime.CreateSqliteProcessingSiteTable(p_dataMgr, oConn, Tables.TravelTime.DefaultProcessingSiteTableName);
+                    frmMain.g_oTables.m_oTravelTime.CreateProcessingSiteTable(p_dataMgr, oConn, Tables.TravelTime.DefaultProcessingSiteTableName);
                     //travel time table
-                    frmMain.g_oTables.m_oTravelTime.CreateSqliteTravelTimeTable(p_dataMgr, oConn, Tables.TravelTime.DefaultTravelTimeTableName);
+                    frmMain.g_oTables.m_oTravelTime.CreateTravelTimeTable(p_dataMgr, oConn, Tables.TravelTime.DefaultTravelTimeTableName);
                 }
                 strDestFile = this.txtRootDirectory.Text.Trim() + "\\" + Tables.TravelTime.DefaultGisAuditPathAndDbFile;
                 p_dataMgr.CreateDbFile(strDestFile);
@@ -796,7 +891,7 @@ namespace FIA_Biosum_Manager
                 //
                 //master file
                 //
-                strDestFile = $@"{this.txtRootDirectory.Text.Trim()}\{frmMain.g_oTables.m_oFIAPlot.DefaultPopTableDbFile}";
+                strOldDestFile = $@"{this.txtRootDirectory.Text.Trim()}\{frmMain.g_oTables.m_oFIAPlot.DefaultPopTableDbFile}";
                 strConn = p_dataMgr.GetConnectionString(strDestFile);
                 p_frmTherm.Increment(3);
 				p_frmTherm.lblMsg.Text = strDestFile;
@@ -806,23 +901,23 @@ namespace FIA_Biosum_Manager
                 {
                     con.Open();
                     //plot table
-                    frmMain.g_oTables.m_oFIAPlot.CreateSqlitePlotTable(p_dataMgr, con, frmMain.g_oTables.m_oFIAPlot.DefaultPlotTableName);
+                    frmMain.g_oTables.m_oFIAPlot.CreatePlotTable(p_dataMgr, con, frmMain.g_oTables.m_oFIAPlot.DefaultPlotTableName);
                     //cond table
-                    frmMain.g_oTables.m_oFIAPlot.CreateSqliteConditionTable(p_dataMgr, con, frmMain.g_oTables.m_oFIAPlot.DefaultConditionTableName);
+                    frmMain.g_oTables.m_oFIAPlot.CreateConditionTable(p_dataMgr, con, frmMain.g_oTables.m_oFIAPlot.DefaultConditionTableName);
                     //site tree table
-                    frmMain.g_oTables.m_oFIAPlot.CreateSqliteSiteTreeTable(p_dataMgr, con, frmMain.g_oTables.m_oFIAPlot.DefaultSiteTreeTableName);
+                    frmMain.g_oTables.m_oFIAPlot.CreateSiteTreeTable(p_dataMgr, con, frmMain.g_oTables.m_oFIAPlot.DefaultSiteTreeTableName);
                     //tree table
-                    frmMain.g_oTables.m_oFIAPlot.CreateSqliteTreeTable(p_dataMgr, con, frmMain.g_oTables.m_oFIAPlot.DefaultTreeTableName);
+                    frmMain.g_oTables.m_oFIAPlot.CreateTreeTable(p_dataMgr, con, frmMain.g_oTables.m_oFIAPlot.DefaultTreeTableName);
                     //biosum pop stratum adjustment factors table
-                    frmMain.g_oTables.m_oFIAPlot.CreateSQLiteBiosumPopStratumAdjustmentFactorsTable(p_dataMgr, con, frmMain.g_oTables.m_oFIAPlot.DefaultBiosumPopStratumAdjustmentFactorsTableName);
+                    frmMain.g_oTables.m_oFIAPlot.CreateBiosumPopStratumAdjustmentFactorsTable(p_dataMgr, con, frmMain.g_oTables.m_oFIAPlot.DefaultBiosumPopStratumAdjustmentFactorsTableName);
                     //pop estimation unit table
-                    frmMain.g_oTables.m_oFIAPlot.CreateSqlitePopEstnUnitTable(p_dataMgr, con, frmMain.g_oTables.m_oFIAPlot.DefaultPopEstnUnitTableName);
+                    frmMain.g_oTables.m_oFIAPlot.CreatePopEstnUnitTable(p_dataMgr, con, frmMain.g_oTables.m_oFIAPlot.DefaultPopEstnUnitTableName);
                     //pop eval table
-                    frmMain.g_oTables.m_oFIAPlot.CreateSqlitePopEvalTable(p_dataMgr, con, frmMain.g_oTables.m_oFIAPlot.DefaultPopEvalTableName);
+                    frmMain.g_oTables.m_oFIAPlot.CreatePopEvalTable(p_dataMgr, con, frmMain.g_oTables.m_oFIAPlot.DefaultPopEvalTableName);
                     //pop plot stratum assignment table
-                    frmMain.g_oTables.m_oFIAPlot.CreateSqlitePopPlotStratumAssgnTable(p_dataMgr, con, frmMain.g_oTables.m_oFIAPlot.DefaultPopPlotStratumAssgnTableName);
+                    frmMain.g_oTables.m_oFIAPlot.CreatePopPlotStratumAssgnTable(p_dataMgr, con, frmMain.g_oTables.m_oFIAPlot.DefaultPopPlotStratumAssgnTableName);
                     //pop stratum table
-                    frmMain.g_oTables.m_oFIAPlot.CreateSqlitePopStratumTable(p_dataMgr, con, frmMain.g_oTables.m_oFIAPlot.DefaultPopStratumTableName);
+                    frmMain.g_oTables.m_oFIAPlot.CreatePopStratumTable(p_dataMgr, con, frmMain.g_oTables.m_oFIAPlot.DefaultPopStratumTableName);
                 }
 
                 //
@@ -837,10 +932,10 @@ namespace FIA_Biosum_Manager
                 using (System.Data.SQLite.SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection(strConn))
                 {
                     conn.Open();
-                    frmMain.g_oTables.m_oFIAPlot.CreateSqliteDWMCoarseWoodyDebrisTable(p_dataMgr, conn, frmMain.g_oTables.m_oFIAPlot.DefaultDWMCoarseWoodyDebrisName);
-                    frmMain.g_oTables.m_oFIAPlot.CreateSqliteDWMFineWoodyDebrisTable(p_dataMgr, conn, frmMain.g_oTables.m_oFIAPlot.DefaultDWMFineWoodyDebrisName);
-                    frmMain.g_oTables.m_oFIAPlot.CreateSqliteDWMDuffLitterFuelTable(p_dataMgr, conn, frmMain.g_oTables.m_oFIAPlot.DefaultDWMDuffLitterFuelName);
-                    frmMain.g_oTables.m_oFIAPlot.CreateSqliteDWMTransectSegmentTable(p_dataMgr, conn, frmMain.g_oTables.m_oFIAPlot.DefaultDWMTransectSegmentName);
+                    frmMain.g_oTables.m_oFIAPlot.CreateDWMCoarseWoodyDebrisTable(p_dataMgr, conn, frmMain.g_oTables.m_oFIAPlot.DefaultDWMCoarseWoodyDebrisName);
+                    frmMain.g_oTables.m_oFIAPlot.CreateDWMFineWoodyDebrisTable(p_dataMgr, conn, frmMain.g_oTables.m_oFIAPlot.DefaultDWMFineWoodyDebrisName);
+                    frmMain.g_oTables.m_oFIAPlot.CreateDWMDuffLitterFuelTable(p_dataMgr, conn, frmMain.g_oTables.m_oFIAPlot.DefaultDWMDuffLitterFuelName);
+                    frmMain.g_oTables.m_oFIAPlot.CreateDWMTransectSegmentTable(p_dataMgr, conn, frmMain.g_oTables.m_oFIAPlot.DefaultDWMTransectSegmentName);
                 }
 
                 //
@@ -855,11 +950,11 @@ namespace FIA_Biosum_Manager
                 {
                     conn.Open();
                     //rx table
-                    frmMain.g_oTables.m_oFvs.CreateSQLiteRxTable(p_dataMgr, conn, Tables.FVS.DefaultRxTableName);
+                    frmMain.g_oTables.m_oFvs.CreateRxTable(p_dataMgr, conn, Tables.FVS.DefaultRxTableName);
                     //rx harvest cost column table
-                    frmMain.g_oTables.m_oFvs.CreateSqliteRxHarvestCostColumnTable(p_dataMgr, conn, Tables.FVS.DefaultRxHarvestCostColumnsTableName);
+                    frmMain.g_oTables.m_oFvs.CreateRxHarvestCostColumnTable(p_dataMgr, conn, Tables.FVS.DefaultRxHarvestCostColumnsTableName);
                     //rx packages table
-                    frmMain.g_oTables.m_oFvs.CreateSQLiteRxPackageTable(p_dataMgr, conn, Tables.FVS.DefaultRxPackageTableName);
+                    frmMain.g_oTables.m_oFvs.CreateRxPackageTable(p_dataMgr, conn, Tables.FVS.DefaultRxPackageTableName);
 
                 }
                 //fvs output pre-post seqnum processing
@@ -888,7 +983,7 @@ namespace FIA_Biosum_Manager
                 //
 				//copy default optimizer_definitions.db to new project directory
 				strSourceFile = this.m_oEnv.strAppDir + "\\db\\optimizer_definitions.db";
-				strDestFile = this.txtRootDirectory.Text.Trim() + "\\" + Tables.OptimizerDefinitions.DefaultSqliteDbFile;
+				strDestFile = this.txtRootDirectory.Text.Trim() + "\\" + Tables.OptimizerDefinitions.DefaultDbFile;
 				p_frmTherm.Increment(8);
 				p_frmTherm.lblMsg.Text = strDestFile;
 				p_frmTherm.lblMsg.Refresh();
@@ -900,154 +995,154 @@ namespace FIA_Biosum_Manager
 				p_frmTherm.Increment(9);
                 p_frmTherm.lblMsg.Text = this.txtRootDirectory.Text.Trim() + "\\" + Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableDbFile;
 				p_frmTherm.lblMsg.Refresh();
-                //CreateOptimizerScenarioRuleDefinitionDbAndTables(this.txtRootDirectory.Text.Trim() + "\\" + Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableDbFile);
-				CreateOptimizerScenarioRuleDefinitionSqliteDbAndTables(this.txtRootDirectory.Text.Trim() + "\\" + Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableSqliteDbFile);
+				CreateOptimizerScenarioRuleDefinitionDbAndTables(this.txtRootDirectory.Text.Trim() + "\\" + Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableDbFile);
 				//
 				//processor scenario rule definitions
 				//
 				p_frmTherm.lblMsg.Text = strDestFile;
 				p_frmTherm.lblMsg.Refresh();
-                CreateProcessorScenarioRuleDefinitionDbAndTables($@"{this.txtRootDirectory.Text.Trim()}\processor\{Tables.ProcessorScenarioRuleDefinitions.DefaultSqliteDbFile}");
+                CreateProcessorScenarioRuleDefinitionDbAndTables($@"{this.txtRootDirectory.Text.Trim()}\processor\{Tables.ProcessorScenarioRuleDefinitions.DefaulDbFile}");
 
                 p_frmTherm.Increment(10);
 				//p_frmTherm.lblMsg.Text = strDestFile;
 				p_frmTherm.lblMsg.Refresh();
 				//System.IO.File.Copy(strSourceFile, strDestFile,true);		
 				
+
 				p_frmTherm.Increment(13);
-				strSourceFile = this.txtRootDirectory.Text.Trim() + "\\db\\project.mdb";
-				strConn = p_ado.getMDBConnString(strSourceFile,"admin","");
+				strSourceFile = this.txtRootDirectory.Text.Trim() + "\\db\\project.db";
+				strConn = p_dataMgr.GetConnectionString(strSourceFile);
 				p_frmTherm.Close();
 				p_frmTherm.Dispose();
 				p_frmTherm = null;
 
-				p_ado.OpenConnection(strConn);
-				if (p_ado.m_intError == 0)
-				{
+				using (var oConn = new System.Data.SQLite.SQLiteConnection(strConn))
+                {
+					oConn.Open();
+
 					if (this.txtDescription.Text.Trim().Length > 0)
-						strDesc = p_ado.FixString(this.txtDescription.Text.Trim(),"'","''");
-					strSQL = "INSERT INTO project (proj_id,created_by,created_date,company,description,shared_file,project_root_directory,application_version) VALUES " + "(" +  
-						"'" + this.txtProjectId.Text.Trim() + "'," + 
-						"'" + this.txtName.Text.Trim() + "'," + 
-						"'" + this.txtDate.Text +  "'," + 
-						"'" + this.txtCompany.Text.Trim() + "'," + 
-						"'" + strDesc + "'," + 
-						"'" + this.txtRootDirectory.Text.Trim() + "'," + 
-						"'" + frmMain.g_strAppVer + "');";
+                    {
+						strDesc = p_dataMgr.FixString(this.txtDescription.Text.Trim(), "'", "''");
+                    }
+					p_dataMgr.m_strSQL = "INSERT INTO project (" +
+						"proj_id, created_by, created_date, company, description, project_root_directory, application_version) " +
+						"VALUES (" +
+						"'" + this.txtProjectId.Text.Trim() + "', " +
+						"'" + this.txtName.Text.Trim() + "', " +
+						"'" + this.txtDate.Text + "', " +
+						"'" + this.txtCompany.Text.Trim() + "', " +
+						"'" + strDesc + "', " +
+						"'" + this.txtRootDirectory.Text.Trim() + "', " +
+						"'" + frmMain.g_strAppVer + "')";
+					p_dataMgr.SqlNonQuery(oConn, p_dataMgr.m_strSQL);
 
-					p_ado.SqlNonQuery(p_ado.m_OleDbConnection,strSQL);
-
-
-					strSQL = "INSERT INTO datasource (table_type,Path,file,table_name) VALUES " + 
-						"('Plot'," + 
-						"'" + this.txtRootDirectory.Text.ToString().Trim() + "\\db'," + 
-						"'master.db'," + 
+					p_dataMgr.m_strSQL = "INSERT INTO datasource (table_type, path, file, table_name) VALUES " +
+						"('Plot'," +
+						"'" + this.txtRootDirectory.Text.ToString().Trim() + "\\db'," +
+						"'master.db'," +
 						"'plot');";
-					p_ado.SqlNonQuery(p_ado.m_OleDbConnection,strSQL);
+					p_dataMgr.SqlNonQuery(oConn, p_dataMgr.m_strSQL);
 
-					strSQL = "INSERT INTO datasource (table_type,Path,file,table_name) VALUES " + 
-						"('Condition'," + 
-						"'" + this.txtRootDirectory.Text.ToString().Trim() + "\\db'," + 
-						"'master.db'," + 
+					p_dataMgr.m_strSQL = "INSERT INTO datasource (table_type, path, file, table_name) VALUES " +
+						"('Condition'," +
+						"'" + this.txtRootDirectory.Text.ToString().Trim() + "\\db'," +
+						"'master.db'," +
 						"'cond');";
-					p_ado.SqlNonQuery(p_ado.m_OleDbConnection,strSQL);
+					p_dataMgr.SqlNonQuery(oConn, p_dataMgr.m_strSQL);
 
-					strSQL = "INSERT INTO datasource (table_type,Path,file,table_name) VALUES " + 
-						"('Tree'," + 
-						"'" + this.txtRootDirectory.Text.ToString().Trim() + "\\db'," + 
-						"'master.db'," + 
+					p_dataMgr.m_strSQL = "INSERT INTO datasource (table_type, path, file, table_name) VALUES " +
+						"('Tree'," +
+						"'" + this.txtRootDirectory.Text.ToString().Trim() + "\\db'," +
+						"'master.db'," +
 						"'tree');";
-					p_ado.SqlNonQuery(p_ado.m_OleDbConnection,strSQL);
+					p_dataMgr.SqlNonQuery(oConn, p_dataMgr.m_strSQL);
 
-					strSQL = "INSERT INTO datasource (table_type,Path,file,table_name) VALUES " +
-						"('Treatment Prescriptions'," + 
-						"'" + this.txtRootDirectory.Text.ToString().Trim()  + "\\db'," + 
-						"'master.db'," + 
+					p_dataMgr.m_strSQL = "INSERT INTO datasource (table_type, path, file, table_name) VALUES " +
+						"('Treatment Prescriptions'," +
+						"'" + this.txtRootDirectory.Text.ToString().Trim() + "\\db'," +
+						"'master.db'," +
 						"'rx');";
-					p_ado.SqlNonQuery(p_ado.m_OleDbConnection,strSQL);
+					p_dataMgr.SqlNonQuery(oConn, p_dataMgr.m_strSQL);
 
-                    strSQL = "INSERT INTO datasource (table_type,Path,file,table_name) VALUES " +
-						"('Treatment Prescriptions Harvest Cost Columns'," + 
-						"'" + this.txtRootDirectory.Text.ToString().Trim()  + "\\db'," + 
-						"'master.db'," + 
+					p_dataMgr.m_strSQL = "INSERT INTO datasource (table_type, path, file, table_name) VALUES " +
+						"('Treatment Prescriptions Harvest Cost Columns'," +
+						"'" + this.txtRootDirectory.Text.ToString().Trim() + "\\db'," +
+						"'master.db'," +
 						"'" + Tables.FVS.DefaultRxHarvestCostColumnsTableName + "');";
-					p_ado.SqlNonQuery(p_ado.m_OleDbConnection,strSQL);
+					p_dataMgr.SqlNonQuery(oConn, p_dataMgr.m_strSQL);
 
-					strSQL = "INSERT INTO datasource (table_type,Path,file,table_name) VALUES " +
-						"('Treatment Packages'," + 
-						"'" + this.txtRootDirectory.Text.ToString().Trim()  + "\\db'," + 
-						"'master.db'," + 
+					p_dataMgr.m_strSQL = "INSERT INTO datasource (table_type, path, file, table_name) VALUES " +
+						"('Treatment Packages'," +
+						"'" + this.txtRootDirectory.Text.ToString().Trim() + "\\db'," +
+						"'master.db'," +
 						"'rxpackage');";
-					p_ado.SqlNonQuery(p_ado.m_OleDbConnection,strSQL);
+					p_dataMgr.SqlNonQuery(oConn, p_dataMgr.m_strSQL);
 
-                    strSQL = "INSERT INTO datasource (table_type,Path,file,table_name) VALUES " +
-                        "('FVS PRE-POST SeqNum Definitions'," +
-                        "'" + this.txtRootDirectory.Text.ToString().Trim() + "\\db'," +
-                        "'master.db'," +
-                        "'" + Tables.FVS.DefaultFVSPrePostSeqNumTable + "');";
-                    p_ado.SqlNonQuery(p_ado.m_OleDbConnection, strSQL);
+					p_dataMgr.m_strSQL = "INSERT INTO datasource (table_type, path, file, table_name) VALUES " +
+						"('FVS PRE-POST SeqNum Definitions'," +
+						"'" + this.txtRootDirectory.Text.ToString().Trim() + "\\db'," +
+						"'master.db'," +
+						"'" + Tables.FVS.DefaultFVSPrePostSeqNumTable + "');";
+					p_dataMgr.SqlNonQuery(oConn, p_dataMgr.m_strSQL);
 
-                    strSQL = "INSERT INTO datasource (table_type,Path,file,table_name) VALUES " +
-                        "('FVS PRE-POST SeqNum Treatment Package Assign'," +
-                        "'" + this.txtRootDirectory.Text.ToString().Trim() + "\\db'," +
-                        "'master.db'," +
-                        "'" + Tables.FVS.DefaultFVSPrePostSeqNumRxPackageAssgnTable + "');";
-                    p_ado.SqlNonQuery(p_ado.m_OleDbConnection, strSQL);
+					p_dataMgr.m_strSQL = "INSERT INTO datasource (table_type, path, file, table_name) VALUES " +
+						"('FVS PRE-POST SeqNum Treatment Package Assign'," +
+						"'" + this.txtRootDirectory.Text.ToString().Trim() + "\\db'," +
+						"'master.db'," +
+						"'" + Tables.FVS.DefaultFVSPrePostSeqNumRxPackageAssgnTable + "');";
+					p_dataMgr.SqlNonQuery(oConn, p_dataMgr.m_strSQL);
 
-					strSQL = "INSERT INTO datasource (table_type,Path,file,table_name) VALUES " +
-						"('Travel Times'," + 
-						"'" + this.txtRootDirectory.Text.ToString().Trim() + "\\gis\\db'," + 
-						"'" + Tables.TravelTime.DefaultTravelTimeDbFile + "'," + 
-						"'travel_time');";
-					p_ado.SqlNonQuery(p_ado.m_OleDbConnection,strSQL);
-
-					strSQL = "INSERT INTO datasource (table_type,Path,file,table_name) VALUES " + 
-						"('Processing Sites'," + 
+					p_dataMgr.m_strSQL = "INSERT INTO datasource (table_type, path, file, table_name) VALUES " +
+						"('Travel Times'," +
 						"'" + this.txtRootDirectory.Text.ToString().Trim() + "\\gis\\db'," +
-                        "'" + Tables.TravelTime.DefaultTravelTimeDbFile + "'," + 
+						"'" + Tables.TravelTime.DefaultTravelTimeDbFile + "'," +
+						"'travel_time');";
+					p_dataMgr.SqlNonQuery(oConn, p_dataMgr.m_strSQL);
+
+					p_dataMgr.m_strSQL = "INSERT INTO datasource (table_type, path, file, table_name) VALUES " +
+						"('Processing Sites'," +
+						"'" + this.txtRootDirectory.Text.ToString().Trim() + "\\gis\\db'," +
+						"'" + Tables.TravelTime.DefaultTravelTimeDbFile + "'," +
 						"'processing_site');";
-					p_ado.SqlNonQuery(p_ado.m_OleDbConnection,strSQL);
-					
-                    strSQL = "INSERT INTO datasource (table_type,Path,file,table_name) VALUES " +
-                        "('FIA Tree Macro Plot Breakpoint Diameter'," +
+					p_dataMgr.SqlNonQuery(oConn, p_dataMgr.m_strSQL);
+
+					p_dataMgr.m_strSQL = "INSERT INTO datasource (table_type, path, file, table_name) VALUES " +
+						"('FIA Tree Macro Plot Breakpoint Diameter'," +
 						"'@@appdata@@\\fiabiosum'," +
 						"'biosum_ref.db'," +
-                        "'TreeMacroPlotBreakPointDia');";
-                    p_ado.SqlNonQuery(p_ado.m_OleDbConnection, strSQL);
+						"'TreeMacroPlotBreakPointDia');";
+					p_dataMgr.SqlNonQuery(oConn, p_dataMgr.m_strSQL);
 
-                    strSQL = "INSERT INTO datasource (table_type,Path,file,table_name) VALUES " +
-                        "('" + Datasource.TableTypes.HarvestMethods + "'," +
-                        "'@@appdata@@\\fiabiosum'," +
-                        "'" + Tables.Reference.DefaultBiosumReferenceSqliteFile + "'," +
-                        "'" + Tables.Reference.DefaultHarvestMethodsTableName + "');";
-					p_ado.SqlNonQuery(p_ado.m_OleDbConnection,strSQL);
+					p_dataMgr.m_strSQL = "INSERT INTO datasource (table_type, path, file, table_name) VALUES " +
+						"('" + Datasource.TableTypes.HarvestMethods + "'," +
+						"'@@appdata@@\\fiabiosum'," +
+						"'" + Tables.Reference.DefaultBiosumReferenceFile + "'," +
+						"'" + Tables.Reference.DefaultHarvestMethodsTableName + "');";
+					p_dataMgr.SqlNonQuery(oConn, p_dataMgr.m_strSQL);
 
-                    strSQL = "INSERT INTO datasource (table_type,Path,file,table_name) VALUES " +
-                        "('" + Datasource.TableTypes.PopStratumAdjFactors + "'," +
-                        "'" + this.txtRootDirectory.Text.ToString().Trim() + "\\db'," +
-                        "'master.db'," +
-                        "'" + frmMain.g_oTables.m_oFIAPlot.DefaultBiosumPopStratumAdjustmentFactorsTableName + "');";
-                    p_ado.SqlNonQuery(p_ado.m_OleDbConnection, strSQL);
+					p_dataMgr.m_strSQL = "INSERT INTO datasource (table_type, path, file, table_name) VALUES " +
+						"('" + Datasource.TableTypes.PopStratumAdjFactors + "'," +
+						"'" + this.txtRootDirectory.Text.ToString().Trim() + "\\db'," +
+						"'master.db'," +
+						"'" + frmMain.g_oTables.m_oFIAPlot.DefaultBiosumPopStratumAdjustmentFactorsTableName + "');";
+					p_dataMgr.SqlNonQuery(oConn, p_dataMgr.m_strSQL);
 
-					strSQL = "INSERT INTO datasource (table_type,Path,file,table_name) VALUES " +
-						"('Site Tree'," + 
-						"'" + this.txtRootDirectory.Text.ToString().Trim() + "\\db'," + 
-						"'master.db'," + 
+					p_dataMgr.m_strSQL = "INSERT INTO datasource (table_type, path, file, table_name) VALUES " +
+						"('Site Tree'," +
+						"'" + this.txtRootDirectory.Text.ToString().Trim() + "\\db'," +
+						"'master.db'," +
 						"'sitetree');";
-					p_ado.SqlNonQuery(p_ado.m_OleDbConnection,strSQL);
+					p_dataMgr.SqlNonQuery(oConn, p_dataMgr.m_strSQL);
 
-                    strSQL = "INSERT INTO datasource (table_type,Path,file,table_name) VALUES " +
-                             "('" + Datasource.TableTypes.FiaTreeSpeciesReference + "'," +
-                             "'@@AppData@@" + frmMain.g_strBiosumDataDir + "'," +
-                             "'" + Tables.Reference.DefaultBiosumReferenceSqliteFile + "'," +
-                             "'" + Tables.ProcessorScenarioRun.DefaultFiaTreeSpeciesRefTableName + "');";
-                    p_ado.SqlNonQuery(p_ado.m_OleDbConnection, strSQL);
+					p_dataMgr.m_strSQL = "INSERT INTO datasource (table_type, path, file, table_name) VALUES " +
+							 "('" + Datasource.TableTypes.FiaTreeSpeciesReference + "'," +
+							 "'@@AppData@@" + frmMain.g_strBiosumDataDir + "'," +
+							 "'" + Tables.Reference.DefaultBiosumReferenceFile + "'," +
+							 "'" + Tables.ProcessorScenarioRun.DefaultFiaTreeSpeciesRefTableName + "');";
+					p_dataMgr.SqlNonQuery(oConn, p_dataMgr.m_strSQL);
 
-                    frmMain.g_oGeneralMacroSubstitutionVariable_Collection.Item(frmMain.PROJDIR).VariableSubstitutionString = this.txtRootDirectory.Text.Trim();
-					
+					frmMain.g_oGeneralMacroSubstitutionVariable_Collection.Item(frmMain.PROJDIR).VariableSubstitutionString = this.txtRootDirectory.Text.Trim();
 				}
-				p_ado.CloseConnection(p_ado.m_OleDbConnection);
-				p_ado.m_OleDbConnection = null;
 
 				frmMain.g_oUtils.WriteText(this.txtRootDirectory.Text.Trim() + "\\application.version",frmMain.g_strAppVer);
 				
@@ -1055,34 +1150,34 @@ namespace FIA_Biosum_Manager
 
 
 				//make the new project the current project
-				this.OpenProjectTable(this.txtRootDirectory.Text,"project.mdb");
+				this.OpenProjectTableNew(this.txtRootDirectory.Text, "project.db");
 
 				if (this.m_intError == 0)
 				{
 					this.lblTitle.Text = "Project Properties";
 				}
-				((frmMain)this.ParentForm.ParentForm).OpenProject(this.txtRootDirectory.Text,"project.mdb");
+				((frmMain)this.ParentForm.ParentForm).OpenProject(this.txtRootDirectory.Text,"project.db");
 
 			}
 			else 
 			{
-				System.Data.OleDb.OleDbConnection oConn = new System.Data.OleDb.OleDbConnection();
 				strFullPath = this.m_strProjectDirectory.Trim() + "\\db\\" + this.m_strProjectFile;
-				strConn = p_ado.getMDBConnString(strFullPath,"admin","");
+				strConn = p_dataMgr.GetConnectionString(strFullPath);
 				if (this.txtDescription.Text.Trim().Length > 0)
-					strDesc = p_ado.FixString(this.txtDescription.Text.Trim(),"'","''");
-                strSQL = "UPDATE project SET created_by = '" + this.txtName.Text + "', " +
-                    "proj_id = '" + this.txtProjectId.Text.Trim() + "', " +
-                    "company = '" + this.txtCompany.Text + "', " +
-                    "description = '" + strDesc + "', " +
-                    "project_root_directory = '" + this.txtRootDirectory.Text + "' ";
-				p_ado.SqlNonQuery(strConn,strSQL);
-                this.m_strProjectId = this.txtProjectId.Text.Trim();
-                ((frmMain)this.ParentForm.ParentForm).Text = "Fia Biosum Manager (" + this.m_strProjectId + ")";
-				System.Data.OleDb.OleDbCommand oCommand = new System.Data.OleDb.OleDbCommand();		
-				
+                {
+					strDesc = p_dataMgr.FixString(this.txtDescription.Text.Trim(), "'", "''");
+                }
+				p_dataMgr.m_strSQL = "UPDATE project " +
+					"SET created_by = '" + this.txtName.Text + "', " +
+					"proj_id = '" + this.txtProjectId.Text.Trim() + "', " +
+					"company = '" + this.txtCompany.Text + "', " +
+					"description = '" + strDesc + "', " +
+					"project_root_directory = '" + this.txtRootDirectory.Text + "'";
+				p_dataMgr.SqlNonQuery(strConn, p_dataMgr.m_strSQL);
+				this.m_strProjectId = this.txtProjectId.Text.Trim();
+				((frmMain)this.ParentForm.ParentForm).Text = "Fia Biosum Manager (" + this.m_strProjectId + ")";
+
 			}
-			p_ado=null;
             p_dataMgr = null;
 			this.btnSave.Enabled=false;
 			this.btnCancel.Enabled=false;
@@ -1094,10 +1189,9 @@ namespace FIA_Biosum_Manager
 			this.grpboxProjectId.Enabled=false;
 			string tempstr = this.txtRootDirectory.Text ;
 			this.m_strProjectDirectory = tempstr; 
-			this.m_strProjectFile = "project.mdb";
+			this.m_strProjectFile = "project.db";
 			this.m_strProjectId = this.txtProjectId.Text.Trim();
 			this.m_strAction="";
-
 
 		}
 		public void New_Project()
@@ -1147,7 +1241,7 @@ namespace FIA_Biosum_Manager
 		}
 		
 
-		public void CreateOptimizerScenarioRuleDefinitionSqliteDbAndTables(string p_strPathAndFile)
+		public void CreateOptimizerScenarioRuleDefinitionDbAndTables(string p_strPathAndFile)
         {
 			DataMgr dataMgr = new DataMgr();
 
@@ -1299,20 +1393,20 @@ namespace FIA_Biosum_Manager
 				//replace spaces with underscores
 				this.txtProjectId.Text = this.txtProjectId.Text.Replace(" ","_");
 
-                if (this.m_strAction == "NEW")
-                {
-                    if (txtRootDirectory.Text.Trim().Length == 0)
-                    {
-                        this.txtRootDirectory.Text = this.m_oEnv.strAppDir.Substring(0, 2) + "\\FIA_Biosum\\" + this.txtProjectId.Text.ToLower();
-                    }
-                    else
-                    {
-                        if (txtRootDirectory.Text.Trim().Substring(txtRootDirectory.Text.Trim().Length - 1, 1) == @"\")
-                            this.txtRootDirectory.Text = this.txtRootDirectory.Text.Trim() + this.txtProjectId.Text.ToLower();
-                        else
-                            this.txtRootDirectory.Text = this.txtRootDirectory.Text.Trim() + "\\" + this.txtProjectId.Text.ToLower();
-                    }
-                }
+                //if (this.m_strAction == "NEW")
+                //{
+                //    if (txtRootDirectory.Text.Trim().Length == 0)
+                //    {
+                //        this.txtRootDirectory.Text = this.m_oEnv.strAppDir.Substring(0, 2) + "\\FIA_Biosum\\" + this.txtProjectId.Text.ToLower();
+                //    }
+                //    else
+                //    {
+                //        if (txtRootDirectory.Text.Trim().Substring(txtRootDirectory.Text.Trim().Length - 1, 1) == @"\")
+                //            this.txtRootDirectory.Text = this.txtRootDirectory.Text.Trim() + this.txtProjectId.Text.ToLower();
+                //        else
+                //            this.txtRootDirectory.Text = this.txtRootDirectory.Text.Trim() + "\\" + this.txtProjectId.Text.ToLower();
+                //    }
+                //}
 			}
             if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 1)
                 frmMain.g_oUtils.WriteText(m_strDebugFile, "uc_project.txtProjectId_Leave: txtProjectId.Text=" + txtProjectId.Text.Trim() + " txtRootDirectory.Text=" + txtRootDirectory.Text.Trim() + "\r\n");
@@ -1453,40 +1547,37 @@ namespace FIA_Biosum_Manager
             
 
             /**********************************************
-			 **instantiate the ado_data_access class
+			 **instantiate the DataMgr class
 			 **********************************************/
-			ado_data_access oAdo = new ado_data_access();
             DataMgr oDataMgr = new DataMgr();
             //
             //PROJECT DATA SOURCE
             //
-            strFullPath = strProjDir + "\\db\\" + this.m_strProjectFile;
-            strConn = oAdo.getMDBConnString(strFullPath, "", "");
-            if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 1)
-                frmMain.g_oUtils.WriteText(m_strDebugFile, "uc_project.SetProjectPathEnvironmentVariables: Open Connection to Project Dbfile " + strConn + ")\r\n");
-            oAdo.OpenConnection(strConn);
-            
-            strSQL = "UPDATE project SET project_root_directory = '" + strProjDir + "' " +
-                     "WHERE proj_id = '" + this.txtProjectId.Text.Trim() + "';";
-            if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 2)
-                frmMain.g_oUtils.WriteText(m_strDebugFile, "uc_project.SetProjectPathEnvironmentVariables: Execute SQL \r\n" + strSQL + "\r\n");
+			strFullPath = strProjDir + "\\db\\" + this.m_strProjectFile;
+			strConn = oDataMgr.GetConnectionString(strFullPath);
+			if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 1)
+				frmMain.g_oUtils.WriteText(m_strDebugFile, "uc_project.SetProjectPathEnvironmentVariables: Open Connection to Project Dbfile " + strConn + ")\r\n");
+			using (System.Data.SQLite.SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection(strConn))
+            {
+				conn.Open();
+				strSQL = "UPDATE project SET project_root_directory = '" + strProjDir + "' " +
+					"WHERE proj_id = '" + this.txtProjectId.Text.Trim() + "'";
+				if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 2)
+					frmMain.g_oUtils.WriteText(m_strDebugFile, "uc_project.SetProjectPathEnvironmentVariables: Execute SQL \r\n" + strSQL + "\r\n");
+				oDataMgr.SqlNonQuery(conn, strSQL);
 
-            oAdo.SqlNonQuery(oAdo.m_OleDbConnection, strSQL);
+				strSQL = "UPDATE datasource SET path = " +
+					"REPLACE(TRIM(LOWER(path)), '" + strOldProjDir.Trim().ToLower() + "', " +
+					"'" + strProjDir.Trim().ToLower() + "')";
+				if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 2)
+					frmMain.g_oUtils.WriteText(m_strDebugFile, "uc_project.SetProjectPathEnvironmentVariables: Execute SQL \r\n" + strSQL + "\r\n");
+				oDataMgr.SqlNonQuery(conn, strSQL);
+			}
 
-            strSQL = "UPDATE datasource " + 
-                     "SET path = REPLACE(TRIM(LCASE(path))," + 
-                                "'" + strOldProjDir.Trim().ToLower() + "'," + 
-                                "'" + strProjDir.Trim().ToLower() + "')";
-            oAdo.SqlNonQuery(oAdo.m_OleDbConnection, strSQL);
-
-            if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 2)
-                frmMain.g_oUtils.WriteText(m_strDebugFile, "uc_project.SetProjectPathEnvironmentVariables: Execute SQL \r\n" + strSQL + "\r\n");
-
-            oAdo.CloseConnection(oAdo.m_OleDbConnection);
-            //
-            //TREATMENT OPTIMIZER SCENARIO DATA SOURCE
-            //
-            strFullPath = strProjDir + "\\" + Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableSqliteDbFile;
+			//
+			//TREATMENT OPTIMIZER SCENARIO DATA SOURCE
+			//
+			strFullPath = strProjDir + "\\" + Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableDbFile;
             if (System.IO.File.Exists(strFullPath))
             {
 				strConn = oDataMgr.GetConnectionString(strFullPath);
@@ -1515,7 +1606,7 @@ namespace FIA_Biosum_Manager
             //
             //PROCESSOR SCENARIO DATA SOURCE
             //
-            strFullPath = $@"{strProjDir}\processor\{Tables.ProcessorScenarioRuleDefinitions.DefaultSqliteDbFile}";
+            strFullPath = $@"{strProjDir}\processor\{Tables.ProcessorScenarioRuleDefinitions.DefaulDbFile}";
             if (System.IO.File.Exists(strFullPath))
             {
                 strConn = oDataMgr.GetConnectionString(strFullPath);
@@ -1551,9 +1642,6 @@ namespace FIA_Biosum_Manager
             if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 1)
                 frmMain.g_oUtils.WriteText(m_strDebugFile, "uc_project.SetProjectPathEnvironmentVariables: Leaving \r\n");
 			
-		    oAdo = null;
-
-
  		}
 
         private void btnHelp_Click(object sender, EventArgs e)
