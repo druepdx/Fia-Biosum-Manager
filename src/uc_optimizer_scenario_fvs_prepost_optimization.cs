@@ -15,11 +15,7 @@ namespace FIA_Biosum_Manager
 	{
 		private System.Windows.Forms.GroupBox groupBox1;
 		private System.ComponentModel.IContainer components;
-		public System.Data.OleDb.OleDbDataAdapter m_OleDbDataAdapter;
 		public System.Data.DataSet m_DataSet;
-		public System.Data.OleDb.OleDbConnection m_OleDbConnectionMaster;
-		public System.Data.OleDb.OleDbConnection m_OleDbConnectionScenario;
-		public System.Data.OleDb.OleDbCommand m_OleDbCommand;
 		public System.Data.DataRelation m_DataRelation;
 		public System.Data.DataTable m_DataTable;
 		public System.Data.DataRow m_DataRow;

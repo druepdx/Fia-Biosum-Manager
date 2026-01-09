@@ -20,7 +20,6 @@ namespace FIA_Biosum_Manager
         private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.TextBox txtHaulCost;
 
-        public System.Data.OleDb.OleDbConnection m_OleDbConnectionScenario;
 		public FIA_Biosum_Manager.frmOptimizerScenario m_frmScenario;
 		private FIA_Biosum_Manager.frmGridView m_frmHarvestCosts;
 		public string[] m_strColumnsToEdit;

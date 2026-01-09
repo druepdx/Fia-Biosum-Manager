@@ -228,19 +228,6 @@ namespace FIA_Biosum_Manager
 					return;
 				}
 
-				//ado_data_access p_ado = new ado_data_access();
-				//this.m_OleDbRxConn = new System.Data.OleDb.OleDbConnection();
-				//p_ado.OpenConnection(this.strRxConn, ref this.m_OleDbRxConn);
-				//if (p_ado.m_intError != 0)
-				//{
-				//	this.m_OleDbConnectionScenario.Close();
-				//	this.m_OleDbConnectionScenario = null;
-				//	this.m_OleDbRxConn = null;
-				//	return;
-				//}
-				//p_ado.m_strSQL = "select * from " + this.strRxPackageTableName;
-				//p_ado.SqlQueryReader(this.m_OleDbRxConn, p_ado.m_strSQL);
-
 				oDataMgr.m_strSQL = "ATTACH DATABASE '" + strRxDBFile + "' AS rxdb";
 				oDataMgr.SqlNonQuery(conn, oDataMgr.m_strSQL);
 
@@ -306,13 +293,9 @@ namespace FIA_Biosum_Manager
 								************************************************************************/
 							oDataMgr.m_strSQL = "SELECT * FROM rxdb." + this.strRxPackageTableName +
 								" where rxpackage = '" + oDataMgr.m_DataReader["rxpackage"].ToString() + "';";
-							//this.m_OleDbCommand = this.m_OleDbRxConn.CreateCommand();
 							this.m_SQLiteCommand = conn.CreateCommand();
-							//this.m_OleDbCommand.CommandText = oDataMgr.m_strSQL;
 							this.m_SQLiteCommand.CommandText = oDataMgr.m_strSQL;
-							//this.m_OleDbDataAdapter.SelectCommand = this.m_OleDbCommand;
 							this.m_SQLiteDataAdapter.SelectCommand = this.m_SQLiteCommand;
-							//this.m_OleDbDataAdapter.Fill(this.m_DataSet, this.strRxPackageTableName);
 							this.m_SQLiteDataAdapter.Fill(this.m_DataSet, "rxdb." + this.strRxPackageTableName);
 							if (this.m_DataSet.Tables["rxdb." + this.strRxPackageTableName].Rows.Count == 0)
 							{
@@ -342,11 +325,6 @@ namespace FIA_Biosum_Manager
 					**display the treatments to the user
 					***************************************************************************************/
 					this.m_DataSet = new System.Data.DataSet();
-					//this.m_OleDbDataAdapter = new System.Data.OleDb.OleDbDataAdapter();
-					//this.m_OleDbCommand = this.m_OleDbRxConn.CreateCommand();
-					//this.m_OleDbCommand.CommandText = "SELECT * FROM " + this.strRxPackageTableName;
-					//this.m_OleDbDataAdapter.SelectCommand = this.m_OleDbCommand;
-					//this.m_OleDbDataAdapter.Fill(this.m_DataSet, this.strRxPackageTableName);
 					this.m_SQLiteDataAdapter = new System.Data.SQLite.SQLiteDataAdapter();
 					this.m_SQLiteCommand = conn.CreateCommand();
 					this.m_SQLiteCommand.CommandText = "SELECT * FROM rxdb." + this.strRxPackageTableName;

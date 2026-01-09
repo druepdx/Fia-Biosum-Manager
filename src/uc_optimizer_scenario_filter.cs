@@ -441,7 +441,6 @@ namespace FIA_Biosum_Manager
 						//remove the last comma
 						if (str.Trim().Length > 0) str = str.Substring(0, str.Length - 1);
 
-						//strNewSQL = p_ado.FixString(this.txtCurrentSQL.Text,"'","''");
 						sb.Append("INSERT INTO " + this.m_strScenarioTable + " (scenario_id,sql_command,current_yn,table_list) Values('");
 						sb.Append(strScenarioId);
 						sb.Append("','");

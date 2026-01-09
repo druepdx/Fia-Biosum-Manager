@@ -14,12 +14,7 @@ namespace FIA_Biosum_Manager
 	public class uc_optimizer_scenario_fvs_prepost_variables_tiebreaker: System.Windows.Forms.UserControl
 	{
 		private System.Windows.Forms.GroupBox groupBox1;
-		//private int m_intFullHt=400;
-		public System.Data.OleDb.OleDbDataAdapter m_OleDbDataAdapter;
 		public System.Data.DataSet m_DataSet;
-		public System.Data.OleDb.OleDbConnection m_OleDbConnectionMaster;
-		public System.Data.OleDb.OleDbConnection m_OleDbConnectionScenario;
-		public System.Data.OleDb.OleDbCommand m_OleDbCommand;
 		public System.Data.DataRelation m_DataRelation;
 		public System.Data.DataTable m_DataTable;
 		public System.Data.DataRow m_DataRow;

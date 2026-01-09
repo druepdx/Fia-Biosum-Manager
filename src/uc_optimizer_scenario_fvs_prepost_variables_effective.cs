@@ -15,11 +15,7 @@ namespace FIA_Biosum_Manager
 	{
 		private System.Windows.Forms.GroupBox groupBox1;
 		private System.ComponentModel.IContainer components;
-		public System.Data.OleDb.OleDbDataAdapter m_OleDbDataAdapter;
 		public System.Data.DataSet m_DataSet;
-		public System.Data.OleDb.OleDbConnection m_OleDbConnectionMaster;
-		public System.Data.OleDb.OleDbConnection m_OleDbConnectionScenario;
-		public System.Data.OleDb.OleDbCommand m_OleDbCommand;
 		public System.Data.DataRelation m_DataRelation;
 		public System.Data.DataTable m_DataTable;
 		public System.Data.DataRow m_DataRow;
@@ -2048,60 +2044,7 @@ namespace FIA_Biosum_Manager
 
 		}
 
-		private void btnFFEExpressionBuilderTest_Click(object sender, System.EventArgs e)
-		{
-			string strSQL="";
-			//int intArrayCount;
-			//int x=0;
-			string strConn="";
-			//string strCommand="";
-			//string str="";
-
-			ado_data_access p_ado = new ado_data_access();
-
-			string strScenarioId = this.ReferenceOptimizerScenarioForm.uc_scenario1.txtScenarioId.Text.Trim().ToLower();
-            
-			//scenario mdb connection
-			string strOptimizerResultsAccdb = 
-				((frmMain)this.ParentForm.ParentForm).frmProject.uc_project1.m_strProjectDirectory +
-                "\\optimizer\\" + strScenarioId + "\\" + Tables.OptimizerScenarioResults.DefaultScenarioResultsDbFile;
-
-			this.m_OleDbConnectionScenario = new System.Data.OleDb.OleDbConnection();
-			strConn=p_ado.getMDBConnString(strOptimizerResultsAccdb,"admin","");
-			p_ado.OpenConnection(strConn, ref this.m_OleDbConnectionScenario);	
-			if (p_ado.m_intError != 0)
-			{
-				p_ado = null;
-				return;
-			}
-			strSQL = "SELECT * FROM effective WHERE " +
-				this.txtExpression.Text + ";";
-			p_ado.SqlQueryReader(this.m_OleDbConnectionScenario, strSQL);
-
-				  
-			if (p_ado.m_intError == 0)
-			{
-				
-
-				MessageBox.Show("Valid Syntax");
-				
-				p_ado.m_OleDbDataReader.Close();
-				p_ado.m_OleDbDataReader = null;
-				p_ado.m_OleDbCommand = null;
-				
-			}
-			p_ado = null;
-			this.m_OleDbConnectionScenario.Close();
-
-		}
-
 		
-
-		
-
-		
-
-
 		public int val_overall_effective_expression()
 		{
 			//int x=0;

@@ -26,8 +26,6 @@ namespace FIA_Biosum_Manager
 
 		private int m_intError=0;
 		public System.Data.DataSet m_ds;
-		public System.Data.OleDb.OleDbConnection m_conn;
-		public System.Data.OleDb.OleDbDataAdapter m_da;
         public RunOptimizer m_oRunOptimizer;
 		public string m_strCustomPlotSQL="";
 		private FIA_Biosum_Manager.frmGridView m_frmGridView;
