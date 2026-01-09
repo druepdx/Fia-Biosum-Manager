@@ -462,15 +462,6 @@
     <Compile Include="uc_project.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="uc_project_document_links.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="uc_project_document_links_edit.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="uc_project_notes.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="uc_psite_list.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -765,15 +756,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="uc_project.resx">
       <DependentUpon>uc_project.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="uc_project_document_links.resx">
-      <DependentUpon>uc_project_document_links.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="uc_project_document_links_edit.resx">
-      <DependentUpon>uc_project_document_links_edit.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="uc_project_notes.resx">
-      <DependentUpon>uc_project_notes.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="uc_psite_list.resx">
       <DependentUpon>uc_psite_list.cs</DependentUpon>

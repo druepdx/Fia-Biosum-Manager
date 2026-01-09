@@ -36,11 +36,7 @@ namespace FIA_Biosum_Manager
             public string DefaultProjectTableDbFile { get { return @"db\project.mdb"; } }
             public string DefaultProjectTableName { get { return "project"; } }
             public string DefaultProjectNotesTableDbFile { get { return @"db\project.mdb"; } }
-            public string DefaultProjectNotesTableName { get { return "notes"; } }
-            public string DefaultProjectLinksDepositoryTableName { get { return "links_depository"; } }
-            public string DefaultProjectLinksCategoryTableName { get { return "links_category"; } }
             public string DefaultProjectUserConfigTableDbFile { get { return @"db\project.mdb"; } }
-            public string DefaultProjectUserConfigTableName { get { return "user_config"; } }
             static public string DefaultProjectDatasourceTableDbFile { get { return @"db\project.mdb"; } }
             static public string DefaultProjectDatasourceTableName { get { return "datasource"; } }
             public Project()
@@ -105,74 +101,12 @@ namespace FIA_Biosum_Manager
                     "company CHAR(100)," +
                     "description CHAR(255)," +
                     "notes CHAR(255)," +
-                    "shared_file CHAR(255)," +  //@ToDo: This can probably be removed when the shared functionality goes away
                     "project_root_directory CHAR(255)," +
                     "application_version CHAR(11))";     
             }
 
-            public void CreateUserConfigTable(FIA_Biosum_Manager.ado_data_access p_oAdo, System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
-            {
-                p_oAdo.SqlNonQuery(p_oConn, CreateUserConfigTableSQL(p_strTableName));
-            }
-            public string CreateUserConfigTableSQL(string p_strTableName)
-            {
-                return "CREATE TABLE " + p_strTableName + " (" +
-                    "user_name CHAR(50)," +
-                    "personal_directory CHAR(254))";
-            }
 
-
-            public void CreateProjectLinksCategoryTable(FIA_Biosum_Manager.ado_data_access p_oAdo, System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
-            {
-                p_oAdo.SqlNonQuery(p_oConn, CreateProjectLinksCategoryTableSQL(p_strTableName));
-                CreateProjectLinksCategoryTableIndexes(p_oAdo, p_oConn, p_strTableName);
-            }
-            public void CreateProjectLinksCategoryTableIndexes(FIA_Biosum_Manager.ado_data_access p_oAdo, System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
-            {
-                p_oAdo.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx", "category");
-                p_oAdo.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx2", "subcategory");
-            }
-            public string CreateProjectLinksCategoryTableSQL(string p_strTableName)
-            {
-                return "CREATE TABLE " + p_strTableName + " (" +
-                    "category BYTE," +
-                    "subcategory INTEGER," +
-                    "subcategory_desc CHAR(50))";
-            }
-            public void CreateProjectLinksDepositoryTable(FIA_Biosum_Manager.ado_data_access p_oAdo, System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
-            {
-                p_oAdo.SqlNonQuery(p_oConn, CreateProjectLinksDepositoryTableSQL(p_strTableName));
-                CreateProjectLinksCategoryTableIndexes(p_oAdo, p_oConn, p_strTableName);
-            }
-            public void CreateProjectLinksDepositoryTableIndexes(FIA_Biosum_Manager.ado_data_access p_oAdo, System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
-            {
-                p_oAdo.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx", "category");
-                p_oAdo.AddIndex(p_oConn, p_strTableName, p_strTableName + "_idx2", "subcategory");
-            }
-
-            public string CreateProjectLinksDepositoryTableSQL(string p_strTableName)
-            {
-                return "CREATE TABLE " + p_strTableName + " (" +
-                    "category BYTE," +
-                    "subcategory INTEGER," +
-                    "link CHAR(100)," +
-                    "description CHAR(100)," +
-                    "list_yn CHAR(1) DEFAULT 'Y')";
-            }
-            public void CreateProjectNotesTable(FIA_Biosum_Manager.ado_data_access p_oAdo, System.Data.OleDb.OleDbConnection p_oConn, string p_strTableName)
-            {
-                p_oAdo.SqlNonQuery(p_oConn, CreateProjectNotesTableSQL(p_strTableName));
-            }
-            public string CreateProjectNotesTableSQL(string p_strTableName)
-            {
-                return "CREATE TABLE " + p_strTableName + " (" +
-                    "notes MEMO)";
-            }
-
-
-
-
-
+           
         }
         public class OptimizerScenarioResults
         {

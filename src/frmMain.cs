@@ -30,8 +30,6 @@ namespace FIA_Biosum_Manager
 		private System.Windows.Forms.MenuItem mnuFileRecentProjects4;
 		private System.Windows.Forms.MenuItem mnuView;
 		private System.Windows.Forms.MenuItem mnuViewProject;
-		private System.Windows.Forms.MenuItem mnuViewNotes;
-		private System.Windows.Forms.MenuItem mnuViewLinks;
 		private System.Windows.Forms.MenuItem mnuHelp;
 		private System.Windows.Forms.MenuItem mnuHelpBiosummatic;
 		private System.Windows.Forms.MenuItem mnuHelpTechnicalSupport;
@@ -42,8 +40,6 @@ namespace FIA_Biosum_Manager
 		private System.Windows.Forms.ImageList imgList1;
 		private System.Windows.Forms.ToolBarButton btnOpen;
 		private System.Windows.Forms.ToolBarButton btnProject;
-		private System.Windows.Forms.ToolBarButton btnNotes;
-		private System.Windows.Forms.ToolBarButton btnLinks;
 		private System.Windows.Forms.OpenFileDialog openFileDialog1;
 
 		public FIA_Biosum_Manager.frmDialog frmProject;
@@ -294,9 +290,7 @@ namespace FIA_Biosum_Manager
 			this.btnFVS.Enabled=false;
 			this.btnProcessor.Enabled=false;
 			this.panel1.Enabled=false;
-			this.btnNotes.Enabled=false;
 			this.btnProject.Enabled=false;
-			this.btnLinks.Enabled = false;
 			this.mnuView.Enabled=false;
 			
 			this.mnuFileSaveProject.Enabled=false;
@@ -470,8 +464,6 @@ namespace FIA_Biosum_Manager
             this.mnuFileExit = new System.Windows.Forms.MenuItem();
             this.mnuView = new System.Windows.Forms.MenuItem();
             this.mnuViewProject = new System.Windows.Forms.MenuItem();
-            this.mnuViewNotes = new System.Windows.Forms.MenuItem();
-            this.mnuViewLinks = new System.Windows.Forms.MenuItem();
             this.mnuSettings = new System.Windows.Forms.MenuItem();
             this.mnuTools = new System.Windows.Forms.MenuItem();
             this.mnuToolsFCS = new System.Windows.Forms.MenuItem();
@@ -488,8 +480,6 @@ namespace FIA_Biosum_Manager
             this.btnOpen = new System.Windows.Forms.ToolBarButton();
             this.btnSave = new System.Windows.Forms.ToolBarButton();
             this.btnProject = new System.Windows.Forms.ToolBarButton();
-            this.btnNotes = new System.Windows.Forms.ToolBarButton();
-            this.btnLinks = new System.Windows.Forms.ToolBarButton();
             this.ctxMenu1 = new System.Windows.Forms.ContextMenu();
             this.imgList1 = new System.Windows.Forms.ImageList(this.components);
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
@@ -610,9 +600,7 @@ namespace FIA_Biosum_Manager
             // 
             this.mnuView.Index = 1;
             this.mnuView.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-            this.mnuViewProject,
-            this.mnuViewNotes,
-            this.mnuViewLinks});
+            this.mnuViewProject});
             this.mnuView.Text = "&View";
             // 
             // mnuViewProject
@@ -620,18 +608,6 @@ namespace FIA_Biosum_Manager
             this.mnuViewProject.Index = 0;
             this.mnuViewProject.Text = "Project Properties";
             this.mnuViewProject.Click += new System.EventHandler(this.mnuViewProject_Click);
-            // 
-            // mnuViewNotes
-            // 
-            this.mnuViewNotes.Index = 1;
-            this.mnuViewNotes.Text = "Project Notes";
-            this.mnuViewNotes.Click += new System.EventHandler(this.mnuViewNotes_Click);
-            // 
-            // mnuViewLinks
-            // 
-            this.mnuViewLinks.Index = 2;
-            this.mnuViewLinks.Text = "Project Links";
-            this.mnuViewLinks.Click += new System.EventHandler(this.mnuViewLinks_Click);
             // 
             // mnuSettings
             // 
@@ -718,9 +694,7 @@ namespace FIA_Biosum_Manager
             this.tlbMain.Buttons.AddRange(new System.Windows.Forms.ToolBarButton[] {
             this.btnOpen,
             this.btnSave,
-            this.btnProject,
-            this.btnNotes,
-            this.btnLinks});
+            this.btnProject});
             this.tlbMain.ButtonSize = new System.Drawing.Size(52, 38);
             this.tlbMain.ContextMenu = this.ctxMenu1;
             this.tlbMain.DropDownArrows = true;
@@ -751,18 +725,6 @@ namespace FIA_Biosum_Manager
             this.btnProject.ImageIndex = 2;
             this.btnProject.Name = "btnProject";
             this.btnProject.Text = "Project";
-            // 
-            // btnNotes
-            // 
-            this.btnNotes.ImageIndex = 3;
-            this.btnNotes.Name = "btnNotes";
-            this.btnNotes.Text = "Notes";
-            // 
-            // btnLinks
-            // 
-            this.btnLinks.ImageIndex = 4;
-            this.btnLinks.Name = "btnLinks";
-            this.btnLinks.Text = "Links";
             // 
             // ctxMenu1
             // 
@@ -2307,9 +2269,6 @@ namespace FIA_Biosum_Manager
 
 		private void mnuViewProject_Click(object sender, System.EventArgs e)
 		{
-			
-			this.frmProject.uc_project_document_links1.Visible=false;
-			this.frmProject.uc_project_notes1.Visible=false;
 			this.frmProject.uc_project1.Visible=true;
 			this.frmProject.uc_project1.m_strAction="VIEW";
 			this.frmProject.uc_project1.lblTitle.Text = "Project Properties";
@@ -2361,7 +2320,6 @@ namespace FIA_Biosum_Manager
 				this.frmProject.uc_project1.txtDate.Text = this.frmProject.uc_project1.m_strNewDate;
 				this.frmProject.uc_project1.txtCompany.Text = this.frmProject.uc_project1.m_strNewCompany;
 				this.frmProject.uc_project1.txtDescription.Text = this.frmProject.uc_project1.m_strNewDescription ;
-				this.frmProject.uc_project1.txtShared.Text = this.frmProject.uc_project1.m_strNewShared;
 				this.frmProject.uc_project1.txtRootDirectory.Text = this.frmProject.uc_project1.m_strNewRootDirectory;
 				this.frmProject.uc_project1.m_strProjectId = this.frmProject.uc_project1.m_strNewProjectId;
                 if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 1)
@@ -2375,7 +2333,6 @@ namespace FIA_Biosum_Manager
                     frmMain.g_oUtils.WriteText(frmProject.uc_project1.m_strDebugFile, "Project Date:               " + frmProject.uc_project1.txtDate.Text.Trim() + "\r\n");
                     frmMain.g_oUtils.WriteText(frmProject.uc_project1.m_strDebugFile, "Current Date/Time:          " + DateTime.Now.ToString() + "\r\n");
                     frmMain.g_oUtils.WriteText(frmProject.uc_project1.m_strDebugFile, "Company:                    " + frmProject.uc_project1.txtCompany.Text.Trim() + "\r\n");
-                    frmMain.g_oUtils.WriteText(frmProject.uc_project1.m_strDebugFile, "Shared:                     " + frmProject.uc_project1.txtShared.Text.Trim() + "\r\n");
                     frmMain.g_oUtils.WriteText(frmProject.uc_project1.m_strDebugFile, "Description:                " + frmProject.uc_project1.txtDescription.Text.Trim() + "\r\n");
                 }
 
@@ -2424,21 +2381,9 @@ namespace FIA_Biosum_Manager
 				this.btnFVS.Enabled=true;
 				this.btnProcessor.Enabled=true;
 				this.m_pnlCurrent.Enabled=true;
-				this.btnNotes.Enabled=true;
 				this.btnProject.Enabled=true;
 				this.btnSave.Enabled=true;
                 this.mnuToolsProjectRootFolder.Enabled = true;
-				if (this.frmProject.uc_project1.txtPersonal.Text.Trim().Length == 0 &&
-					this.frmProject.uc_project1.txtShared.Text.Trim().Length == 0)
-				{
-					this.btnLinks.Enabled = false;
-					this.btnNotes.Enabled=false;
-				}
-				else 
-				{
-					this.btnLinks.Enabled=true;
-					this.btnNotes.Enabled=true;
-				}
 				this.mnuView.Enabled=true;
 				
 				this.mnuFileSaveProject.Enabled=true;
@@ -2460,7 +2405,6 @@ namespace FIA_Biosum_Manager
 				frmTemp.frmProject.uc_project1.txtDate.Text = this.frmProject.uc_project1.m_strNewDate;
 				frmTemp.frmProject.uc_project1.txtCompany.Text = this.frmProject.uc_project1.m_strNewCompany;
 				frmTemp.frmProject.uc_project1.txtDescription.Text = this.frmProject.uc_project1.m_strNewDescription ;
-				frmTemp.frmProject.uc_project1.txtShared.Text = this.frmProject.uc_project1.m_strNewShared;
 				frmTemp.frmProject.uc_project1.txtRootDirectory.Text = this.frmProject.uc_project1.m_strNewRootDirectory;
 				frmTemp.frmProject.uc_project1.m_strProjectId = this.frmProject.uc_project1.m_strNewProjectId;
 
@@ -2475,7 +2419,6 @@ namespace FIA_Biosum_Manager
                     frmMain.g_oUtils.WriteText(frmTemp.frmProject.uc_project1.m_strDebugFile, "Project Date:               " + frmProject.uc_project1.txtDate.Text.Trim() + "\r\n");
                     frmMain.g_oUtils.WriteText(frmTemp.frmProject.uc_project1.m_strDebugFile, "Current Date/Time           " + DateTime.Now.ToString() + "\r\n") ;
                     frmMain.g_oUtils.WriteText(frmTemp.frmProject.uc_project1.m_strDebugFile, "Company:                    " + frmProject.uc_project1.txtCompany.Text.Trim() + "\r\n");
-                    frmMain.g_oUtils.WriteText(frmTemp.frmProject.uc_project1.m_strDebugFile, "Shared:                     " + frmProject.uc_project1.txtShared.Text.Trim() + "\r\n");
                     frmMain.g_oUtils.WriteText(frmTemp.frmProject.uc_project1.m_strDebugFile, "Description:                " + frmProject.uc_project1.txtDescription.Text.Trim() + "\r\n");
                 }
 
@@ -2493,20 +2436,9 @@ namespace FIA_Biosum_Manager
 				frmTemp.btnFVS.Enabled=true;
 				frmTemp.btnProcessor.Enabled=true;
 				frmTemp.m_pnlCurrent.Enabled=true;
-				frmTemp.btnNotes.Enabled=true;
 				frmTemp.btnProject.Enabled=true;
 				frmTemp.btnSave.Enabled=true;
                 mnuToolsProjectRootFolder.Enabled = true;
-
-				if (frmTemp.frmProject.uc_project1.txtPersonal.Text.Trim().Length == 0 &&
-					frmTemp.frmProject.uc_project1.txtShared.Text.Trim().Length == 0)
-				{
-					frmTemp.btnLinks.Enabled = false;
-				}
-				else 
-				{
-					frmTemp.btnLinks.Enabled=true;
-				}
 				
 				frmTemp.mnuView.Enabled=true;
 				
@@ -2522,7 +2454,6 @@ namespace FIA_Biosum_Manager
 		    this.frmProject.uc_project1.m_strNewDate="";
 		    this.frmProject.uc_project1.m_strNewCompany="";
 		    this.frmProject.uc_project1.m_strNewDescription="";
-            this.frmProject.uc_project1.m_strNewShared="";
 		    this.frmProject.uc_project1.m_strNewRootDirectory="";
 			this.frmProject.uc_project1.m_strNewProjectVersion="";
 			frmMain.g_sbpInfo.Text = "Ready";
@@ -2769,11 +2700,8 @@ namespace FIA_Biosum_Manager
 		{
 			int intAvailHt=0;;
 			int intAvailWd=0;
-			this.frmProject.uc_project_notes1.Visible=false;
 			this.frmProject.uc_project1.Visible=false;
             this.frmProject.uc_scenario1.Visible=false;
-			this.frmProject.uc_project_document_links1.loadvalues(this.frmProject.uc_project1.txtShared.Text,this.frmProject.uc_project1.txtPersonal.Text,false);
-			this.frmProject.uc_project_document_links1.Visible=true;
 			this.frmProject.Visible = true;
 			if (this.frmProject.WindowState==System.Windows.Forms.FormWindowState.Minimized)
 			{
@@ -2991,19 +2919,6 @@ namespace FIA_Biosum_Manager
                                 else bPromptMsg = true;
                             }
                             temp.uc_project1.SaveProjectProperties();
-                        }
-                        if (temp.uc_project_notes1.btnSave.Enabled == true)
-                        {
-                            if (bPromptMsg == false && p_bPrompt)
-                            {
-                                result = MessageBox.Show("Save Changes to " + child.Text.Trim() + " Y/N", "FIA Biosum", System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Question);
-                                if (result == System.Windows.Forms.DialogResult.No)
-                                {
-                                    break;
-                                }
-                                else bPromptMsg = true;
-                            }
-                            temp.uc_project_notes1.savevalues();
                         }
                         temp = null;
                     }
@@ -3413,9 +3328,6 @@ namespace FIA_Biosum_Manager
 			
 			this.frmProject.uc_project1.Visible=false;
 			this.frmProject.uc_scenario1.Visible=false;
-			this.frmProject.uc_project_document_links1.Visible=false;
-            this.frmProject.uc_project_notes1.loadnotes();				
-			this.frmProject.uc_project_notes1.Visible=true;
 			this.frmProject.Visible = true;
 			if (this.frmProject.WindowState==System.Windows.Forms.FormWindowState.Minimized)
 			{

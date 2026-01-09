@@ -36,7 +36,6 @@ namespace FIA_Biosum_Manager
 		public string m_strNewDate="";
 		public string m_strNewCompany="";
 		public string m_strNewDescription="";
-        public string m_strNewShared="";
 		public string m_strNewRootDirectory="";
 		public string m_strNewProjectVersion="";
         
@@ -55,24 +54,6 @@ namespace FIA_Biosum_Manager
 		public string m_strProjectDirectoryDrive = "";
 		public string m_strProjectRootDirectory="";
 		
-
-
-		//shared user directory for keeping notes and document links
-		public string m_strDBSharedDirectory="";
-		public string m_strDBSharedRootDirectory="";
-		public string m_strDBSharedDirectoryDrive="";
-		public string m_strSharedDirectory="";
-		public string m_strSharedRootDirectory="";
-		public string m_strSharedDirectoryDrive="";
-
-		//personal user directory for keeping notes and document links
-		public string m_strDBPersonalDirectory="";
-		public string m_strDBPersonalRootDirectory="";
-		public string m_strDBPersonalDirectoryDrive="";
-
-		public string m_strPersonalDirectoryDrive="";
-        public string m_strPersonalRootDirectory="";
-		public string m_strPersonalDirectory="";
 
 		public int m_intError;
 		public string m_strError;
@@ -101,18 +82,10 @@ namespace FIA_Biosum_Manager
 		public System.Windows.Forms.TextBox txtName;
 		private System.Windows.Forms.Label lblName;
 		private System.Windows.Forms.GroupBox grpboxProjectDirectory;
-        private System.Windows.Forms.Button btnPersonalHelp;
-        private System.Windows.Forms.Button btnPersonalDirectory;
-        private System.Windows.Forms.Label lblLocal;
-        public System.Windows.Forms.TextBox txtPersonal;
-        private System.Windows.Forms.Button btnSharedHelp;
-        private System.Windows.Forms.Button btnSharedDirectory;
-        private System.Windows.Forms.Label lblShared;
         private System.Windows.Forms.Button btnRootDirectoryHelp;
 		private System.Windows.Forms.Button btnRootDirectory;
 		private System.Windows.Forms.Label lblRootDirectory;
 		public System.Windows.Forms.TextBox txtRootDirectory;
-        public System.Windows.Forms.TextBox txtShared;
         public System.Windows.Forms.Label lblTitle;
 		private System.Windows.Forms.Button btnEdit;
 		public System.Windows.Forms.Button btnSave;
@@ -151,7 +124,6 @@ namespace FIA_Biosum_Manager
             this.m_intFullWh = this.grpboxCreated.Location.X + this.grpboxCreated.Size.Width + 30;
 
 			this.txtRootDirectory.Enabled=false;
-			this.txtShared.Enabled=false;
 			m_oResizeForm.ScrollBarParentControl=panel1;
 
             m_strDebugFile = frmMain.g_oEnv.strTempDir + @"\FIA_Biosum_DebugLog_" + String.Format("{0:yyyyMMdd}", DateTime.Now) + ".txt";
@@ -221,7 +193,6 @@ namespace FIA_Biosum_Manager
 				    m_strNewDate=p_ado.m_OleDbDataReader["created_date"].ToString();
 		            m_strNewCompany=p_ado.m_OleDbDataReader["company"].ToString().Trim();
 		            m_strNewDescription=p_ado.m_OleDbDataReader["description"].ToString().Trim();
-                    m_strNewShared=p_ado.m_OleDbDataReader["shared_file"].ToString();
 		            m_strNewRootDirectory=p_ado.m_OleDbDataReader["project_root_directory"].ToString();
                     
 					if (bAppVerColumnExist)
@@ -272,62 +243,7 @@ namespace FIA_Biosum_Manager
 			}
 			frmMain.g_sbpInfo.Text = "Ready";
 		}
-		public void OpenUserConfigTable(string strDir, string strFile)
-       	{
-            if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 1)
-            {
-                frmMain.g_oUtils.WriteText(m_strDebugFile, "\r\n//\r\n");
-                frmMain.g_oUtils.WriteText(m_strDebugFile, "//uc_project.OpenUserConfigTable \r\n");
-                frmMain.g_oUtils.WriteText(m_strDebugFile, "//\r\n");
-            }
-			this.m_intError = 0;
-			this.m_strError = "";
-			ado_data_access p_ado = new ado_data_access();
-			
-			string strFullPath = strDir + "\\" + strFile;
-			string strConn = p_ado.getMDBConnString(strFullPath,"admin","");
-			//string strConn = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + strFullPath + ";User Id=admin;Password=;";
-			p_ado.SqlQueryReader(strConn,"select * from user_config where trim(ucase(user_name)) = '" + System.Environment.UserName.ToString().Trim().ToUpper() + "'");
 		
-			if (p_ado.m_intError==0)
-			{
-				try
-				{
-					while (p_ado.m_OleDbDataReader.Read())
-					{
-                       this.txtPersonal.Text = p_ado.m_OleDbDataReader["personal_directory"].ToString();
-						if (this.txtPersonal.Text.Trim().Length > 0) 
-						{
-							if (((frmMain)this.ParentForm.ParentForm).tlbMain.Buttons[3].Enabled==false)
-							{
-								((frmMain)this.ParentForm.ParentForm).tlbMain.Buttons[3].Enabled=true;
-							}
-						}
-						else
-						{
-							if (((frmMain)this.ParentForm.ParentForm).tlbMain.Buttons[3].Enabled==true)
-							{
-								((frmMain)this.ParentForm.ParentForm).tlbMain.Buttons[3].Enabled=false;
-							}
-						}
-					}
-				}
-				catch (Exception caught)
-				{
-					MessageBox.Show(caught.Message);
-				}
-				p_ado.m_OleDbDataReader.Close();
-				p_ado.m_OleDbDataReader = null;
-				p_ado.m_OleDbCommand = null;
-				p_ado.m_OleDbConnection.Close();
-				p_ado.m_OleDbConnection = null;
-			}
-			else 
-			{
-				this.m_intError = p_ado.m_intError;
-			}
-			p_ado = null;
-		}
 		#region Component Designer generated code
 		/// <summary> 
 		/// Required method for Designer support - do not modify 
@@ -350,18 +266,10 @@ namespace FIA_Biosum_Manager
             this.txtName = new System.Windows.Forms.TextBox();
             this.lblName = new System.Windows.Forms.Label();
             this.grpboxProjectDirectory = new System.Windows.Forms.GroupBox();
-            this.btnPersonalHelp = new System.Windows.Forms.Button();
-            this.btnPersonalDirectory = new System.Windows.Forms.Button();
-            this.lblLocal = new System.Windows.Forms.Label();
-            this.txtPersonal = new System.Windows.Forms.TextBox();
-            this.btnSharedHelp = new System.Windows.Forms.Button();
-            this.btnSharedDirectory = new System.Windows.Forms.Button();
-            this.lblShared = new System.Windows.Forms.Label();
             this.btnRootDirectoryHelp = new System.Windows.Forms.Button();
             this.btnRootDirectory = new System.Windows.Forms.Button();
             this.lblRootDirectory = new System.Windows.Forms.Label();
             this.txtRootDirectory = new System.Windows.Forms.TextBox();
-            this.txtShared = new System.Windows.Forms.TextBox();
             this.lblTitle = new System.Windows.Forms.Label();
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
@@ -532,70 +440,6 @@ namespace FIA_Biosum_Manager
             this.grpboxProjectDirectory.TabStop = false;
             this.grpboxProjectDirectory.Text = "Project Directory";
             // 
-            // btnPersonalHelp
-            // 
-            this.btnPersonalHelp.Image = ((System.Drawing.Image)(resources.GetObject("btnPersonalHelp.Image")));
-            this.btnPersonalHelp.Location = new System.Drawing.Point(600, 112);
-            this.btnPersonalHelp.Name = "btnPersonalHelp";
-            this.btnPersonalHelp.Size = new System.Drawing.Size(32, 32);
-            this.btnPersonalHelp.TabIndex = 11;
-            this.btnPersonalHelp.Visible = false;
-            // 
-            // btnPersonalDirectory
-            // 
-            this.btnPersonalDirectory.Enabled = false;
-            this.btnPersonalDirectory.Image = ((System.Drawing.Image)(resources.GetObject("btnPersonalDirectory.Image")));
-            this.btnPersonalDirectory.Location = new System.Drawing.Point(561, 98);
-            this.btnPersonalDirectory.Name = "btnPersonalDirectory";
-            this.btnPersonalDirectory.Size = new System.Drawing.Size(32, 32);
-            this.btnPersonalDirectory.TabIndex = 10;
-            this.btnPersonalDirectory.Click += new System.EventHandler(this.btnPersonalDirectory_Click);
-            // 
-            // lblLocal
-            // 
-            this.lblLocal.Location = new System.Drawing.Point(16, 98);
-            this.lblLocal.Name = "lblLocal";
-            this.lblLocal.Size = new System.Drawing.Size(80, 53);
-            this.lblLocal.TabIndex = 9;
-            this.lblLocal.Text = "Personal Notes And Document Links Directory";
-            // 
-            // txtPersonal
-            // 
-            this.txtPersonal.Enabled = false;
-            this.txtPersonal.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPersonal.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.txtPersonal.Location = new System.Drawing.Point(112, 103);
-            this.txtPersonal.Name = "txtPersonal";
-            this.txtPersonal.Size = new System.Drawing.Size(416, 23);
-            this.txtPersonal.TabIndex = 8;
-            // 
-            // btnSharedHelp
-            // 
-            this.btnSharedHelp.Image = ((System.Drawing.Image)(resources.GetObject("btnSharedHelp.Image")));
-            this.btnSharedHelp.Location = new System.Drawing.Point(601, 44);
-            this.btnSharedHelp.Name = "btnSharedHelp";
-            this.btnSharedHelp.Size = new System.Drawing.Size(32, 32);
-            this.btnSharedHelp.TabIndex = 7;
-            this.btnSharedHelp.Visible = false;
-            // 
-            // btnSharedDirectory
-            // 
-            this.btnSharedDirectory.Enabled = false;
-            this.btnSharedDirectory.Image = ((System.Drawing.Image)(resources.GetObject("btnSharedDirectory.Image")));
-            this.btnSharedDirectory.Location = new System.Drawing.Point(561, 52);
-            this.btnSharedDirectory.Name = "btnSharedDirectory";
-            this.btnSharedDirectory.Size = new System.Drawing.Size(32, 32);
-            this.btnSharedDirectory.TabIndex = 6;
-            this.btnSharedDirectory.Click += new System.EventHandler(this.btnSharedDirectory_Click);
-            // 
-            // lblShared
-            // 
-            this.lblShared.Location = new System.Drawing.Point(16, 52);
-            this.lblShared.Name = "lblShared";
-            this.lblShared.Size = new System.Drawing.Size(80, 40);
-            this.lblShared.TabIndex = 4;
-            this.lblShared.Text = "Shared Notes And Document Links Directory";
-            // 
             // btnRootDirectoryHelp
             // 
             this.btnRootDirectoryHelp.Image = ((System.Drawing.Image)(resources.GetObject("btnRootDirectoryHelp.Image")));
@@ -631,15 +475,6 @@ namespace FIA_Biosum_Manager
             this.txtRootDirectory.Name = "txtRootDirectory";
             this.txtRootDirectory.Size = new System.Drawing.Size(416, 23);
             this.txtRootDirectory.TabIndex = 0;
-            // 
-            // txtShared
-            // 
-            this.txtShared.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtShared.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.txtShared.Location = new System.Drawing.Point(112, 57);
-            this.txtShared.Name = "txtShared";
-            this.txtShared.Size = new System.Drawing.Size(416, 23);
-            this.txtShared.TabIndex = 0;
             // 
             // lblTitle
             // 
@@ -734,8 +569,6 @@ namespace FIA_Biosum_Manager
 			this.btnSave.Enabled=true;
 			this.btnCancel.Enabled=true;
 
-			this.btnPersonalDirectory.Enabled=true;
-			this.btnSharedDirectory.Enabled=true;
 			this.btnEdit.Enabled=false;
             this.grpboxProjectId.Enabled = true;
 			
@@ -938,8 +771,6 @@ namespace FIA_Biosum_Manager
 				frmMain.g_oTables.m_oProject.CreateAccessDatasourceTable(p_ado,p_ado.m_OleDbConnection,Tables.Project.DefaultProjectDatasourceTableName);
 				//project table
 				frmMain.g_oTables.m_oProject.CreateAccessProjectTable(p_ado,p_ado.m_OleDbConnection,frmMain.g_oTables.m_oProject.DefaultProjectTableName);
-				//user config table
-				frmMain.g_oTables.m_oProject.CreateUserConfigTable(p_ado,p_ado.m_OleDbConnection,frmMain.g_oTables.m_oProject.DefaultProjectUserConfigTableName);
 				p_ado.CloseConnection(p_ado.m_OleDbConnection);
 				//
 				//travel times file and tables
@@ -1083,70 +914,6 @@ namespace FIA_Biosum_Manager
 				p_frmTherm.lblMsg.Refresh();
 				//System.IO.File.Copy(strSourceFile, strDestFile,true);		
 				
-				if (this.txtShared.Text.Trim().Length > 0)
-				{
-					strDestFile = this.txtRootDirectory.Text.Trim() + "\\db\\shared_project_links_and_notes.mdb";
-					p_dao.CreateMDB(strDestFile);
-					p_frmTherm.Increment(11);
-					p_frmTherm.lblMsg.Text = strDestFile;
-					p_frmTherm.lblMsg.Refresh();
-					strConn = p_ado.getMDBConnString(strDestFile,"admin","");
-					p_ado.OpenConnection(strConn);
-					frmMain.g_oTables.m_oProject.CreateProjectLinksCategoryTable(p_ado,p_ado.m_OleDbConnection,frmMain.g_oTables.m_oProject.DefaultProjectLinksCategoryTableName);
-					frmMain.g_oTables.m_oProject.CreateProjectLinksDepositoryTable(p_ado,p_ado.m_OleDbConnection,frmMain.g_oTables.m_oProject.DefaultProjectLinksDepositoryTableName);
-					frmMain.g_oTables.m_oProject.CreateProjectNotesTable(p_ado,p_ado.m_OleDbConnection,frmMain.g_oTables.m_oProject.DefaultProjectNotesTableName);
-					p_ado.CloseConnection(p_ado.m_OleDbConnection);
-
-				}
-
-				
-				if (this.txtPersonal.Text.Length == 0)
-				{
-					result = MessageBox.Show("Do you want to keep personal project related notes and document links (Y/N)","test", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-					switch (result) 
-					{
-						case DialogResult.Yes:
-							//check to see if the project drive is on the users computer
-							for (x=0; x<= ((frmMain)this.ParentForm.ParentForm).m_LocalHardDrive.Length-1; x++)
-							{
-								intAt = this.txtRootDirectory.Text.IndexOf(((frmMain)this.ParentForm.ParentForm).m_LocalHardDrive[x].Trim().ToUpper(),0, this.txtRootDirectory.Text.Length);
-								if (intAt >=0) 
-								{
-									break;
-								}
-							}
-							if (x <= ((frmMain)this.ParentForm.ParentForm).m_LocalHardDrive.Length-1) 
-							{
-								//create a personal copy of the project file
-								if (!System.IO.Directory.Exists(this.txtRootDirectory.Text.Trim() + "\\db\\" + System.Environment.UserName.ToString().Trim())) 
-								{
-									strFullPath = this.txtRootDirectory.Text.Trim() + "\\db\\" + System.Environment.UserName.ToString().Trim();
-									System.IO.Directory.CreateDirectory(strFullPath);
-								}
-								strDestFile = this.txtRootDirectory.Text.Trim() + "\\db\\" +  System.Environment.UserName.ToString().Trim() + "\\personal_project_links_and_notes.mdb";
-								p_dao.CreateMDB(strDestFile);
-								p_frmTherm.Increment(12);
-								p_frmTherm.lblMsg.Text = strDestFile;
-								p_frmTherm.lblMsg.Refresh();
-								this.txtPersonal.Text = this.txtRootDirectory.Text.Trim() + "\\db\\" +  System.Environment.UserName.ToString().Trim();
-								strConn = p_ado.getMDBConnString(strDestFile,"admin","");
-								p_ado.OpenConnection(strConn);
-								frmMain.g_oTables.m_oProject.CreateProjectLinksCategoryTable(p_ado,p_ado.m_OleDbConnection,frmMain.g_oTables.m_oProject.DefaultProjectLinksCategoryTableName);
-								frmMain.g_oTables.m_oProject.CreateProjectLinksDepositoryTable(p_ado,p_ado.m_OleDbConnection,frmMain.g_oTables.m_oProject.DefaultProjectLinksDepositoryTableName);
-								frmMain.g_oTables.m_oProject.CreateProjectNotesTable(p_ado,p_ado.m_OleDbConnection,frmMain.g_oTables.m_oProject.DefaultProjectNotesTableName);
-								p_ado.CloseConnection(p_ado.m_OleDbConnection);
-							}
-							else 
-							{
-
-
-							}
-							break;
-						case DialogResult.No:
-							break;
-					}                
-				}
-				
 				p_frmTherm.Increment(13);
 				strSourceFile = this.txtRootDirectory.Text.Trim() + "\\db\\project.mdb";
 				strConn = p_ado.getMDBConnString(strSourceFile,"admin","");
@@ -1165,23 +932,11 @@ namespace FIA_Biosum_Manager
 						"'" + this.txtDate.Text +  "'," + 
 						"'" + this.txtCompany.Text.Trim() + "'," + 
 						"'" + strDesc + "'," + 
-						"'" + this.txtShared.Text.Trim() + "'," + 
 						"'" + this.txtRootDirectory.Text.Trim() + "'," + 
 						"'" + frmMain.g_strAppVer + "');";
 
 					p_ado.SqlNonQuery(p_ado.m_OleDbConnection,strSQL);
 
-					if (this.txtPersonal.Text.Trim().Length > 0)
-					{
-						strSQL = "DELETE * FROM user_config WHERE user_name =  " + "'" + System.Environment.UserName.ToString().Trim() + "'";
-						p_ado.SqlNonQuery(p_ado.m_OleDbConnection,strSQL);
-						strSQL = "INSERT INTO user_config (user_name,personal_directory) VALUES " + "(" +  
-							"'" + System.Environment.UserName.ToString().Trim() + "'," + 
-							"'" + this.txtPersonal.Text.Trim() + "');";
-
-						p_ado.SqlNonQuery(p_ado.m_OleDbConnection,strSQL);
-
-					}
 
 					strSQL = "INSERT INTO datasource (table_type,Path,file,table_name) VALUES " + 
 						"('Plot'," + 
@@ -1320,23 +1075,11 @@ namespace FIA_Biosum_Manager
                     "proj_id = '" + this.txtProjectId.Text.Trim() + "', " +
                     "company = '" + this.txtCompany.Text + "', " +
                     "description = '" + strDesc + "', " +
-                    "shared_file = '" + this.txtShared.Text + "', " +
                     "project_root_directory = '" + this.txtRootDirectory.Text + "' ";
 				p_ado.SqlNonQuery(strConn,strSQL);
                 this.m_strProjectId = this.txtProjectId.Text.Trim();
                 ((frmMain)this.ParentForm.ParentForm).Text = "Fia Biosum Manager (" + this.m_strProjectId + ")";
-				System.Data.OleDb.OleDbCommand oCommand = new System.Data.OleDb.OleDbCommand();
-				if (this.txtPersonal.Text.Trim().Length > 0)
-				{
-					strSQL = "DELETE * FROM user_config WHERE user_name =  " + "'" + System.Environment.UserName.ToString().Trim() + "'";
-					p_ado.SqlNonQuery(strConn,strSQL);
-					strSQL = "INSERT INTO user_config (user_name,personal_directory) VALUES " + "(" +  
-						"'" + System.Environment.UserName.ToString().Trim() + "'," + 
-						"'" + this.txtPersonal.Text.Trim() + "');";
-
-					p_ado.SqlNonQuery(strConn,strSQL);
-
-				}			
+				System.Data.OleDb.OleDbCommand oCommand = new System.Data.OleDb.OleDbCommand();		
 				
 			}
 			p_ado=null;
@@ -1354,19 +1097,6 @@ namespace FIA_Biosum_Manager
 			this.m_strProjectFile = "project.mdb";
 			this.m_strProjectId = this.txtProjectId.Text.Trim();
 			this.m_strAction="";
-			if (((frmMain)this.ParentForm.ParentForm).tlbMain.Buttons[4].Enabled==false)
-			{
-				if (this.txtPersonal.Text.Trim().Length > 0 || this.txtShared.Text.Trim().Length > 0)
-				{
-					((frmMain)this.ParentForm.ParentForm).tlbMain.Buttons[4].Enabled=true;
-					((frmMain)this.ParentForm.ParentForm).tlbMain.Buttons[3].Enabled=true;
-				}
-				else
-				{
-					((frmMain)this.ParentForm.ParentForm).tlbMain.Buttons[4].Enabled=false;
-					((frmMain)this.ParentForm.ParentForm).tlbMain.Buttons[3].Enabled=false;
-				}
-			}
 
 
 		}
@@ -1381,16 +1111,12 @@ namespace FIA_Biosum_Manager
 			this.txtProjectId.Text = "";
 			
 			//this.txtRootDirectory.Text = this.m_oEnv.strAppDir.Substring(0,2) + "\\FIA_Biosum";
-			this.txtShared.Text = "";
-			this.txtPersonal.Text = "";
 			this.txtProjectId.Enabled=true;
 			this.txtName.Enabled=true;
 			this.txtCompany.Enabled=true;
 			this.txtDescription.Enabled=true;
 			this.txtDate.Enabled=false;
 			this.btnRootDirectory.Enabled=true;
-			this.btnSharedDirectory.Enabled=true;
-			this.btnPersonalDirectory.Enabled=true;
 			this.btnEdit.Enabled=false;
 			this.btnSave.Enabled=true;
 			this.btnCancel.Enabled=true;
@@ -1476,275 +1202,7 @@ namespace FIA_Biosum_Manager
             }
         }
 
-        private void btnSharedDirectory_Click(object sender, System.EventArgs e)
-		{
-		    string strSourceFile="";
-			string strDestFile="";
-			string strNewShared="";
-			string strConn;
-			DialogResult result2 = new DialogResult();
-			//prompt for the location of the shared project.mdb table used for notes and document links
-			DialogResult result =  this.folderBrowserDialog1.ShowDialog();
-			
-			if (result == DialogResult.OK) 
-			{
-				dao_data_access oDao = new dao_data_access();
-				ado_data_access oAdo = new ado_data_access();
-				string strTemp = this.folderBrowserDialog1.SelectedPath;
-			
-				if (strTemp.Length > 0) 
-				{
-					strNewShared=strTemp;
-					//check if the selected directory is the project directory
-					if (strTemp.Trim().ToUpper() == this.m_strProjectDirectory.Trim().ToUpper() + "\\DB")
-					{
-						//cannot overwrite the main project table so just 
-						//designate it as the shared document link and notes table
-						this.txtShared.Text = strTemp;
-					}
-					else if (strTemp.Trim().ToUpper() == this.txtPersonal.Text.Trim().ToUpper()) 
-					{
-						MessageBox.Show("!!Personal Directory And Shared Directory Cannot Be The Same!!","Personal Notes And Document Links",MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-					}
-					else 
-					{
-
-						//see if we currently have a shared directory
-						
-						if (this.m_strSharedDirectory.Trim().Length == 0)
-						{
-							//no current shared directory so copy an empty project.mdb file to the 
-							//new shared directory
-							
-							strDestFile = strNewShared + "\\shared_project_links_and_notes.mdb";
-							if (System.IO.File.Exists(strDestFile)==false)
-							{
-								this.txtShared.Text = strNewShared;
-								//create new shared project links and documents db file
-								oDao.CreateMDB(strDestFile);
-								strConn = oAdo.getMDBConnString(strDestFile,"admin","");
-								oAdo.OpenConnection(strConn);
-								frmMain.g_oTables.m_oProject.CreateProjectLinksCategoryTable(oAdo,oAdo.m_OleDbConnection,frmMain.g_oTables.m_oProject.DefaultProjectLinksCategoryTableName);
-								frmMain.g_oTables.m_oProject.CreateProjectLinksDepositoryTable(oAdo,oAdo.m_OleDbConnection,frmMain.g_oTables.m_oProject.DefaultProjectLinksDepositoryTableName);
-								frmMain.g_oTables.m_oProject.CreateProjectNotesTable(oAdo,oAdo.m_OleDbConnection,frmMain.g_oTables.m_oProject.DefaultProjectNotesTableName);
-								while (oAdo.m_OleDbConnection.State != System.Data.ConnectionState.Closed)
-								{
-									oAdo.m_OleDbConnection.Close();
-								}
-
-
-
-							}
-							else
-							{
-                                
-								//a project file already exists in the directory
-                                result = MessageBox.Show("A project notes and document links file already exists.\r\n\r\n NOTE: Previously saved shared notes and document links will be overwritten if choosing <Yes>.\r\n\r\nOverwrite the file? (Y/N)", "Shared Notes And Document Links", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-								switch (result) 
-								{
-									case DialogResult.Yes:
-										System.IO.File.Delete(strDestFile);
-										this.txtShared.Text = strNewShared;
-										oDao.CreateMDB(strDestFile);
-										strConn = oAdo.getMDBConnString(strDestFile,"admin","");
-										oAdo.OpenConnection(strConn);
-										frmMain.g_oTables.m_oProject.CreateProjectLinksCategoryTable(oAdo,oAdo.m_OleDbConnection,frmMain.g_oTables.m_oProject.DefaultProjectLinksCategoryTableName);
-										frmMain.g_oTables.m_oProject.CreateProjectLinksDepositoryTable(oAdo,oAdo.m_OleDbConnection,frmMain.g_oTables.m_oProject.DefaultProjectLinksDepositoryTableName);
-										frmMain.g_oTables.m_oProject.CreateProjectNotesTable(oAdo,oAdo.m_OleDbConnection,frmMain.g_oTables.m_oProject.DefaultProjectTableName);
-										oAdo.CloseConnection(oAdo.m_OleDbConnection);
-										break;
-									case DialogResult.No:
-                                        result = MessageBox.Show("Reference the existing notes and document links file (Y/N)", "Shared Notes And Document Links", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                                        if (result==DialogResult.OK)
-                                            this.txtShared.Text = strNewShared;
-										break;
-								}                
-							}
-						}
-						else
-						{
-							//we have a shared directory already
-							
-							strDestFile = strNewShared + "\\shared_project_links_and_notes.mdb";
-							if (System.IO.File.Exists(strDestFile)==false)
-							{
-								//destination file does not exist
-								//a current shared notes and document links project.mdb exists 
-								//  so lets prompt user whether to copy the previous
-								//  project.mdb or a new one.
-								result2 = MessageBox.Show("A Current Shared Notes and Document Links table exists. Do you want to copy it to the new location?(Y/N)", "Shared Notes And Document Links", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-								switch (result2) 
-								{
-									case DialogResult.Yes:
-										this.txtShared.Text = strNewShared;
-										strSourceFile = this.m_strSharedDirectory + "\\shared_project_links_and_notes.mdb";
-										if (System.IO.File.Exists(strSourceFile.Trim())==false)
-										{
-											strSourceFile = this.m_oEnv.strAppDir + "\\db\\shared_project_links_and_notes.mdb";
-										}
-										System.IO.File.Copy(strSourceFile, strDestFile,true);
-										break;
-									case DialogResult.No:
-										this.txtShared.Text = strNewShared;
-										oDao.CreateMDB(strDestFile);
-										strConn = oAdo.getMDBConnString(strDestFile,"admin","");
-										oAdo.OpenConnection(strConn);
-										frmMain.g_oTables.m_oProject.CreateProjectLinksCategoryTable(oAdo,oAdo.m_OleDbConnection,frmMain.g_oTables.m_oProject.DefaultProjectLinksCategoryTableName);
-										frmMain.g_oTables.m_oProject.CreateProjectLinksDepositoryTable(oAdo,oAdo.m_OleDbConnection,frmMain.g_oTables.m_oProject.DefaultProjectLinksDepositoryTableName);
-										frmMain.g_oTables.m_oProject.CreateProjectNotesTable(oAdo,oAdo.m_OleDbConnection,frmMain.g_oTables.m_oProject.DefaultProjectNotesTableName);
-										while (oAdo.m_OleDbConnection.State != System.Data.ConnectionState.Closed)
-										{
-											oAdo.m_OleDbConnection.Close();
-										}							
-										break;
-								}                
-								
-
-							}
-							else
-							{
-								//destination file already exists.
-								//a current shared notes and document links project.mdb exists 
-								//  and a notes and document links project.mdb exists in the 
-								//  newly designated directory 
-								strDestFile = strNewShared + "\\shared_project_links_and_notes.mdb";
-								this.m_frmDialog1 =  new frmDialog();
-								this.m_frmDialog1.Height = 100;
-								
-								this.m_frmDialog1.Width = 100;
-								this.m_frmDialog1.MinimizeBox = false;
-								this.m_frmDialog1.MaximizeBox = false;
-								this.m_frmDialog1.WindowState=System.Windows.Forms.FormWindowState.Normal;
-								this.m_frmDialog1.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-								//label message
-								System.Windows.Forms.Label lblMsg = new System.Windows.Forms.Label();
-								lblMsg.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Regular))), System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-								lblMsg.ForeColor = System.Drawing.Color.Black;
-								lblMsg.Location = new System.Drawing.Point(8, 16);
-								lblMsg.Size = new System.Drawing.Size(208, 24);
-								this.m_frmDialog1.Controls.Add(lblMsg);
-
-								lblMsg.Name = "label1";
-								lblMsg.Top = 2;
-								lblMsg.Left = 2;
-								lblMsg.Width = 200;
-								lblMsg.Height = 50;
-
-								lblMsg.Text = "The selected shared directory already has a notes and document link database." + 
-									" Do you want to overwrite it with a new database file, or overwrite it with the current database " + 
-									" file, or keep the existing database file?";
-								lblMsg.Visible=true;
-								//copy current button
-								System.Windows.Forms.Button btnCopyCurrent = new System.Windows.Forms.Button();
-								btnCopyCurrent.Name="btnCopyCurrent";
-								btnCopyCurrent.FlatStyle = System.Windows.Forms.FlatStyle.Standard;
-								btnCopyCurrent.BackColor = System.Drawing.SystemColors.Control;
-								btnCopyCurrent.Location = new System.Drawing.Point(8, 256);
-								btnCopyCurrent.Size = new System.Drawing.Size(128, 24);
-								btnCopyCurrent.TabIndex = 4;
-								btnCopyCurrent.Text = "Copy Current";
-								btnCopyCurrent.Click += new EventHandler(this.m_frmDialog1_btnPressed_Click);
-								this.m_frmDialog1.Controls.Add(btnCopyCurrent);
-
-								//copy new
-
-								System.Windows.Forms.Button btnCopyNew = new System.Windows.Forms.Button();
-								btnCopyNew.Name="btnCopyNew";
-								btnCopyNew.FlatStyle = System.Windows.Forms.FlatStyle.Standard;
-								btnCopyNew.BackColor = System.Drawing.SystemColors.Control;
-								btnCopyNew.Location = new System.Drawing.Point(8, 256);
-								btnCopyNew.Size = new System.Drawing.Size(128, 24);
-								btnCopyNew.TabIndex = 4;
-								btnCopyNew.Text = "Copy New";
-								btnCopyNew.Click += new EventHandler(this.m_frmDialog1_btnPressed_Click);
-								this.m_frmDialog1.Controls.Add(btnCopyNew);
-
-
-								System.Windows.Forms.Button btnKeep = new System.Windows.Forms.Button();
-								btnKeep.Name="btnKeep";
-								btnKeep.FlatStyle = System.Windows.Forms.FlatStyle.Standard;
-								btnKeep.BackColor = System.Drawing.SystemColors.Control;
-								btnKeep.Location = new System.Drawing.Point(8, 256);
-								btnKeep.Size = new System.Drawing.Size(128, 24);
-								btnKeep.TabIndex = 4;
-								btnKeep.Text = "Keep";
-								btnKeep.Click += new EventHandler(this.m_frmDialog1_btnPressed_Click);
-								this.m_frmDialog1.Controls.Add(btnKeep);
-
-
-								System.Windows.Forms.Button btnCancel = new System.Windows.Forms.Button();
-								btnCancel.Name="btnCancel";
-								btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Standard;
-								btnCancel.BackColor = System.Drawing.SystemColors.Control;
-								btnCancel.Location = new System.Drawing.Point(8, 256);
-								btnCancel.Size = new System.Drawing.Size(128, 24);
-								btnCancel.TabIndex = 4;
-								btnCancel.Text = "Cancel";
-								btnCancel.Click += new EventHandler(this.m_frmDialog1_btnPressed_Click);
-								this.m_frmDialog1.Controls.Add(btnCancel);
-
-
-
-								lblMsg.Width = btnCopyCurrent.Width + btnCopyNew.Width + btnKeep.Width + btnCancel.Width;
-								btnCopyCurrent.Left = 2;
-								btnCopyNew.Left = 2 + btnCopyCurrent.Width;
-								btnKeep.Left = btnCopyNew.Left + btnCopyNew.Width;
-								btnCancel.Left = btnKeep.Left + btnKeep.Width;
-								btnCopyCurrent.Top = lblMsg.Top + lblMsg.Height;
-								btnCopyNew.Top = btnCopyCurrent.Top;
-								btnKeep.Top = btnCopyCurrent.Top;
-								btnCancel.Top = btnCopyCurrent.Top;
-								this.m_frmDialog1.Width = lblMsg.Left + lblMsg.Width + 6;
-								this.m_frmDialog1.Text = "Select A Shared Notes And Document Link Option";
-								this.m_frmDialog1.Height = btnCopyCurrent.Top + (int)(btnCopyCurrent.Height * 1.8) + 10;
-
-								result2 = this.m_frmDialog1.ShowDialog();
-								switch (result2)
-								{
-									case DialogResult.OK:
-									switch (m_strAction)
-									{
-										case "COPY CURRENT":
-											this.txtShared.Text = strNewShared;
-											strSourceFile = this.m_strSharedDirectory + "\\shared_project_links_and_notes.mdb";
-											System.IO.File.Copy(strSourceFile, strDestFile,true);
-											break;
-										case "COPY NEW":
-											oDao.CreateMDB(strDestFile);
-											strConn = oAdo.getMDBConnString(strDestFile,"admin","");
-											oAdo.OpenConnection(strConn);
-											frmMain.g_oTables.m_oProject.CreateProjectLinksCategoryTable(oAdo,oAdo.m_OleDbConnection,frmMain.g_oTables.m_oProject.DefaultProjectLinksCategoryTableName);
-											frmMain.g_oTables.m_oProject.CreateProjectLinksDepositoryTable(oAdo,oAdo.m_OleDbConnection,frmMain.g_oTables.m_oProject.DefaultProjectLinksDepositoryTableName);
-											frmMain.g_oTables.m_oProject.CreateProjectNotesTable(oAdo,oAdo.m_OleDbConnection,frmMain.g_oTables.m_oProject.DefaultProjectNotesTableName);
-											while (oAdo.m_OleDbConnection.State != System.Data.ConnectionState.Closed)
-											{
-												oAdo.m_OleDbConnection.Close();
-											}
-											break;
-										case "KEEP":
-											this.txtShared.Text = strNewShared;
-											break;
-										default:
-											break;
-									}
-										break;
-									default:
-										break;
-
-								}
-							}
-						}
-					}
-					if (this.txtShared.Text.Trim().ToUpper() == strNewShared.Trim().ToUpper())
-					{
-						((frmDialog)this.ParentForm).uc_project1.btnSave.Enabled=true;
-					}
-				}
-				oDao=null;
-				oAdo=null;
-			}
-
-		}
+       
 		public  void Open_Project()
 		{
             if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 1)
@@ -1777,12 +1235,6 @@ namespace FIA_Biosum_Manager
                         frmMain.g_oUtils.WriteText(m_strDebugFile, "uc_project.Open_Profect: strNewProjectDirectory=" + m_strNewProjectDirectory + " strNewProjectFile=" + m_strNewProjectFile + "\r\n");
                     }
 					this.OpenProjectTable(this.m_strNewProjectDirectory, this.m_strNewProjectFile);
-                    if (this.m_intError == 0)
-                        this.OpenUserConfigTable(this.m_strNewProjectDirectory + "\\db", this.m_strNewProjectFile);
-                    else
-                    {
-
-                    }
 
 
 				}
@@ -1824,8 +1276,6 @@ namespace FIA_Biosum_Manager
                     
                 
 				this.OpenProjectTable(this.m_strNewProjectDirectory, this.m_strNewProjectFile);
-                if (this.m_intError == 0)
-                    this.OpenUserConfigTable(this.m_strNewProjectDirectory + "\\db", this.m_strNewProjectFile);
                 
 			}
 			else 
@@ -1911,28 +1361,16 @@ namespace FIA_Biosum_Manager
 			
 
 			this.lblRootDirectory.Left = this.grpboxProjectDirectory.Left + 2;
-			this.lblShared.Left = this.lblRootDirectory.Left;
-			this.lblLocal.Left = this.lblRootDirectory.Left;
 
 			this.txtRootDirectory.Left = this.lblRootDirectory.Left + this.lblRootDirectory.Width + 2;
-			this.txtShared.Left = this.txtRootDirectory.Left;
-			this.txtPersonal.Left = this.txtRootDirectory.Left;
 
 			this.btnRootDirectoryHelp.Left = this.grpboxProjectDirectory.Width - this.btnRootDirectoryHelp.Width - 2;
-			this.btnSharedHelp.Left = this.btnRootDirectoryHelp.Left;
-			this.btnPersonalHelp.Left = this.btnRootDirectoryHelp.Left;
 
 			this.btnRootDirectory.Left = this.btnRootDirectoryHelp.Left - this.btnRootDirectoryHelp.Width - 2;
-			this.btnSharedDirectory.Left = this.btnRootDirectory.Left;
-			this.btnPersonalDirectory.Left = this.btnRootDirectory.Left;
 
-			this.btnSharedHelp.Top = this.btnSharedDirectory.Top;
-			this.btnPersonalHelp.Top = this.btnPersonalDirectory.Top;
 			this.btnRootDirectoryHelp.Top = this.btnRootDirectory.Top;
 
 			this.txtRootDirectory.Width = this.grpboxProjectDirectory.Width  - this.lblRootDirectory.Width  - this.btnRootDirectory.Width - this.btnRootDirectoryHelp.Width   - 15;
-			this.txtShared.Width = this.txtRootDirectory.Width;
-			this.txtPersonal.Width = this.txtRootDirectory.Width;
 			
 			
 			this.txtDescription.Left = this.grpboxDescription.Left + 2;
@@ -1960,297 +1398,7 @@ namespace FIA_Biosum_Manager
 		        this.ParentForm.Close();
 		}
 
-		private void btnPersonalDirectory_Click(object sender, System.EventArgs e)
-		{
-
-			string strSourceFile="";
-			string strDestFile="";
-			string strNewPersonal="";
-			string strConn="";
-			DialogResult result2 = new DialogResult();
-			this.folderBrowserDialog1.SelectedPath = this.txtRootDirectory.Text;
-			DialogResult result =  this.folderBrowserDialog1.ShowDialog();
-			if (result == DialogResult.OK) 
-			{
-				dao_data_access oDao = new dao_data_access();
-				ado_data_access oAdo = new ado_data_access();
-
-				string strTemp = this.folderBrowserDialog1.SelectedPath;
-			
-				if (strTemp.Length > 0) 
-				{
-					strNewPersonal=strTemp;
-					//check if the selected directory is the project directory
-					if (strTemp.Trim().ToUpper() == this.m_strProjectDirectory.Trim().ToUpper())
-					{
-						//cannot overwrite the main project table so just 
-						//designate it as the shared document link and notes table
-						MessageBox.Show("!!Personal Directory And Project Directory Cannot Be The Same!!","Personal Notes And Document Links", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-					}
-					else if (strTemp.Trim().ToUpper() == this.txtShared.Text.Trim().ToUpper()) 
-					{
-						MessageBox.Show("!!Personal Directory And Shared Directory Cannot Be The Same!!","Personal Notes And Document Links", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-					}
-					else 
-					{
-
-						//see if we currently have a shared directory
-
-						if (this.m_strPersonalDirectory.Trim().Length == 0)
-						{
-							//no current shared directory so copy an empty project.mdb file to the 
-							//new shared directory
-							//strDestFile = this.txtShared.Text + "\\project.mdb";
-							strDestFile = strNewPersonal + "\\personal_project_links_and_notes.mdb";
-							if (System.IO.File.Exists(strDestFile)==false)
-							{
-								this.txtPersonal.Text = strNewPersonal;
-								oDao.CreateMDB(strDestFile);
-								strConn = oAdo.getMDBConnString(strDestFile,"admin","");
-								oAdo.OpenConnection(strConn);
-								frmMain.g_oTables.m_oProject.CreateProjectLinksCategoryTable(oAdo,oAdo.m_OleDbConnection,frmMain.g_oTables.m_oProject.DefaultProjectLinksCategoryTableName);
-								frmMain.g_oTables.m_oProject.CreateProjectLinksDepositoryTable(oAdo,oAdo.m_OleDbConnection,frmMain.g_oTables.m_oProject.DefaultProjectLinksDepositoryTableName);
-								frmMain.g_oTables.m_oProject.CreateProjectNotesTable(oAdo,oAdo.m_OleDbConnection,frmMain.g_oTables.m_oProject.DefaultProjectNotesTableName);
-								while (oAdo.m_OleDbConnection.State != System.Data.ConnectionState.Closed)
-								{
-									oAdo.m_OleDbConnection.Close();
-								}
-							}
-							else
-							{
-								//a project file already exists in the directory
-                                result = MessageBox.Show("A project notes and document links file already exists.\r\n\r\n NOTE: Previously saved personal notes and document links will be overwritten if choosing <Yes>.\r\n\r\nOverwrite the file? (Y/N)", "Personal Notes And Document Links", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-								switch (result) 
-								{
-									case DialogResult.Yes:
-										System.IO.File.Delete(strDestFile);
-										this.txtPersonal.Text = strNewPersonal;
-										oDao.CreateMDB(strDestFile);
-										strConn = oAdo.getMDBConnString(strDestFile,"admin","");
-										oAdo.OpenConnection(strConn);
-										frmMain.g_oTables.m_oProject.CreateProjectLinksCategoryTable(oAdo,oAdo.m_OleDbConnection,frmMain.g_oTables.m_oProject.DefaultProjectLinksCategoryTableName);
-										frmMain.g_oTables.m_oProject.CreateProjectLinksDepositoryTable(oAdo,oAdo.m_OleDbConnection,frmMain.g_oTables.m_oProject.DefaultProjectLinksDepositoryTableName);
-										frmMain.g_oTables.m_oProject.CreateProjectNotesTable(oAdo,oAdo.m_OleDbConnection,frmMain.g_oTables.m_oProject.DefaultProjectNotesTableName);
-										while (oAdo.m_OleDbConnection.State != System.Data.ConnectionState.Closed)
-										{
-											oAdo.m_OleDbConnection.Close();
-										}
-                                        frmMain.g_oFrmMain.frmProject.uc_project_document_links1.loadvalues(
-                                            txtShared.Text,
-                                            txtPersonal.Text, true);
-										break;
-									case DialogResult.No:
-                                         result = MessageBox.Show("Reference the existing notes and document links file (Y/N)", "Shared Notes And Document Links", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                                         if (result == DialogResult.Yes)
-                                         {
-                                             this.txtPersonal.Text = strNewPersonal;
-                                             frmMain.g_oFrmMain.frmProject.uc_project_document_links1.loadvalues(
-                                             txtShared.Text,
-                                             txtPersonal.Text, true);
-                                         }
-										break;
-								}                
-							}
-						}
-						else
-						{
-							//we have a shared directory already
-							//strDestFile = this.txtShared.Text + "\\project.mdb";
-							strDestFile = strNewPersonal + "\\personal_project_links_and_notes.mdb";
-							if (System.IO.File.Exists(strDestFile)==false)
-							{
-								//destination file does not exist
-								//a current shared notes and document links project.mdb exists 
-								//  so lets prompt user whether to copy the previous
-								//  project.mdb or a new one.
-								result2 = MessageBox.Show("A Current Personal Notes and Document Links table exists. Do you want to copy it to the new location?(Y/N)", "Personal Notes And Document Links", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-								switch (result2) 
-								{
-									case DialogResult.Yes:
-										this.txtPersonal.Text = strNewPersonal;
-										strSourceFile = this.m_strPersonalDirectory + "\\personal_project_links_and_notes.mdb";
-										if (System.IO.File.Exists(strSourceFile.Trim())==false)
-										{
-											oDao.CreateMDB(strDestFile);
-											strConn = oAdo.getMDBConnString(strDestFile,"admin","");
-											oAdo.OpenConnection(strConn);
-											frmMain.g_oTables.m_oProject.CreateProjectLinksCategoryTable(oAdo,oAdo.m_OleDbConnection,frmMain.g_oTables.m_oProject.DefaultProjectLinksCategoryTableName);
-											frmMain.g_oTables.m_oProject.CreateProjectLinksDepositoryTable(oAdo,oAdo.m_OleDbConnection,frmMain.g_oTables.m_oProject.DefaultProjectLinksDepositoryTableName);
-											frmMain.g_oTables.m_oProject.CreateProjectNotesTable(oAdo,oAdo.m_OleDbConnection,frmMain.g_oTables.m_oProject.DefaultProjectNotesTableName);
-											while (oAdo.m_OleDbConnection.State != System.Data.ConnectionState.Closed)
-											{
-												oAdo.m_OleDbConnection.Close();
-											}
-										}
-										else
-										{
-											System.IO.File.Copy(strSourceFile, strDestFile,true);
-										}
-										break;
-									case DialogResult.No:
-										this.txtPersonal.Text = strNewPersonal;
-										//strSourceFile = this.m_oEnv.strAppDir + "\\db\\personal_project_links_and_notes.mdb";
-										//System.IO.File.Copy(strSourceFile, strDestFile,true);									
-										oDao.CreateMDB(strDestFile);
-										strConn = oAdo.getMDBConnString(strDestFile,"admin","");
-										oAdo.OpenConnection(strConn);
-										frmMain.g_oTables.m_oProject.CreateProjectLinksCategoryTable(oAdo,oAdo.m_OleDbConnection,frmMain.g_oTables.m_oProject.DefaultProjectLinksCategoryTableName);
-										frmMain.g_oTables.m_oProject.CreateProjectLinksDepositoryTable(oAdo,oAdo.m_OleDbConnection,frmMain.g_oTables.m_oProject.DefaultProjectLinksDepositoryTableName);
-										frmMain.g_oTables.m_oProject.CreateProjectNotesTable(oAdo,oAdo.m_OleDbConnection,frmMain.g_oTables.m_oProject.DefaultProjectNotesTableName);
-										while (oAdo.m_OleDbConnection.State != System.Data.ConnectionState.Closed)
-										{
-											oAdo.m_OleDbConnection.Close();
-										}
-										break;
-								}                
-								
-
-							}
-							else
-							{
-								//destination file already exists.
-								//a current shared notes and document links project.mdb exists 
-								//  and a notes and document links project.mdb exists in the 
-								//  newly designated directory 
-								strDestFile = strNewPersonal + "\\personal_project_links_and_notes.mdb";
-								this.m_frmDialog1 =  new frmDialog();
-								this.m_frmDialog1.Height = 100;
-								
-								this.m_frmDialog1.Width = 100;
-								this.m_frmDialog1.MinimizeBox = false;
-								this.m_frmDialog1.MaximizeBox = false;
-								this.m_frmDialog1.WindowState=System.Windows.Forms.FormWindowState.Normal;
-								this.m_frmDialog1.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-								//label message
-								System.Windows.Forms.Label lblMsg = new System.Windows.Forms.Label();
-								lblMsg.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Regular))), System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-								lblMsg.ForeColor = System.Drawing.Color.Black;
-								lblMsg.Location = new System.Drawing.Point(8, 16);
-								lblMsg.Size = new System.Drawing.Size(208, 24);
-								this.m_frmDialog1.Controls.Add(lblMsg);
-
-								lblMsg.Name = "label1";
-								lblMsg.Top = 2;
-								lblMsg.Left = 2;
-								lblMsg.Width = 200;
-								lblMsg.Height = 50;
-
-								lblMsg.Text = "The selected personal directory already has a notes and document link database." + 
-									" Do you want to overwrite it with a new database file, or overwrite it with the current database " + 
-									" file, or keep the existing database file?";
-								lblMsg.Visible=true;
-								//copy current button
-								System.Windows.Forms.Button btnCopyCurrent = new System.Windows.Forms.Button();
-								btnCopyCurrent.Name="btnCopyCurrent";
-								btnCopyCurrent.FlatStyle = System.Windows.Forms.FlatStyle.Standard;
-								btnCopyCurrent.BackColor = System.Drawing.SystemColors.Control;
-								btnCopyCurrent.Location = new System.Drawing.Point(8, 256);
-								btnCopyCurrent.Size = new System.Drawing.Size(128, 24);
-								btnCopyCurrent.TabIndex = 4;
-								btnCopyCurrent.Text = "Copy Current";
-								btnCopyCurrent.Click += new EventHandler(this.m_frmDialog1_btnPressed_Click);
-								this.m_frmDialog1.Controls.Add(btnCopyCurrent);
-
-								//copy new
-
-								System.Windows.Forms.Button btnCopyNew = new System.Windows.Forms.Button();
-								btnCopyNew.Name="btnCopyNew";
-								btnCopyNew.FlatStyle = System.Windows.Forms.FlatStyle.Standard;
-								btnCopyNew.BackColor = System.Drawing.SystemColors.Control;
-								btnCopyNew.Location = new System.Drawing.Point(8, 256);
-								btnCopyNew.Size = new System.Drawing.Size(128, 24);
-								btnCopyNew.TabIndex = 4;
-								btnCopyNew.Text = "Copy New";
-								btnCopyNew.Click += new EventHandler(this.m_frmDialog1_btnPressed_Click);
-								this.m_frmDialog1.Controls.Add(btnCopyNew);
-
-
-								System.Windows.Forms.Button btnKeep = new System.Windows.Forms.Button();
-								btnKeep.Name="btnKeep";
-								btnKeep.FlatStyle = System.Windows.Forms.FlatStyle.Standard;
-								btnKeep.BackColor = System.Drawing.SystemColors.Control;
-								btnKeep.Location = new System.Drawing.Point(8, 256);
-								btnKeep.Size = new System.Drawing.Size(128, 24);
-								btnKeep.TabIndex = 4;
-								btnKeep.Text = "Keep";
-								btnKeep.Click += new EventHandler(this.m_frmDialog1_btnPressed_Click);
-								this.m_frmDialog1.Controls.Add(btnKeep);
-
-
-								System.Windows.Forms.Button btnCancel = new System.Windows.Forms.Button();
-								btnCancel.Name="btnCancel";
-								btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Standard;
-								btnCancel.BackColor = System.Drawing.SystemColors.Control;
-								btnCancel.Location = new System.Drawing.Point(8, 256);
-								btnCancel.Size = new System.Drawing.Size(128, 24);
-								btnCancel.TabIndex = 4;
-								btnCancel.Text = "Cancel";
-								btnCancel.Click += new EventHandler(this.m_frmDialog1_btnPressed_Click);
-								this.m_frmDialog1.Controls.Add(btnCancel);
-
-
-
-								lblMsg.Width = btnCopyCurrent.Width + btnCopyNew.Width + btnKeep.Width + btnCancel.Width;
-								btnCopyCurrent.Left = 2;
-								btnCopyNew.Left = 2 + btnCopyCurrent.Width;
-								btnKeep.Left = btnCopyNew.Left + btnCopyNew.Width;
-								btnCancel.Left = btnKeep.Left + btnKeep.Width;
-								btnCopyCurrent.Top = lblMsg.Top + lblMsg.Height;
-								btnCopyNew.Top = btnCopyCurrent.Top;
-								btnKeep.Top = btnCopyCurrent.Top;
-								btnCancel.Top = btnCopyCurrent.Top;
-								this.m_frmDialog1.Width = lblMsg.Left + lblMsg.Width + 6;
-								this.m_frmDialog1.Text = "Select A Personal Notes And Document Link Option";
-								this.m_frmDialog1.Height = btnCopyCurrent.Top + (int)(btnCopyCurrent.Height * 1.8) + 10;
-
-								result2 = this.m_frmDialog1.ShowDialog();
-								switch (result2)
-								{
-									case DialogResult.OK:
-									switch (m_strAction)
-									{
-										case "COPY CURRENT":
-											this.txtPersonal.Text = strNewPersonal;
-											strSourceFile = this.m_strSharedDirectory + "\\personal_project_links_and_notes.mdb";
-											System.IO.File.Copy(strSourceFile, strDestFile,true);
-											break;
-										case "COPY NEW":
-											oDao.CreateMDB(strDestFile);
-											strConn = oAdo.getMDBConnString(strDestFile,"admin","");
-											oAdo.OpenConnection(strConn);
-											frmMain.g_oTables.m_oProject.CreateProjectLinksCategoryTable(oAdo,oAdo.m_OleDbConnection,frmMain.g_oTables.m_oProject.DefaultProjectLinksCategoryTableName);
-											frmMain.g_oTables.m_oProject.CreateProjectLinksDepositoryTable(oAdo,oAdo.m_OleDbConnection,frmMain.g_oTables.m_oProject.DefaultProjectLinksDepositoryTableName);
-											frmMain.g_oTables.m_oProject.CreateProjectNotesTable(oAdo,oAdo.m_OleDbConnection,frmMain.g_oTables.m_oProject.DefaultProjectNotesTableName);
-											while (oAdo.m_OleDbConnection.State != System.Data.ConnectionState.Closed)
-											{
-												oAdo.m_OleDbConnection.Close();
-											}
-											break;
-										case "KEEP":
-											this.txtPersonal.Text = strNewPersonal;
-											break;
-										default:
-											break;
-									}
-										break;
-									default:
-										break;
-
-								}
-							}
-						}
-					}
-					if (this.txtPersonal.Text.Trim().ToUpper() == strNewPersonal.Trim().ToUpper())
-					{
-						((frmDialog)this.ParentForm).uc_project1.btnSave.Enabled=true;
-					}
-				}
-				oAdo=null;
-				oDao=null;
-
-			}
-
-		}
+		
 		private void m_frmDialog1_btnPressed_Click(object sender, System.EventArgs e)
 		{
 			

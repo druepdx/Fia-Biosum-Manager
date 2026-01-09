@@ -14,8 +14,6 @@ namespace FIA_Biosum_Manager
 
 		public FIA_Biosum_Manager.uc_select_list_item uc_select_list_item1;
 		public FIA_Biosum_Manager.uc_project uc_project1;
-		public FIA_Biosum_Manager.uc_project_document_links uc_project_document_links1;
-		public FIA_Biosum_Manager.uc_project_document_links_edit uc_project_document_links_edit1;
 		 public FIA_Biosum_Manager.uc_scenario uc_scenario1;
 		public FIA_Biosum_Manager.frmDialog m_frmDialogCallingForm;
 		public FIA_Biosum_Manager.frmOptimizerScenario m_frmScenarioCallingForm;
@@ -35,7 +33,6 @@ namespace FIA_Biosum_Manager
 		public FIA_Biosum_Manager.uc_plot_input uc_plot_input1;
 		public FIA_Biosum_Manager.uc_delete_conditions uc_delete_conditions;
 		public FIA_Biosum_Manager.uc_delete_packages uc_delete_packages;
-		public FIA_Biosum_Manager.uc_project_notes uc_project_notes1;
 		public FIA_Biosum_Manager.uc_processor_scenario_tree_diam_groups_list uc_processor_scenario_tree_diam_groups_list1;
 		public FIA_Biosum_Manager.uc_processor_scenario_tree_diam_groups_edit uc_processor_scenario_tree_diam_groups_edit1;
 		public FIA_Biosum_Manager.uc_processor_scenario_tree_spc_groups uc_processor_scenario_tree_spc_groups1;
@@ -298,38 +295,20 @@ namespace FIA_Biosum_Manager
             
             this.uc_project1 = new uc_project();
             
-            this.uc_project_document_links1 = new uc_project_document_links();
-            
-            this.uc_project_document_links_edit1 = new uc_project_document_links_edit();
-            
             this.uc_previous_expressions1 = new uc_previous_expressions();
-            
-            this.uc_project_notes1 = new uc_project_notes();
             
             this.Controls.Add(this.uc_select_list_item1);
             
             this.Controls.Add(this.uc_project1);
-                        
-            this.Controls.Add(this.uc_project_document_links1);
-            
-            this.Controls.Add(this.uc_project_document_links_edit1);
             
             this.Controls.Add(this.uc_previous_expressions1);
             
-            this.Controls.Add(this.uc_project_notes1);
-            
 
             this.uc_select_list_item1.Visible=false;
-			this.uc_project_document_links1.Visible=false;
-			this.uc_project_document_links_edit1.Visible=false;
 			this.uc_project1.Visible=false;
 			this.uc_previous_expressions1.Visible=false;
-			this.uc_project_notes1.Visible=false;
-			this.uc_project_document_links1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.uc_project_document_links_edit1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.uc_previous_expressions1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.uc_select_list_item1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.uc_project_notes1.Dock = System.Windows.Forms.DockStyle.Fill;
 		}
 
 		private void frmDialog_Resize(object sender, System.EventArgs e)
