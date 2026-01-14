@@ -290,7 +290,7 @@ namespace FIA_Biosum_Manager
         {
             SQLite.ADO.DataMgr oDataMgr = new SQLite.ADO.DataMgr();
             string strDbFile = frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() +
-                "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaulDbFile;
+                "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaultDbFile;
             using (System.Data.SQLite.SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection(oDataMgr.GetConnectionString(strDbFile)))
             {
                 conn.Open();

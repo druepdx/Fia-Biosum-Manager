@@ -34,7 +34,7 @@ namespace FIA_Biosum_Manager
         public class Project
         {
             public string DefaultProjectTableDbFile { get { return @"db\project.mdb"; } }
-            public string DefaultProjectTableName { get { return "project"; } }
+            static public string DefaultProjectTableName { get { return "project"; } }
             public string DefaultProjectNotesTableDbFile { get { return @"db\project.mdb"; } }
             public string DefaultProjectUserConfigTableDbFile { get { return @"db\project.mdb"; } }
             static public string DefaultProjectDatasourceTableDbFile { get { return @"db\project.mdb"; } }
@@ -4539,7 +4539,7 @@ namespace FIA_Biosum_Manager
             static public string DefaultTreeDiamGroupsTableName { get { return "scenario_tree_diam_groups"; } }
             static public string DefaultTreeSpeciesGroupsTableName { get { return "scenario_tree_species_groups"; } }
             static public string DefaultTreeSpeciesGroupsListTableName { get { return "scenario_tree_species_groups_list"; } }
-            static public string DefaulDbFile { get { return @"db\scenario_processor_rule_definitions.db"; } }
+            static public string DefaultDbFile { get { return @"db\scenario_processor_rule_definitions.db"; } }
 
 
 

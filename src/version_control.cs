@@ -171,6 +171,7 @@ namespace FIA_Biosum_Manager
                     }
                 }
             }
+            //UpdateDatasources_5_12_1();
             frmMain.g_oFrmMain.DeactivateStandByAnimation();
 
             if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 1)
@@ -295,7 +296,7 @@ namespace FIA_Biosum_Manager
 
             // MIGRATING SETTINGS FROM scenario_processor_rule_definitions.mdb TO scenario_processor_rule_definitions.db
             string targetDbFile = ReferenceProjectDirectory.Trim() +
-                @"\processor\" + Tables.ProcessorScenarioRuleDefinitions.DefaulDbFile;
+                @"\processor\" + Tables.ProcessorScenarioRuleDefinitions.DefaultDbFile;
             string sourceDbFile = ReferenceProjectDirectory.Trim() +
                 @"\processor\" + Tables.ProcessorScenarioRuleDefinitions.DefaultHarvestMethodDbFile;
             if (System.IO.File.Exists(targetDbFile) == false)
@@ -363,7 +364,7 @@ namespace FIA_Biosum_Manager
                     if (oAdo.m_intError == 0)
                     {
                         // Set file (database) field to new Sqlite DB
-                        string newDbFile = System.IO.Path.GetFileName(Tables.ProcessorScenarioRuleDefinitions.DefaulDbFile);
+                        string newDbFile = System.IO.Path.GetFileName(Tables.ProcessorScenarioRuleDefinitions.DefaultDbFile);
                         oAdo.m_strSQL = "UPDATE scenario_1 set file = '" +
                             newDbFile + "'";
                         oAdo.SqlNonQuery(copyConn, oAdo.m_strSQL);
@@ -591,7 +592,7 @@ namespace FIA_Biosum_Manager
 
                 // MIGRATE GIS DATA
                 // Check if Processor parameters in SQLite
-                string strTest = $@"{frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim()}\processor\{Tables.ProcessorScenarioRuleDefinitions.DefaulDbFile}";
+                string strTest = $@"{frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim()}\processor\{Tables.ProcessorScenarioRuleDefinitions.DefaultDbFile}";
                 if (!System.IO.File.Exists(strTest))
                 {
                     System.Windows.Forms.MessageBox.Show("Processor parameters have not been migrated to SQLite. SQLite GIS data cannot be loaded!", "FIA Biosum");
@@ -712,7 +713,7 @@ namespace FIA_Biosum_Manager
                                 }
                             }
                         }
-                        strConn = oDataMgr.GetConnectionString($@"{frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim()}\processor\{Tables.ProcessorScenarioRuleDefinitions.DefaulDbFile}");
+                        strConn = oDataMgr.GetConnectionString($@"{frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim()}\processor\{Tables.ProcessorScenarioRuleDefinitions.DefaultDbFile}");
                         using (System.Data.SQLite.SQLiteConnection scenarioConn = new System.Data.SQLite.SQLiteConnection(strConn))
                         {
                             scenarioConn.Open();
@@ -1074,7 +1075,7 @@ namespace FIA_Biosum_Manager
                     oDataMgr.SqlNonQuery(conn, oDataMgr.m_strSQL);
                 }
                 // Update Processor data sources
-                strDestFile = $@"{ReferenceProjectDirectory.Trim()}\processor\{Tables.ProcessorScenarioRuleDefinitions.DefaulDbFile}";
+                strDestFile = $@"{ReferenceProjectDirectory.Trim()}\processor\{Tables.ProcessorScenarioRuleDefinitions.DefaultDbFile}";
                 using (System.Data.SQLite.SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection(oDataMgr.GetConnectionString(strDestFile)))
                 {
                     conn.Open();
@@ -1385,7 +1386,7 @@ namespace FIA_Biosum_Manager
                     frmMain.g_oTables.m_oFIAPlot.DefaultBiosumPopStratumAdjustmentFactorsTableName);
 
                 // Update processor datasources
-                strDestFile = ReferenceProjectDirectory.Trim() + "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaulDbFile;
+                strDestFile = ReferenceProjectDirectory.Trim() + "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaultDbFile;
                 using (System.Data.SQLite.SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection(oDataMgr.GetConnectionString(strDestFile)))
                 {
                     conn.Open();
@@ -1429,7 +1430,7 @@ namespace FIA_Biosum_Manager
                 Tables.Reference.DefaultBiosumReferenceFile, Tables.Reference.DefaultFIATreeSpeciesTableName);
 
             // Update processor datasource
-            strDestFile = ReferenceProjectDirectory.Trim() + "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaulDbFile;
+            strDestFile = ReferenceProjectDirectory.Trim() + "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaultDbFile;
             using (System.Data.SQLite.SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection(oDataMgr.GetConnectionString(strDestFile)))
             {
                 conn.Open();
@@ -1524,6 +1525,79 @@ namespace FIA_Biosum_Manager
                 System.IO.File.Copy(strSourceFile, strDestFile, true);
             }
 
+            // Migrate project database
+            ODBCMgr oODBCMgr = new ODBCMgr();
+            utils oUtils = new utils();
+            dao_data_access oDao = new dao_data_access();
+            ado_data_access oAdo = new ado_data_access();
+            strDestFile = ReferenceProjectDirectory.Trim() + "\\db\\project.db";
+            strSourceFile = ReferenceProjectDirectory.Trim() + "\\db\\project.mdb";
+
+            if (!System.IO.File.Exists(strDestFile))
+            {
+                oDataMgr.CreateDbFile(strDestFile);
+            }
+
+            using (System.Data.SQLite.SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection(oDataMgr.GetConnectionString(strDestFile)))
+            {
+                conn.Open();
+
+                if (!oDataMgr.TableExist(conn, Tables.Project.DefaultProjectTableName))
+                {
+                    frmMain.g_oTables.m_oProject.CreateProjectTable(oDataMgr, conn, Tables.Project.DefaultProjectTableName);
+                }
+
+                if (!oDataMgr.TableExist(conn, Tables.Project.DefaultProjectDatasourceTableName))
+                {
+                    frmMain.g_oTables.m_oProject.CreateDatasourceTable(oDataMgr, conn, Tables.Project.DefaultProjectDatasourceTableName);
+                }
+            }
+
+            // Create DSN if needed
+            if (oODBCMgr.CurrentUserDSNKeyExist(ODBCMgr.DSN_KEYS.ProjectDsnName))
+            {
+                oODBCMgr.RemoveUserDSN(ODBCMgr.DSN_KEYS.ProjectDsnName);
+            }
+            oODBCMgr.CreateUserSQLiteDSN(ODBCMgr.DSN_KEYS.ProjectDsnName, strDestFile);
+
+            // Set new temporary database
+            string strTempAccdb = oUtils.getRandomFile(frmMain.g_oEnv.strTempDir, "accdb");
+            oDao.CreateMDB(strTempAccdb);
+
+            // Link access tables to temporary database
+            oDao.CreateTableLink(strTempAccdb, Tables.Project.DefaultProjectTableName, strSourceFile, Tables.Project.DefaultProjectTableName);
+            oDao.CreateTableLink(strTempAccdb, Tables.Project.DefaultProjectDatasourceTableName, strSourceFile, Tables.Project.DefaultProjectDatasourceTableName);
+
+            // Create SQLite table links
+            oDao.CreateSQLiteTableLink(strTempAccdb, Tables.Project.DefaultProjectTableName, Tables.Project.DefaultProjectTableName + "_1",
+                ODBCMgr.DSN_KEYS.ProjectDsnName, strDestFile);
+            oDao.CreateSQLiteTableLink(strTempAccdb, Tables.Project.DefaultProjectDatasourceTableName, Tables.Project.DefaultProjectDatasourceTableName + "_1",
+                ODBCMgr.DSN_KEYS.ProjectDsnName, strDestFile);
+            System.Threading.Thread.Sleep(4000);
+
+            // Copy tables
+            string strConn = oAdo.getMDBConnString(strTempAccdb, "", "");
+            using (OleDbConnection copyConn = new OleDbConnection(strConn))
+            {
+                copyConn.Open();
+                oAdo.m_strSQL = "INSERT INTO " + Tables.Project.DefaultProjectTableName + "_1 " +
+                    "(proj_id, created_by, created_date, company, description, notes, project_root_directory, application_version) " +
+                    "SELECT proj_id, created_by, created_date, company, description, notes, project_root_directory, application_version " +
+                    " FROM " + Tables.Project.DefaultProjectTableName;
+                oAdo.SqlNonQuery(copyConn, oAdo.m_strSQL);
+
+                oAdo.m_strSQL = "INSERT INTO " + Tables.Project.DefaultProjectDatasourceTableName + "_1 " +
+                    "SELECT * FROM " + Tables.Project.DefaultProjectDatasourceTableName;
+                oAdo.SqlNonQuery(copyConn, oAdo.m_strSQL);
+
+                oAdo.m_strSQL = "DROP TABLE " + Tables.Project.DefaultProjectTableName + "_1";
+                oAdo.SqlNonQuery(copyConn, oAdo.m_strSQL);
+
+                oAdo.m_strSQL = "DROP TABLE " + Tables.Project.DefaultProjectDatasourceTableName + "_1";
+                oAdo.SqlNonQuery(copyConn, oAdo.m_strSQL);
+            }
+
+            
         }
 
             // Method to compare two versions.

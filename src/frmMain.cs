@@ -2058,7 +2058,7 @@ namespace FIA_Biosum_Manager
             string strScenarioDir = strProjDir.Trim() + "\\processor";
             strFullPath = new System.Text.StringBuilder(strScenarioDir);
             strFullPath.Append("\\");
-            string strDbFullPath = strFullPath.ToString() + Tables.ProcessorScenarioRuleDefinitions.DefaulDbFile;
+            string strDbFullPath = strFullPath.ToString() + Tables.ProcessorScenarioRuleDefinitions.DefaultDbFile;
             strFullPath.Append(Tables.ProcessorScenarioRuleDefinitions.DefaultAdditionalHarvestCostsDbFile);
             if (System.IO.File.Exists(strDbFullPath))
             {
@@ -2336,8 +2336,14 @@ namespace FIA_Biosum_Manager
                     frmMain.g_oUtils.WriteText(frmProject.uc_project1.m_strDebugFile, "Description:                " + frmProject.uc_project1.txtDescription.Text.Trim() + "\r\n");
                 }
 
-
-				this.frmProject.uc_project1.SetProjectPathEnvironmentVariables();
+                if (this.frmProject.uc_project1.m_strProjectFile.EndsWith(".mdb") || this.frmProject.uc_project1.m_strProjectFile.EndsWith(".mde") || this.frmProject.uc_project1.m_strProjectFile.EndsWith(".accdb"))
+                {
+                    this.frmProject.uc_project1.SetProjectPathEnvironmentVariables();
+                }
+                else
+                {
+                    this.frmProject.uc_project1.SetProjectPathEnvironmentVariablesSqlite();
+                }
 				if (frmProject.uc_project1.m_strAction != "NEW")
 				{
 					oVersCtl.ReferenceProjectDirectory=this.frmProject.uc_project1.m_strProjectDirectory;
@@ -2422,8 +2428,15 @@ namespace FIA_Biosum_Manager
                     frmMain.g_oUtils.WriteText(frmTemp.frmProject.uc_project1.m_strDebugFile, "Description:                " + frmProject.uc_project1.txtDescription.Text.Trim() + "\r\n");
                 }
 
-				frmTemp.frmProject.uc_project1.SetProjectPathEnvironmentVariables();
-				if (frmTemp.frmProject.uc_project1.m_strAction != "NEW")
+                if (this.frmProject.uc_project1.m_strProjectFile.EndsWith(".mdb") || this.frmProject.uc_project1.m_strProjectFile.EndsWith(".mde") || this.frmProject.uc_project1.m_strProjectFile.EndsWith(".accdb"))
+                {
+                    this.frmProject.uc_project1.SetProjectPathEnvironmentVariables();
+                }
+                else
+                {
+                    this.frmProject.uc_project1.SetProjectPathEnvironmentVariablesSqlite();
+                }
+                if (frmTemp.frmProject.uc_project1.m_strAction != "NEW")
 				{
 					oVersCtl.ReferenceProjectDirectory=frmTemp.frmProject.uc_project1.m_strProjectDirectory;
 					oVersCtl.PerformVersionCheck();

@@ -940,7 +940,7 @@ namespace FIA_Biosum_Manager
                 if (ReferenceOptimizerScenarioForm.m_oOptimizerScenarioItem.m_oProcessorScenarioItem_Collection.Item(x).Selected)
                 {
                     string strProcessorRuleDefsDb = frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() +
-                    "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaulDbFile;
+                    "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaultDbFile;
 
                     string strProcessorScenarioId = ReferenceOptimizerScenarioForm.m_oOptimizerScenarioItem.m_oProcessorScenarioItem_Collection.Item(x).ScenarioId;
 
@@ -1950,7 +1950,7 @@ namespace FIA_Biosum_Manager
                 frmMain.g_oTables.m_oFvs.CreateRxHarvestCostColumnTable(p_dataMgr, conn, Tables.FVS.DefaultRxHarvestCostColumnsTableName + "_C");
 
                 // Add the ad hoc additional harvest cost columns to table
-                string strProcessorPath = ((frmMain)this._frmScenario.ParentForm).frmProject.uc_project1.m_strProjectDirectory + "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaulDbFile;
+                string strProcessorPath = ((frmMain)this._frmScenario.ParentForm).frmProject.uc_project1.m_strProjectDirectory + "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaultDbFile;
 
                 p_dataMgr.m_strSQL = "ATTACH DATABASE '" + strProcessorPath + "' AS processor_defs";
                 p_dataMgr.SqlNonQuery(conn, p_dataMgr.m_strSQL);
@@ -7559,7 +7559,7 @@ namespace FIA_Biosum_Manager
                 p_dataMgr.m_strSQL = "ATTACH DATABASE '" + m_strProcessorResultsPathAndFile + "' AS processor_results";
                 p_dataMgr.SqlNonQuery(contextConn, p_dataMgr.m_strSQL);
 
-                p_dataMgr.m_strSQL = "ATTACH DATABASE '" + frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() + "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaulDbFile + "' AS processor_rules";
+                p_dataMgr.m_strSQL = "ATTACH DATABASE '" + frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() + "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaultDbFile + "' AS processor_rules";
                 p_dataMgr.SqlNonQuery(contextConn, p_dataMgr.m_strSQL);
 
                 p_dataMgr.m_strSQL = "ATTACH DATABASE '" + frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() + "\\" + Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableDbFile + "' AS optimizer_rules";

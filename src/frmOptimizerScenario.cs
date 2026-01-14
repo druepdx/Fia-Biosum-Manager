@@ -3194,7 +3194,7 @@ namespace FIA_Biosum_Manager
             //scenario db connection
             string strProcessorScenarioDB =
                 frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() +
-                "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaulDbFile;
+                "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaultDbFile;
             //
             //get a list of all the scenarios
             //

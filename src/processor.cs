@@ -37,7 +37,7 @@ namespace FIA_Biosum_Manager
             // Attach to rule definitions database; Seems to be connection-specific
             string strScenarioDB =
                 frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() +
-                "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaulDbFile;
+                "\\processor\\" + Tables.ProcessorScenarioRuleDefinitions.DefaultDbFile;
             string strSql = "ATTACH DATABASE '" + strScenarioDB + "' AS definitions";
             if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 2)
                 frmMain.g_oUtils.WriteText(m_strDebugFile, "Execute SQL: " + strSql + "\r\n");

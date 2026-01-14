@@ -14,16 +14,6 @@ namespace FIA_Biosum_Manager
 	public class uc_project : System.Windows.Forms.UserControl
 	{
 
-		//oledb
-		private System.Data.DataSet dataSet1;
-		private System.Data.OleDb.OleDbCommand oleDbSelectCommand1;
-		private System.Data.OleDb.OleDbCommand oleDbInsertCommand1;
-		private System.Data.OleDb.OleDbCommand oleDbUpdateCommand1;
-		private System.Data.OleDb.OleDbCommand oleDbDeleteCommand1;
-		private System.Data.OleDb.OleDbDataAdapter oleDbDataAdapter1;
-		private System.Data.OleDb.OleDbCommand oleDbCommand1;
-		private System.Data.OleDb.OleDbConnection oleDbConnection1;
-		//private System.Data.OleDb.OleDbException oleException;
 
 		//project variables
 		public bool boolProjectOpen = false;
@@ -108,14 +98,6 @@ namespace FIA_Biosum_Manager
 
             this.m_oEnv = new env();
 			// TODO: Add any initialization after the InitializeComponent call
-			this.dataSet1 = new System.Data.DataSet();
-			this.oleDbSelectCommand1 = new System.Data.OleDb.OleDbCommand();
-			this.oleDbInsertCommand1 = new System.Data.OleDb.OleDbCommand();
-			this.oleDbUpdateCommand1 = new System.Data.OleDb.OleDbCommand();
-			this.oleDbDeleteCommand1 = new System.Data.OleDb.OleDbCommand();
-			this.oleDbDataAdapter1 = new System.Data.OleDb.OleDbDataAdapter();
-			this.oleDbCommand1 = new System.Data.OleDb.OleDbCommand();
-			this.oleDbConnection1 = new System.Data.OleDb.OleDbConnection();
 			this.m_intError = 0;
 			this.m_strError="";
             // Set the control height to accomodate the lowest button
@@ -701,9 +683,7 @@ namespace FIA_Biosum_Manager
 		}
 		public void SaveProjectProperties()
 		{
-			string strOldDestFile;
 			string strDestFile;
-			string strOldSourceFile;
 			string strSourceFile;
 			string strConn;
 			string strSQL;
@@ -864,7 +844,7 @@ namespace FIA_Biosum_Manager
 					//datasource table
 					frmMain.g_oTables.m_oProject.CreateDatasourceTable(p_dataMgr, oConn, Tables.Project.DefaultProjectDatasourceTableName);
 					//project table
-					frmMain.g_oTables.m_oProject.CreateProjectTable(p_dataMgr, oConn, frmMain.g_oTables.m_oProject.DefaultProjectTableName);
+					frmMain.g_oTables.m_oProject.CreateProjectTable(p_dataMgr, oConn, Tables.Project.DefaultProjectTableName);
                 }
 
 				//
@@ -891,7 +871,7 @@ namespace FIA_Biosum_Manager
                 //
                 //master file
                 //
-                strOldDestFile = $@"{this.txtRootDirectory.Text.Trim()}\{frmMain.g_oTables.m_oFIAPlot.DefaultPopTableDbFile}";
+                strDestFile = $@"{this.txtRootDirectory.Text.Trim()}\{frmMain.g_oTables.m_oFIAPlot.DefaultPopTableDbFile}";
                 strConn = p_dataMgr.GetConnectionString(strDestFile);
                 p_frmTherm.Increment(3);
 				p_frmTherm.lblMsg.Text = strDestFile;
@@ -1001,7 +981,7 @@ namespace FIA_Biosum_Manager
 				//
 				p_frmTherm.lblMsg.Text = strDestFile;
 				p_frmTherm.lblMsg.Refresh();
-                CreateProcessorScenarioRuleDefinitionDbAndTables($@"{this.txtRootDirectory.Text.Trim()}\processor\{Tables.ProcessorScenarioRuleDefinitions.DefaulDbFile}");
+                CreateProcessorScenarioRuleDefinitionDbAndTables($@"{this.txtRootDirectory.Text.Trim()}\processor\{Tables.ProcessorScenarioRuleDefinitions.DefaultDbFile}");
 
                 p_frmTherm.Increment(10);
 				//p_frmTherm.lblMsg.Text = strDestFile;
@@ -1310,8 +1290,8 @@ namespace FIA_Biosum_Manager
 			this.m_strNewProjectFile = "";
 			this.m_strNewProjectDirectory = "";
 			OpenFileDialog OpenFileDialog1 = new OpenFileDialog();
-			OpenFileDialog1.Title = "Open FIA Biosum Project Access File";
-			OpenFileDialog1.Filter = "MS Access Database File (*.MDB,*.MDE,*.ACCDB) |*.mdb;*.mde;*.accdb";
+			OpenFileDialog1.Title = "Open FIA Biosum Project Database File";
+			OpenFileDialog1.Filter = "Database Files (*.MDB,*.MDE,*.ACCDB,*.DB,*.SQLITE,*SQLITE3) |*.mdb;*.mde;*.accdb;*.db;*.sqlite;*.sqlite3";
 			
 			DialogResult result =  OpenFileDialog1.ShowDialog();
 			this.m_intError=0;
@@ -1328,7 +1308,15 @@ namespace FIA_Biosum_Manager
                         frmMain.g_oUtils.WriteText(m_strDebugFile, "uc_project.Open_Profect: Open Project Table \r\n");
                         frmMain.g_oUtils.WriteText(m_strDebugFile, "uc_project.Open_Profect: strNewProjectDirectory=" + m_strNewProjectDirectory + " strNewProjectFile=" + m_strNewProjectFile + "\r\n");
                     }
-					this.OpenProjectTable(this.m_strNewProjectDirectory, this.m_strNewProjectFile);
+
+					if (this.m_strNewProjectFile.EndsWith(".mdb") || this.m_strNewProjectFile.EndsWith(".mde") || this.m_strNewProjectFile.EndsWith(".accdb"))
+                    {
+						this.OpenProjectTable(this.m_strNewProjectDirectory, this.m_strNewProjectFile);
+					}
+                    else
+                    {
+						this.OpenProjectTableNew(this.m_strNewProjectDirectory, this.m_strNewProjectFile);
+                    }
 
 
 				}
@@ -1392,21 +1380,6 @@ namespace FIA_Biosum_Manager
 				this.txtProjectId.Text = this.txtProjectId.Text.Trim();
 				//replace spaces with underscores
 				this.txtProjectId.Text = this.txtProjectId.Text.Replace(" ","_");
-
-                //if (this.m_strAction == "NEW")
-                //{
-                //    if (txtRootDirectory.Text.Trim().Length == 0)
-                //    {
-                //        this.txtRootDirectory.Text = this.m_oEnv.strAppDir.Substring(0, 2) + "\\FIA_Biosum\\" + this.txtProjectId.Text.ToLower();
-                //    }
-                //    else
-                //    {
-                //        if (txtRootDirectory.Text.Trim().Substring(txtRootDirectory.Text.Trim().Length - 1, 1) == @"\")
-                //            this.txtRootDirectory.Text = this.txtRootDirectory.Text.Trim() + this.txtProjectId.Text.ToLower();
-                //        else
-                //            this.txtRootDirectory.Text = this.txtRootDirectory.Text.Trim() + "\\" + this.txtProjectId.Text.ToLower();
-                //    }
-                //}
 			}
             if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 1)
                 frmMain.g_oUtils.WriteText(m_strDebugFile, "uc_project.txtProjectId_Leave: txtProjectId.Text=" + txtProjectId.Text.Trim() + " txtRootDirectory.Text=" + txtRootDirectory.Text.Trim() + "\r\n");
@@ -1518,8 +1491,138 @@ namespace FIA_Biosum_Manager
 			}
 			
 		}
-		
+
 		public void SetProjectPathEnvironmentVariables()
+        {
+			if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 1)
+			{
+				frmMain.g_oUtils.WriteText(m_strDebugFile, "\r\n//\r\n");
+				frmMain.g_oUtils.WriteText(m_strDebugFile, "//uc_project.SetProjectPathEnvironmentVariables \r\n");
+				frmMain.g_oUtils.WriteText(m_strDebugFile, "//\r\n");
+			}
+			int x;
+
+			string strFullPath = "";
+
+			string strConn = "";
+			string strSQL = "";
+			string strOldProjDir = "";
+			string strProjDir = "";
+
+			frmMain.g_oGeneralMacroSubstitutionVariable_Collection.Item(frmMain.OLDPROJDIR).VariableSubstitutionString = this.txtRootDirectory.Text.Trim();
+			frmMain.g_oGeneralMacroSubstitutionVariable_Collection.Item(frmMain.PROJDIR).VariableSubstitutionString = this.m_strProjectDirectory.Trim();
+
+			strProjDir = m_strProjectDirectory.Trim();
+			strOldProjDir = this.txtRootDirectory.Text.Trim();
+
+			if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 1)
+				frmMain.g_oUtils.WriteText(m_strDebugFile, "uc_project.SetProjectPathEnvironmentVariables: Replace old project directory (" + strOldProjDir + ") with new project directory (" + strProjDir + ")\r\n");
+
+			/**********************************************
+			 **instantiate the ado_data_access class
+			 **********************************************/
+			ado_data_access oAdo = new ado_data_access();
+			DataMgr oDataMgr = new DataMgr();
+			//
+			//PROJECT DATA SOURCE
+			//
+			strFullPath = strProjDir + "\\db\\" + this.m_strProjectFile;
+			strConn = oAdo.getMDBConnString(strFullPath, "", "");
+			if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 1)
+				frmMain.g_oUtils.WriteText(m_strDebugFile, "uc_project.SetProjectPathEnvironmentVariables: Open Connection to Project Dbfile " + strConn + ")\r\n");
+			oAdo.OpenConnection(strConn);
+
+			strSQL = "UPDATE project SET project_root_directory = '" + strProjDir + "' " +
+					 "WHERE proj_id = '" + this.txtProjectId.Text.Trim() + "';";
+			if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 2)
+				frmMain.g_oUtils.WriteText(m_strDebugFile, "uc_project.SetProjectPathEnvironmentVariables: Execute SQL \r\n" + strSQL + "\r\n");
+
+			oAdo.SqlNonQuery(oAdo.m_OleDbConnection, strSQL);
+
+			strSQL = "UPDATE datasource " +
+					 "SET path = REPLACE(TRIM(LCASE(path))," +
+								"'" + strOldProjDir.Trim().ToLower() + "'," +
+								"'" + strProjDir.Trim().ToLower() + "')";
+			oAdo.SqlNonQuery(oAdo.m_OleDbConnection, strSQL);
+
+			if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 2)
+				frmMain.g_oUtils.WriteText(m_strDebugFile, "uc_project.SetProjectPathEnvironmentVariables: Execute SQL \r\n" + strSQL + "\r\n");
+
+			oAdo.CloseConnection(oAdo.m_OleDbConnection);
+			//
+			//TREATMENT OPTIMIZER SCENARIO DATA SOURCE
+			//
+			strFullPath = strProjDir + "\\" + Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableDbFile;
+			if (System.IO.File.Exists(strFullPath))
+			{
+				strConn = oDataMgr.GetConnectionString(strFullPath);
+				if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 1)
+					frmMain.g_oUtils.WriteText(m_strDebugFile, "uc_project.SetProjectPathEnvironmentVariables: Open Connection to Treatment Optimizer Scenario Dbfile " + strConn + ")\r\n");
+
+				using (System.Data.SQLite.SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection(strConn))
+				{
+					conn.Open();
+					strSQL = "UPDATE scenario_datasource " +
+					 "SET path = REPLACE(TRIM(LOWER(path))," +
+								"'" + strOldProjDir.Trim().ToLower() + "'," +
+								"'" + strProjDir.Trim().ToLower() + "')";
+					if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 2)
+						frmMain.g_oUtils.WriteText(m_strDebugFile, "uc_project.SetProjectPathEnvironmentVariables: Execute SQL \r\n" + strSQL + "\r\n");
+					oDataMgr.SqlNonQuery(conn, strSQL);
+					strSQL = "UPDATE scenario " +
+					"SET path = REPLACE(TRIM(LOWER(path))," +
+							   "'" + strOldProjDir.Trim().ToLower() + "'," +
+							   "'" + strProjDir.Trim().ToLower() + "')";
+					if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 2)
+						frmMain.g_oUtils.WriteText(m_strDebugFile, "uc_project.SetProjectPathEnvironmentVariables: Execute SQL \r\n" + strSQL + "\r\n");
+					oDataMgr.SqlNonQuery(conn, strSQL);
+				}
+			}
+			//
+			//PROCESSOR SCENARIO DATA SOURCE
+			//
+			strFullPath = $@"{strProjDir}\processor\{Tables.ProcessorScenarioRuleDefinitions.DefaultDbFile}";
+			if (System.IO.File.Exists(strFullPath))
+			{
+				strConn = oDataMgr.GetConnectionString(strFullPath);
+				if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 1)
+					frmMain.g_oUtils.WriteText(m_strDebugFile, "uc_project.SetProjectPathEnvironmentVariables: Open Connection to Processor Scenario Dbfile " + strConn + ")\r\n");
+				using (System.Data.SQLite.SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection(strConn))
+				{
+					conn.Open();
+					strSQL = "UPDATE scenario_datasource " +
+						 "SET path = REPLACE(TRIM(LOWER(path))," +
+									"'" + strOldProjDir.Trim().ToLower() + "'," +
+									"'" + strProjDir.Trim().ToLower() + "')";
+					if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 2)
+						frmMain.g_oUtils.WriteText(m_strDebugFile, "uc_project.SetProjectPathEnvironmentVariables: Execute SQL \r\n" + strSQL + "\r\n");
+					oDataMgr.SqlNonQuery(conn, strSQL);
+					strSQL = "UPDATE scenario " +
+						 "SET path = REPLACE(TRIM(LOWER(path))," +
+									"'" + strOldProjDir.Trim().ToLower() + "'," +
+									"'" + strProjDir.Trim().ToLower() + "')";
+					if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 2)
+						frmMain.g_oUtils.WriteText(m_strDebugFile, "uc_project.SetProjectPathEnvironmentVariables: Execute SQL \r\n" + strSQL + "\r\n");
+					oDataMgr.SqlNonQuery(conn, strSQL);
+				}
+			}
+
+			if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 1)
+				frmMain.g_oUtils.WriteText(m_strDebugFile, "uc_project.SetProjectPathEnvironmentVariables: frmMain.g_oUtils.getDriveLetter for project \r\n");
+			m_strProjectDirectoryDrive = frmMain.g_oUtils.getDriveLetter(strProjDir);
+
+			this.txtRootDirectory.Text = strProjDir;
+
+
+			if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 1)
+				frmMain.g_oUtils.WriteText(m_strDebugFile, "uc_project.SetProjectPathEnvironmentVariables: Leaving \r\n");
+
+			oAdo = null;
+
+		}
+
+
+		public void SetProjectPathEnvironmentVariablesSqlite()
 		{
             if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 1)
             {
@@ -1606,7 +1709,7 @@ namespace FIA_Biosum_Manager
             //
             //PROCESSOR SCENARIO DATA SOURCE
             //
-            strFullPath = $@"{strProjDir}\processor\{Tables.ProcessorScenarioRuleDefinitions.DefaulDbFile}";
+            strFullPath = $@"{strProjDir}\processor\{Tables.ProcessorScenarioRuleDefinitions.DefaultDbFile}";
             if (System.IO.File.Exists(strFullPath))
             {
                 strConn = oDataMgr.GetConnectionString(strFullPath);
