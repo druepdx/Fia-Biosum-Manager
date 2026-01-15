@@ -21,7 +21,6 @@ namespace FIA_Biosum_Manager
 		private System.Windows.Forms.TextBox txtHaulCost;
 
 		public FIA_Biosum_Manager.frmOptimizerScenario m_frmScenario;
-		private FIA_Biosum_Manager.frmGridView m_frmHarvestCosts;
 		public string[] m_strColumnsToEdit;
 		public int m_intColumnsToEditCount=0;
 		private System.Windows.Forms.Label label3;

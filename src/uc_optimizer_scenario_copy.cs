@@ -63,7 +63,7 @@ namespace FIA_Biosum_Manager
             //
             //OPEN CONNECTION TO DB FILE CONTAINING Optimizer Analysis Scenario TABLE
             //
-            //scenario mdb connection
+            //scenario db connection
             string strOptimizerScenarioDB =
               frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() + "\\" +
               Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableDbFile;

@@ -265,7 +265,7 @@ namespace FIA_Biosum_Manager
                 m_oRxTools.LoadFVSOutputPrePostRxCycleSeqNum(strDbConn, m_oCurFVSPrepostSeqNumItem_Collection);
                 m_oCurFVSPrepostSeqNumItem_Collection.CopyProperties(m_oSavFVSPrepostSeqNumItem_Collection, m_oCurFVSPrepostSeqNumItem_Collection);
                 m_oQueries.m_oFvs.LoadDatasource = true;
-                m_oQueries.LoadDatasourcesNew(true);
+                m_oQueries.LoadDatasources(true);
                 if (m_oRxPackageItem_Collection == null)
                 {
                     m_oRxPackageItem_Collection = new RxPackageItem_Collection();
@@ -464,11 +464,11 @@ namespace FIA_Biosum_Manager
                 conn.Open();
                 if (!p_oDataMgr.TableExist(conn, Tables.FVS.DefaultFVSPrePostSeqNumTable))
                 {
-                    frmMain.g_oTables.m_oFvs.CreateFVSOutputSQLitePrePostSeqNumTable(p_oDataMgr, conn, Tables.FVS.DefaultFVSPrePostSeqNumTable);
+                    frmMain.g_oTables.m_oFvs.CreateFVSOutputPrePostSeqNumTable(p_oDataMgr, conn, Tables.FVS.DefaultFVSPrePostSeqNumTable);
                 }
                 if (!p_oDataMgr.TableExist(conn, Tables.FVS.DefaultFVSPrePostSeqNumRxPackageAssgnTable))
                 {
-                    frmMain.g_oTables.m_oFvs.CreateFVSOutputPrePostSQLiteSeqNumRxPackageAssgnTable(p_oDataMgr, conn, Tables.FVS.DefaultFVSPrePostSeqNumRxPackageAssgnTable);
+                    frmMain.g_oTables.m_oFvs.CreateFVSOutputPrePostSeqNumRxPackageAssgnTable(p_oDataMgr, conn, Tables.FVS.DefaultFVSPrePostSeqNumRxPackageAssgnTable);
                 }
 
                 if ((int)p_oDataMgr.getRecordCount(conn, "SELECT * FROM " + Tables.FVS.DefaultFVSPrePostSeqNumTable, Tables.FVS.DefaultFVSPrePostSeqNumTable) == 0)

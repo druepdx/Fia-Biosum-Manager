@@ -44,7 +44,7 @@ namespace FIA_Biosum_Manager
 			get {return _strScenarioType;}
 			set {_strScenarioType=value;}
 		}
-        public void LoadDatasourcesNew(bool p_bLimited)
+        public void LoadDatasources(bool p_bLimited)
         {
             if (p_bLimited)
             {
@@ -59,7 +59,7 @@ namespace FIA_Biosum_Manager
             if (this.m_oReference.LoadDatasource) this.m_oReference.LoadDatasources();
             if (this.m_oTravelTime.LoadDatasource) this.m_oTravelTime.LoadDatasources(null, null);
         }
-        public void LoadDatasourcesNew(bool p_bLimited, string p_strScenarioType, string p_strScenarioId)
+        public void LoadDatasources(bool p_bLimited, string p_strScenarioType, string p_strScenarioId)
         {
             Scenario = true;
             ScenarioType = p_strScenarioType;

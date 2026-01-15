@@ -142,7 +142,7 @@ namespace FIA_Biosum_Manager
 			this.m_oQueries = new Queries();
 			m_oQueries.m_oFvs.LoadDatasource=true;
 			m_oQueries.m_oFIAPlot.LoadDatasource=true;
-			m_oQueries.LoadDatasourcesNew(true);
+			m_oQueries.LoadDatasources(true);
             this.m_oEnv = new env();
 
             this.m_bDebug = frmMain.g_bDebug;
@@ -2077,7 +2077,7 @@ namespace FIA_Biosum_Manager
                                 frmMain.g_oDelegate.ExecuteControlMethod((System.Windows.Forms.Control)this.m_frmTherm.lblMsg, "Refresh");
                                 if (oDataMgr.TableExist(conn, Tables.VolumeAndBiomass.BiosumVolumesInputTable))
                                         oDataMgr.SqlNonQuery(conn, "DROP TABLE " + Tables.VolumeAndBiomass.BiosumVolumesInputTable);
-                                frmMain.g_oTables.m_oFvs.CreateSQLiteInputBiosumVolumesTable(oDataMgr, conn, Tables.VolumeAndBiomass.BiosumVolumesInputTable);
+                                frmMain.g_oTables.m_oFvs.CreateInputBiosumVolumesTable(oDataMgr, conn, Tables.VolumeAndBiomass.BiosumVolumesInputTable);
                                 oDataMgr.m_strSQL = Queries.VolumeAndBiomass.FVSOut.BuildInputSQLiteTableForVolumeCalculation_Step1(
                                                    Tables.VolumeAndBiomass.BiosumVolumesInputTable,
                                                    strFvsTreeTable, p_strPackage, p_strVariant);
@@ -4721,7 +4721,7 @@ namespace FIA_Biosum_Manager
                 else
                 {
                     //create audit_fvs_tree_id table
-                    frmMain.g_oTables.m_oFvs.CreateSQLiteFVSTreeIdAudit(SQLite, auditConn, strAuditTable);
+                    frmMain.g_oTables.m_oFvs.CreateFVSTreeIdAudit(SQLite, auditConn, strAuditTable);
                 }
 
                 //Attach audits.db for access to seq num matrices
@@ -6028,7 +6028,7 @@ namespace FIA_Biosum_Manager
 
                             if (SQLite.TableExist(conn, Tables.VolumeAndBiomass.BiosumVolumesInputTable))
                                 SQLite.SqlNonQuery(conn, "DROP TABLE " + Tables.VolumeAndBiomass.BiosumVolumesInputTable);
-                            frmMain.g_oTables.m_oFvs.CreateSQLiteInputBiosumVolumesTable(SQLite, conn, Tables.VolumeAndBiomass.BiosumVolumesInputTable);
+                            frmMain.g_oTables.m_oFvs.CreateInputBiosumVolumesTable(SQLite, conn, Tables.VolumeAndBiomass.BiosumVolumesInputTable);
                             SQLite.m_strSQL = Queries.VolumeAndBiomass.FVSOut.BuildInputSQLiteTableForVolumeCalculation_Step1(
                                                Tables.VolumeAndBiomass.BiosumVolumesInputTable,
                                                Tables.FVS.DefaultFVSInForestTreeTableName, strRxPackage, strFvsVariant);

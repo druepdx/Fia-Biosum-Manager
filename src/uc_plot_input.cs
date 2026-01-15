@@ -2928,7 +2928,7 @@ namespace FIA_Biosum_Manager
             }
             else
             {
-                frmMain.g_oTables.m_oFvs.CreateSQLiteInputFCSBiosumVolumesTable(SQLite, p_conn, strFcsBiosumVolumesInputTable);
+                frmMain.g_oTables.m_oFvs.CreateInputFCSBiosumVolumesTable(SQLite, p_conn, strFcsBiosumVolumesInputTable);
             }
 
             var treeToFcsBiosumVolumesInputTable = new List<Tuple<string, string>>
@@ -3042,7 +3042,7 @@ namespace FIA_Biosum_Manager
             }
             else
             {
-                frmMain.g_oTables.m_oFvs.CreateSqliteInputFCSBiosumVolumesWorkTable(SQLite, p_conn, strWorkTable);
+                frmMain.g_oTables.m_oFvs.CreateInputFCSBiosumVolumesWorkTable(SQLite, p_conn, strWorkTable);
             }
             
             string strInputFields = SQLite.getFieldNames(p_conn, "SELECT * FROM " + strFcsBiosumVolumesInputTable);

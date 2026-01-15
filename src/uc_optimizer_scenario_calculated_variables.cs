@@ -40,7 +40,6 @@ namespace FIA_Biosum_Manager
         public bool m_bSave = false;
         private DataMgr m_oDataMgr = new DataMgr();
         private string m_strTempDB;
-        //private bool m_bUseNegatives;
         private string m_strHandleNegatives;
 
         const int COLUMN_CHECKBOX = 0;
@@ -1085,7 +1084,7 @@ namespace FIA_Biosum_Manager
 
             // Enable the refresh button if we have calculated weighted variables
             string strPrePostWeightedDb = frmMain.g_oFrmMain.frmProject.uc_project1.m_strProjectDirectory +
-                "\\" + Tables.OptimizerScenarioResults.DefaultCalculatedPrePostFVSVariableTableSqliteDbFile;
+                "\\" + Tables.OptimizerScenarioResults.DefaultCalculatedPrePostFVSVariableTableDbFile;
             if (System.IO.File.Exists(strPrePostWeightedDb))
             {
                 using (SQLiteConnection conn = new SQLiteConnection(m_oDataMgr.GetConnectionString(strPrePostWeightedDb)))
@@ -1707,7 +1706,7 @@ namespace FIA_Biosum_Manager
                 return;
             }
             string strOutputDb = frmMain.g_oFrmMain.frmProject.uc_project1.m_strProjectDirectory + "\\" +
-                Tables.OptimizerScenarioResults.DefaultCalculatedPrePostFVSVariableTableSqliteDbFile;
+                Tables.OptimizerScenarioResults.DefaultCalculatedPrePostFVSVariableTableDbFile;
             if (!System.IO.File.Exists(strOutputDb))
             {
                 MessageBox.Show("!!FVS Weighted Variable output database missing. It should be here: " +
@@ -2257,14 +2256,6 @@ namespace FIA_Biosum_Manager
             this.LblSelectedVariable.Text = "Not Defined";
             this.lblFvsVariableName.Text = "Not Defined";
             this.BtnFvsImport.Enabled = false;
-            //if (this.lstFVSFieldsList.SelectedIndex > -1)
-            //{
-            //    this.btnFVSVariablesOptimizationVariableValues.Enabled = true;
-            //}
-            //else
-            //{
-            //    this.btnFVSVariablesOptimizationVariableValues.Enabled = false;
-            //}
         }
 
         private void btnFVSVariableValue_Click(object sender, EventArgs e)
@@ -2636,7 +2627,7 @@ namespace FIA_Biosum_Manager
 
                     frmMain.g_sbpInfo.Text = "Calculating and saving PRE/POST values...Stand by";
                     string strPrePostWeightedDb = frmMain.g_oFrmMain.frmProject.uc_project1.m_strProjectDirectory +
-                        "\\" + Tables.OptimizerScenarioResults.DefaultCalculatedPrePostFVSVariableTableSqliteDbFile;
+                        "\\" + Tables.OptimizerScenarioResults.DefaultCalculatedPrePostFVSVariableTableDbFile;
                     string strFvsPrePostDb = frmMain.g_oFrmMain.frmProject.uc_project1.m_strProjectDirectory +
                         Tables.FVS.DefaultFVSOutPrePostDbFile;
 
@@ -2923,7 +2914,7 @@ namespace FIA_Biosum_Manager
                 string strPostTable = "POST_" + strPieces[0] + "_WEIGHTED";
                 List<string> lstFields = new List<string> {lblFvsVariableName.Text, lblFvsVariableName.Text + "_null_count"};
                 string strCopyCols = "";
-                string strPrePostConn = oDataMgr.GetConnectionString(frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() + "\\" + Tables.OptimizerScenarioResults.DefaultCalculatedPrePostFVSVariableTableSqliteDbFile);
+                string strPrePostConn = oDataMgr.GetConnectionString(frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() + "\\" + Tables.OptimizerScenarioResults.DefaultCalculatedPrePostFVSVariableTableDbFile);
 
                 using (SQLiteConnection prePostConn = new SQLiteConnection(strPrePostConn))
                 {
@@ -2956,7 +2947,7 @@ namespace FIA_Biosum_Manager
                     prePostConn.Close();
                 }
 
-                DeleteVariableSqlite();
+                DeleteVariable();
                 this.btnFvsDetailsCancel.PerformClick();
             }
             else
@@ -3049,12 +3040,12 @@ namespace FIA_Biosum_Manager
             }
             if (objResult == DialogResult.Yes)
             {
-                DeleteVariableSqlite();
+                DeleteVariable();
                 this.btnEconDetailsCancel.PerformClick();
             }
         }
 
-        private void DeleteVariableSqlite()
+        private void DeleteVariable()
         {
             try
             {
@@ -3433,11 +3424,11 @@ namespace FIA_Biosum_Manager
             }
             savenullthreshold();
             // assemble the path for the backup database
-            string strDbName = System.IO.Path.GetFileNameWithoutExtension(Tables.OptimizerScenarioResults.DefaultCalculatedPrePostFVSVariableTableSqliteDbFile);
-            string strDbFolder = System.IO.Path.GetDirectoryName(Tables.OptimizerScenarioResults.DefaultCalculatedPrePostFVSVariableTableSqliteDbFile);
+            string strDbName = System.IO.Path.GetFileNameWithoutExtension(Tables.OptimizerScenarioResults.DefaultCalculatedPrePostFVSVariableTableDbFile);
+            string strDbFolder = System.IO.Path.GetDirectoryName(Tables.OptimizerScenarioResults.DefaultCalculatedPrePostFVSVariableTableDbFile);
             string strBackupDb = frmMain.g_oFrmMain.frmProject.uc_project1.m_strProjectDirectory +
                 "\\" + strDbFolder + "\\" + strDbName + "_backup.db";
-            System.IO.File.Copy(frmMain.g_oFrmMain.frmProject.uc_project1.m_strProjectDirectory + "\\" + Tables.OptimizerScenarioResults.DefaultCalculatedPrePostFVSVariableTableSqliteDbFile,
+            System.IO.File.Copy(frmMain.g_oFrmMain.frmProject.uc_project1.m_strProjectDirectory + "\\" + Tables.OptimizerScenarioResults.DefaultCalculatedPrePostFVSVariableTableDbFile,
                 strBackupDb, true);
             RecalculateCalculatedVariables_Start();
         }
@@ -3471,7 +3462,7 @@ namespace FIA_Biosum_Manager
                 UpdateProgressBar2(0);
 
                 string strPrePostWeightedDb = frmMain.g_oFrmMain.frmProject.uc_project1.m_strProjectDirectory +
-                    "\\" + Tables.OptimizerScenarioResults.DefaultCalculatedPrePostFVSVariableTableSqliteDbFile;
+                    "\\" + Tables.OptimizerScenarioResults.DefaultCalculatedPrePostFVSVariableTableDbFile;
                 using (System.Data.SQLite.SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection(oDataMgr.GetConnectionString(strPrePostWeightedDb)))
                 {
                     conn.Open();
@@ -3819,7 +3810,7 @@ namespace FIA_Biosum_Manager
             string strTargetPreTable = strSourcePreTable + "_WEIGHTED";
             string strTargetPostTable = strSourcePostTable + "_WEIGHTED";
             string strPrePostWeightedDb = frmMain.g_oFrmMain.frmProject.uc_project1.m_strProjectDirectory +
-                "\\" + Tables.OptimizerScenarioResults.DefaultCalculatedPrePostFVSVariableTableSqliteDbFile;
+                "\\" + Tables.OptimizerScenarioResults.DefaultCalculatedPrePostFVSVariableTableDbFile;
 
 
             Dictionary<string, Dictionary<string, double[]>> correctionFactors = new Dictionary<string, Dictionary<string, double[]>>();

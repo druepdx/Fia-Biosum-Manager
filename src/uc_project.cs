@@ -1229,26 +1229,26 @@ namespace FIA_Biosum_Manager
 			using (System.Data.SQLite.SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection(dataMgr.GetConnectionString(p_strPathAndFile)))
             {
 				conn.Open();
-				frmMain.g_oTables.m_oOptimizerScenarioRuleDef.CreateSqliteScenarioCostsTable(dataMgr, conn, Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioCostsTableName);
+				frmMain.g_oTables.m_oOptimizerScenarioRuleDef.CreateScenarioCostsTable(dataMgr, conn, Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioCostsTableName);
 				frmMain.g_oTables.m_oScenario.CreateSqliteScenarioDatasourceTable(dataMgr, conn, Tables.Scenario.DefaultScenarioDatasourceTableName);
-				frmMain.g_oTables.m_oOptimizerScenarioRuleDef.CreateSqliteScenarioHarvestCostColumnsTable(dataMgr, conn, Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioHarvestCostColumnsTableName);
-				frmMain.g_oTables.m_oOptimizerScenarioRuleDef.CreateSqliteScenarioLandOwnerGroupsTable(dataMgr, conn, Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioLandOwnerGroupsTableName);
-				frmMain.g_oTables.m_oOptimizerScenarioRuleDef.CreateSqliteScenarioPlotFilterTable(dataMgr, conn, Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioPlotFilterTableName);
-				frmMain.g_oTables.m_oOptimizerScenarioRuleDef.CreateSqliteScenarioPSitesTable(dataMgr, conn, Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioPSitesTableName);
-				frmMain.g_oTables.m_oOptimizerScenarioRuleDef.CreateSqliteScenarioLastTieBreakRankTable(dataMgr, conn, Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioLastTieBreakRankTableName);
+				frmMain.g_oTables.m_oOptimizerScenarioRuleDef.CreateScenarioHarvestCostColumnsTable(dataMgr, conn, Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioHarvestCostColumnsTableName);
+				frmMain.g_oTables.m_oOptimizerScenarioRuleDef.CreateScenarioLandOwnerGroupsTable(dataMgr, conn, Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioLandOwnerGroupsTableName);
+				frmMain.g_oTables.m_oOptimizerScenarioRuleDef.CreateScenarioPlotFilterTable(dataMgr, conn, Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioPlotFilterTableName);
+				frmMain.g_oTables.m_oOptimizerScenarioRuleDef.CreateScenarioPSitesTable(dataMgr, conn, Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioPSitesTableName);
+				frmMain.g_oTables.m_oOptimizerScenarioRuleDef.CreateScenarioLastTieBreakRankTable(dataMgr, conn, Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioLastTieBreakRankTableName);
 				frmMain.g_oTables.m_oScenario.CreateSqliteScenarioTable(dataMgr, conn, Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioTableName);
-				frmMain.g_oTables.m_oOptimizerScenarioRuleDef.CreateSqliteScenarioFVSVariablesTable(dataMgr, conn, Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioFvsVariablesTableName);
-				frmMain.g_oTables.m_oOptimizerScenarioRuleDef.CreateSqliteScenarioFVSVariableOverallEffectiveTable(dataMgr, conn, Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioFvsVariablesOverallEffectiveTableName);
-				frmMain.g_oTables.m_oOptimizerScenarioRuleDef.CreateSqliteScenarioFVSVariablesOptimizationTable(dataMgr, conn, Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioFvsVariablesOptimizationTableName);
-				frmMain.g_oTables.m_oOptimizerScenarioRuleDef.CreateSqliteScenarioFVSVariablesTieBreakerTable(dataMgr, conn, Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioFvsVariablesTieBreakerTableName);
-				frmMain.g_oTables.m_oOptimizerScenarioRuleDef.CreateSqliteScenarioCondFilterMiscTable(dataMgr, conn, Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioCondFilterMiscTableName);
-				frmMain.g_oTables.m_oOptimizerScenarioRuleDef.CreateSqliteScenarioCondFilterTable(dataMgr, conn, Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioCondFilterTableName);
+				frmMain.g_oTables.m_oOptimizerScenarioRuleDef.CreateScenarioFVSVariablesTable(dataMgr, conn, Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioFvsVariablesTableName);
+				frmMain.g_oTables.m_oOptimizerScenarioRuleDef.CreateScenarioFVSVariableOverallEffectiveTable(dataMgr, conn, Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioFvsVariablesOverallEffectiveTableName);
+				frmMain.g_oTables.m_oOptimizerScenarioRuleDef.CreateScenarioFVSVariablesOptimizationTable(dataMgr, conn, Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioFvsVariablesOptimizationTableName);
+				frmMain.g_oTables.m_oOptimizerScenarioRuleDef.CreateScenarioFVSVariablesTieBreakerTable(dataMgr, conn, Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioFvsVariablesTieBreakerTableName);
+				frmMain.g_oTables.m_oOptimizerScenarioRuleDef.CreateScenarioCondFilterMiscTable(dataMgr, conn, Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioCondFilterMiscTableName);
+				frmMain.g_oTables.m_oOptimizerScenarioRuleDef.CreateScenarioCondFilterTable(dataMgr, conn, Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioCondFilterTableName);
 				frmMain.g_oTables.m_oOptimizerScenarioRuleDef.CreateScenarioProcessorScenarioSelectTable(dataMgr, conn, Tables.OptimizerScenarioRuleDefinitions.DefaultScenarioProcessorScenarioSelectTableName);
 				conn.Close();
             }
 
 			//create empty prepost_fvs_weighted.db
-			string strDestFile = this.txtRootDirectory.Text.Trim() + "\\" + Tables.OptimizerScenarioResults.DefaultCalculatedPrePostFVSVariableTableSqliteDbFile;
+			string strDestFile = this.txtRootDirectory.Text.Trim() + "\\" + Tables.OptimizerScenarioResults.DefaultCalculatedPrePostFVSVariableTableDbFile;
 			if (!System.IO.File.Exists(strDestFile))
             {
 				dataMgr.CreateDbFile(strDestFile);

@@ -183,41 +183,6 @@ namespace FIA_Biosum_Manager
 			/// </summary>
 			/// <param name="p_oVarArray">m_strPreVarArray or m_strPostVarArray values</param>
 			/// <returns></returns>
-			public string[] TableNames(string[] p_oVarArray)
-			{
-				string strTable="";
-				string strTableList=",";
-				string[] strTableArray=null;
-				for (int x=0;x<=p_oVarArray.Length-1;x++)
-				{
-					strTable=this.TableName(p_oVarArray[x]);
-					if (strTable.Trim().Length > 0)
-					{
-						if (strTableList.Trim().ToUpper().IndexOf("," + strTable.ToUpper().Trim().ToUpper() + ",",0) != 0)
-						{
-							strTableList = strTableList + strTable.Trim() + ",";
-						}
-
-					}
-				}
-			
-				if (strTableList.Trim().Length > 1)
-				{
-					strTableList = strTableList.Substring(1,strTableList.Length - 2);
-					strTableArray = frmMain.g_oUtils.ConvertListToArray(strTableList,",");
-					
-				}
-				else 
-				{
-					strTableList="";
-				}
-				return strTableArray;
-			}
-			/// <summary>
-			/// expecting a value in the format of tablename.columnname
-			/// </summary>
-			/// <param name="p_strValue"></param>
-			/// <returns></returns>
 			public string TableName(string p_strValue)
 			{
 				string strTableName="";
@@ -2785,7 +2750,7 @@ namespace FIA_Biosum_Manager
 				}
 
 				string strEffectiveTableName = strPrefix + "_effective";
-				frmMain.g_oTables.m_oOptimizerScenarioResults.CreateSqliteEffectiveTable(oDataMgr, conn,
+				frmMain.g_oTables.m_oOptimizerScenarioResults.CreateEffectiveTable(oDataMgr, conn,
 					strEffectiveTableName, strColumnFilterName);
 
 				strSQL = "SELECT * FROM " + strEffectiveTableName + " WHERE " +
@@ -3592,7 +3557,7 @@ namespace FIA_Biosum_Manager
             {
 				conn.Open();
 
-				string weightedDb = frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() + "\\" + Tables.OptimizerScenarioResults.DefaultCalculatedPrePostFVSVariableTableSqliteDbFile;
+				string weightedDb = frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() + "\\" + Tables.OptimizerScenarioResults.DefaultCalculatedPrePostFVSVariableTableDbFile;
 				if (!oDataMgr.DatabaseAttached(conn, weightedDb))
 				{
 					oDataMgr.m_strSQL = "ATTACH DATABASE '" + weightedDb + "' AS weighted";

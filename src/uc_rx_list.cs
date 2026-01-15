@@ -110,7 +110,7 @@ namespace FIA_Biosum_Manager
 
 			this.m_oQueries = new Queries();
 			m_oQueries.m_oFvs.LoadDatasource=true;
-			m_oQueries.LoadDatasourcesNew(true);
+			m_oQueries.LoadDatasources(true);
 
 			this.m_oLvAlternateColors.InitializeRowCollection();      
 			this.lstRx.Clear();
@@ -1103,7 +1103,7 @@ namespace FIA_Biosum_Manager
             Queries oQueries = new Queries();
             oQueries.m_oFvs.LoadDatasource = true;
 			// pulls from master databases - keep as Access version for now
-            oQueries.LoadDatasourcesNew(true);
+            oQueries.LoadDatasources(true);
             this.LoadAllRxPackageItemsFromTableIntoRxPackageCollection(oQueries, p_oRxPackageItemCollection);
             oQueries = null;
         }
@@ -1652,7 +1652,7 @@ namespace FIA_Biosum_Manager
 		public void CreateTableLinksToFVSPrePostTables(string p_strDestinationDbFile)
         {
 			string strFVSPrePostPathAndDbFile = frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() + "\\" + Tables.FVS.DefaultFVSOutPrePostDbFile;
-			string strFVSWeightedPathAndDbFile = frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() + "\\" + Tables.OptimizerScenarioResults.DefaultCalculatedPrePostFVSVariableTableSqliteDbFile;
+			string strFVSWeightedPathAndDbFile = frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() + "\\" + Tables.OptimizerScenarioResults.DefaultCalculatedPrePostFVSVariableTableDbFile;
 			dao_data_access oDao = new dao_data_access();
 			DataMgr oDataMgr = new DataMgr();
 
@@ -2249,7 +2249,7 @@ namespace FIA_Biosum_Manager
                 {
                     if (!dataMgr.TableExist(conn, strPrePostSeqNumMatrixTable))
                     {
-                        frmMain.g_oTables.m_oFvs.CreateSQLiteFVSOutputPrePostSeqNumAuditGenericTable(dataMgr, conn, strPrePostSeqNumMatrixTable);
+                        frmMain.g_oTables.m_oFvs.CreateFVSOutputPrePostSeqNumAuditGenericTable(dataMgr, conn, strPrePostSeqNumMatrixTable);
                     }
                     if (p_strSourceTableName.Trim().ToUpper() == "FVS_SUMMARY" ||
                         p_strSourceTableName.Trim().ToUpper().IndexOf("FVS_POTFIRE", 0) >= 0)
@@ -2436,14 +2436,14 @@ namespace FIA_Biosum_Manager
                 {
                     if (!dataMgr.TableExist(conn, strPrePostSeqNumMatrixTable))
                     {
-                        frmMain.g_oTables.m_oFvs.CreateSQLiteFVSOutputPrePostSeqNumAuditStrClassTable(dataMgr, conn, strPrePostSeqNumMatrixTable);
+                        frmMain.g_oTables.m_oFvs.CreateFVSOutputPrePostSeqNumAuditStrClassTable(dataMgr, conn, strPrePostSeqNumMatrixTable);
                     }
                 }
                 else
                 {
                     if (!dataMgr.TableExist(conn, strPrePostSeqNumMatrixTable))
                     {
-                        frmMain.g_oTables.m_oFvs.CreateSQLiteFVSOutputPrePostSeqNumAuditGenericTable(dataMgr, conn, strPrePostSeqNumMatrixTable);
+                        frmMain.g_oTables.m_oFvs.CreateFVSOutputPrePostSeqNumAuditGenericTable(dataMgr, conn, strPrePostSeqNumMatrixTable);
                     }
                 }
 

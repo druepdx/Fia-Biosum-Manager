@@ -2041,7 +2041,7 @@ namespace FIA_Biosum_Manager
                                 conn.Open();
                                 if (oDataMgr.m_intError == 0)
                                 {
-                                    string fvsWeightedDb = frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() + "\\" + Tables.OptimizerScenarioResults.DefaultCalculatedPrePostFVSVariableTableSqliteDbFile;
+                                    string fvsWeightedDb = frmMain.g_oFrmMain.frmProject.uc_project1.txtRootDirectory.Text.Trim() + "\\" + Tables.OptimizerScenarioResults.DefaultCalculatedPrePostFVSVariableTableDbFile;
                                     if (!oDataMgr.DatabaseAttached(conn, fvsWeightedDb))
                                     {
                                         oDataMgr.m_strSQL = "ATTACH DATABASE '" + fvsWeightedDb + "' AS weighted";

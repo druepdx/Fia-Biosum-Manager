@@ -192,7 +192,7 @@ namespace FIA_Biosum_Manager
                 // We have an open project
                 m_oQueries.m_oFvs.LoadDatasource = true;
                 m_oQueries.m_oFIAPlot.LoadDatasource = true;
-                m_oQueries.LoadDatasourcesNew(true);
+                m_oQueries.LoadDatasources(true);
 
                 //
                 //OPEN CONNECTION TO TREELIST DB FILE
@@ -946,12 +946,12 @@ namespace FIA_Biosum_Manager
                 //delete and create work tables
                 if (m_oDataMgr.TableExist(conn, Tables.VolumeAndBiomass.BiosumVolumesInputTable))
                     m_oDataMgr.SqlNonQuery(conn, "DROP TABLE " + Tables.VolumeAndBiomass.BiosumVolumesInputTable);
-                frmMain.g_oTables.m_oFvs.CreateSQLiteInputBiosumVolumesTable(m_oDataMgr, conn,
+                frmMain.g_oTables.m_oFvs.CreateInputBiosumVolumesTable(m_oDataMgr, conn,
                     Tables.VolumeAndBiomass.BiosumVolumesInputTable);
 
                 if (m_oDataMgr.TableExist(conn, Tables.VolumeAndBiomass.FcsBiosumVolumesInputTable))
                     m_oDataMgr.SqlNonQuery(conn, "DROP TABLE " + Tables.VolumeAndBiomass.FcsBiosumVolumesInputTable);
-                frmMain.g_oTables.m_oFvs.CreateSQLiteInputFCSBiosumVolumesTable(m_oDataMgr, conn,
+                frmMain.g_oTables.m_oFvs.CreateInputFCSBiosumVolumesTable(m_oDataMgr, conn,
                     Tables.VolumeAndBiomass.FcsBiosumVolumesInputTable);
 
                 List<Tuple<string, string>> fcsBiosumVolumesInputTableValues;
@@ -1370,12 +1370,12 @@ namespace FIA_Biosum_Manager
                 //delete and create work tables
                 if (m_oDataMgr.TableExist(conn, Tables.VolumeAndBiomass.BiosumVolumesInputTable))
                         m_oDataMgr.SqlNonQuery(conn, "DROP TABLE " + Tables.VolumeAndBiomass.BiosumVolumesInputTable);
-                frmMain.g_oTables.m_oFvs.CreateSQLiteInputBiosumVolumesTable(m_oDataMgr, conn,
+                frmMain.g_oTables.m_oFvs.CreateInputBiosumVolumesTable(m_oDataMgr, conn,
                     Tables.VolumeAndBiomass.BiosumVolumesInputTable);
 
                 if (m_oDataMgr.TableExist(conn, Tables.VolumeAndBiomass.FcsBiosumVolumesInputTable))
                         m_oDataMgr.SqlNonQuery(conn, "DROP TABLE " + Tables.VolumeAndBiomass.FcsBiosumVolumesInputTable);
-                frmMain.g_oTables.m_oFvs.CreateSQLiteInputFCSBiosumVolumesTable(m_oDataMgr, conn,
+                frmMain.g_oTables.m_oFvs.CreateInputFCSBiosumVolumesTable(m_oDataMgr, conn,
                     Tables.VolumeAndBiomass.FcsBiosumVolumesInputTable);
 
                 intThermValue++;
@@ -1757,7 +1757,7 @@ namespace FIA_Biosum_Manager
                     //delete and create work tables
                     if (m_oDataMgr.TableExist(conn, Tables.VolumeAndBiomass.BiosumVolumesInputTable))
                         m_oDataMgr.SqlNonQuery(conn, "DROP TABLE " + Tables.VolumeAndBiomass.BiosumVolumesInputTable);
-                    frmMain.g_oTables.m_oFvs.CreateSQLiteInputBiosumVolumesTable(m_oDataMgr, conn,
+                    frmMain.g_oTables.m_oFvs.CreateInputBiosumVolumesTable(m_oDataMgr, conn,
                         Tables.VolumeAndBiomass.BiosumVolumesInputTable);
 
                     if (m_oDataMgr.AttachedTableExist(conn, $@"{m_strSampleTvbcTable}_calc"))
@@ -2115,12 +2115,12 @@ namespace FIA_Biosum_Manager
 
                 if (m_oDataMgr.TableExist(conn, Tables.VolumeAndBiomass.BiosumVolumesInputTable))
                     m_oDataMgr.SqlNonQuery(conn, "DROP TABLE " + Tables.VolumeAndBiomass.BiosumVolumesInputTable);
-                frmMain.g_oTables.m_oFvs.CreateSQLiteInputBiosumVolumesTable(m_oDataMgr, conn, Tables.VolumeAndBiomass.BiosumVolumesInputTable);
+                frmMain.g_oTables.m_oFvs.CreateInputBiosumVolumesTable(m_oDataMgr, conn, Tables.VolumeAndBiomass.BiosumVolumesInputTable);
 
                 if (m_oDataMgr.TableExist(conn, Tables.VolumeAndBiomass.FcsBiosumVolumesInputTable))
                     m_oDataMgr.SqlNonQuery(conn, "DROP TABLE " + Tables.VolumeAndBiomass.FcsBiosumVolumesInputTable);
                 //frmMain.g_oTables.m_oFvs.CreateOracleInputFCSBiosumVolumesTable(m_oAdo, m_oAdo.m_OleDbConnection, Tables.VolumeAndBiomass.FcsBiosumVolumesInputTable);
-                frmMain.g_oTables.m_oFvs.CreateSQLiteInputFCSBiosumVolumesTable(m_oDataMgr, conn, Tables.VolumeAndBiomass.FcsBiosumVolumesInputTable);
+                frmMain.g_oTables.m_oFvs.CreateInputFCSBiosumVolumesTable(m_oDataMgr, conn, Tables.VolumeAndBiomass.FcsBiosumVolumesInputTable);
 
                 if (m_oDataMgr.TableExist(conn, "cull_work_table"))
                     m_oDataMgr.SqlNonQuery(conn, "DROP TABLE cull_work_table");
@@ -2372,7 +2372,7 @@ namespace FIA_Biosum_Manager
                 if (m_oDataMgr.TableExist(conn, "tree_work_table"))
                     m_oDataMgr.SqlNonQuery(conn, "DROP TABLE tree_work_table");
                 frmMain.g_sbpInfo.Text = "Loading Tree Table Data...Stand By";
-                m_oDataMgr.m_strSQL = frmMain.g_oTables.m_oFvs.CreateSQLiteInputBiosumVolumesTableSQL("tree_work_table");
+                m_oDataMgr.m_strSQL = frmMain.g_oTables.m_oFvs.CreateInputBiosumVolumesTableSQL("tree_work_table");
                 if (frmMain.g_bDebug && frmMain.g_intDebugLevel > 2)
                     frmMain.g_oUtils.WriteText(frmMain.g_oFrmMain.frmProject.uc_project1.m_strDebugFile, m_oDataMgr.m_strSQL + "\r\n\r\n");
                 m_oDataMgr.SqlNonQuery(conn, m_oDataMgr.m_strSQL);

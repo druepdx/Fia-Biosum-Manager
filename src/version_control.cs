@@ -223,11 +223,11 @@ namespace FIA_Biosum_Manager
                     conn.Open();
                     if (!oDataMgr.TableExist(conn, Tables.FVS.DefaultFVSPrePostSeqNumTable))
                     {
-                        frmMain.g_oTables.m_oFvs.CreateFVSOutputSQLitePrePostSeqNumTable(oDataMgr, conn, Tables.FVS.DefaultFVSPrePostSeqNumTable);
+                        frmMain.g_oTables.m_oFvs.CreateFVSOutputPrePostSeqNumTable(oDataMgr, conn, Tables.FVS.DefaultFVSPrePostSeqNumTable);
                     }
                     if (!oDataMgr.TableExist(conn, Tables.FVS.DefaultFVSPrePostSeqNumRxPackageAssgnTable))
                     {
-                        frmMain.g_oTables.m_oFvs.CreateFVSOutputPrePostSQLiteSeqNumRxPackageAssgnTable(oDataMgr, conn, Tables.FVS.DefaultFVSPrePostSeqNumRxPackageAssgnTable);
+                        frmMain.g_oTables.m_oFvs.CreateFVSOutputPrePostSeqNumRxPackageAssgnTable(oDataMgr, conn, Tables.FVS.DefaultFVSPrePostSeqNumRxPackageAssgnTable);
                     }
                 }
                 // Create ODBC entry for the new SQLite fvs_master.db file
@@ -928,7 +928,7 @@ namespace FIA_Biosum_Manager
                 conn.Open();
                 if (!oDataMgr.TableExist(conn, Tables.FVS.DefaultFVSPrePostSeqNumTable))
                 {
-                    frmMain.g_oTables.m_oFvs.CreateFVSOutputSQLitePrePostSeqNumTable(oDataMgr, conn, Tables.FVS.DefaultFVSPrePostSeqNumTable);
+                    frmMain.g_oTables.m_oFvs.CreateFVSOutputPrePostSeqNumTable(oDataMgr, conn, Tables.FVS.DefaultFVSPrePostSeqNumTable);
                 }
                 else
                 {
@@ -937,7 +937,7 @@ namespace FIA_Biosum_Manager
                 }
                 if (!oDataMgr.TableExist(conn, Tables.FVS.DefaultFVSPrePostSeqNumRxPackageAssgnTable))
                 {
-                    frmMain.g_oTables.m_oFvs.CreateFVSOutputPrePostSQLiteSeqNumRxPackageAssgnTable(oDataMgr, conn, Tables.FVS.DefaultFVSPrePostSeqNumRxPackageAssgnTable);
+                    frmMain.g_oTables.m_oFvs.CreateFVSOutputPrePostSeqNumRxPackageAssgnTable(oDataMgr, conn, Tables.FVS.DefaultFVSPrePostSeqNumRxPackageAssgnTable);
                 }
                 else
                 {

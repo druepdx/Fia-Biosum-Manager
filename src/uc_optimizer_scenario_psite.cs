@@ -18,16 +18,11 @@ namespace FIA_Biosum_Manager
 		private System.Windows.Forms.ImageList imgSize;
 		private System.Windows.Forms.ListView listView1;
 		private System.ComponentModel.IContainer components;
-		private string m_strTravelTimeTable;
-		private string m_strPSiteTable;
-		private string m_strTempDBFile;
-		private env m_oEnv;
 		public int m_intError=0;
 		public string m_strError="";
 		private System.Windows.Forms.Button btnSelectAll;
 		private System.Windows.Forms.Button btnUnselectAll;
 		private System.Windows.Forms.ToolTip toolTip1;
-		private System.Windows.Forms.ComboBox m_Combo;
 		private System.Windows.Forms.GroupBox groupBox1;
 		public System.Windows.Forms.Label lblTitle;
 		private FIA_Biosum_Manager.frmOptimizerScenario _frmScenario=null;

@@ -62,7 +62,7 @@ namespace FIA_Biosum_Manager
 			m_oQueries.m_oFvs.LoadDatasource=true;
 			m_oQueries.m_oReference.LoadDatasource=true;
             m_oQueries.m_oProcessor.LoadDatasource = true;
-			m_oQueries.LoadDatasourcesNew(true);			
+			m_oQueries.LoadDatasources(true);			
 			this.lvRxHarvestCostColumns.Clear();
 			
 			this.m_oLvAlternateRowColors.InitializeRowCollection();
