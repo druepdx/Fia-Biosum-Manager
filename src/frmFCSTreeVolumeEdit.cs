@@ -1944,11 +1944,11 @@ namespace FIA_Biosum_Manager
                             {
                                 for (int i = 0; i < Tables.VolumeAndBiomass.TvbcVolAndBio.Length; i++)
                                 {
-                                    string test = Tables.VolumeAndBiomass.TvbcVolAndBio[i];
-                                    if (m_oDataMgr.m_DataReader[Tables.VolumeAndBiomass.TvbcVolAndBio[i]] != DBNull.Value)
-                                        p_rowFound[Tables.VolumeAndBiomass.TvbcVolAndBio[i]] = 
-                                            Convert.ToDouble(m_oDataMgr.m_DataReader[Tables.VolumeAndBiomass.TvbcVolAndBio[i]]);
-                                    else p_rowFound[Tables.VolumeAndBiomass.TvbcVolAndBio[i]] = DBNull.Value;
+                                    string nextColName = Tables.VolumeAndBiomass.TvbcVolAndBio[i];
+                                    if (m_oDataMgr.m_DataReader[nextColName] != DBNull.Value)
+                                        p_rowFound[nextColName] = 
+                                            Convert.ToDouble(m_oDataMgr.m_DataReader[nextColName]);
+                                    else p_rowFound[nextColName] = DBNull.Value;
                                 }
                             }
                         }

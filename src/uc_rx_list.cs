@@ -1309,6 +1309,10 @@ namespace FIA_Biosum_Manager
                 {
                     frmMain.g_oTables.m_oFvs.CreateFVSOutTreeTable(dataMgr, conn, Tables.FVS.DefaultFVSCutTreeTableName);
                 }
+                if (!dataMgr.TableExist(conn, Tables.FVS.DefaultFVSCutTreeTvbcTableName))
+                {
+                    frmMain.g_oTables.m_oFvs.CreateFVSOutTreeTvbcTable(dataMgr, conn, Tables.FVS.DefaultFVSCutTreeTvbcTableName);
+                }
             }
         }
 
