@@ -62,8 +62,8 @@ namespace FIA_Biosum_Manager
 		private System.Windows.Forms.GroupBox groupBox1;
 		private System.Windows.Forms.GroupBox grpboxDescription;
 		public System.Windows.Forms.TextBox txtDescription;
-		private System.Windows.Forms.GroupBox grpboxCompany;
-		public System.Windows.Forms.TextBox txtCompany;
+		private System.Windows.Forms.GroupBox grpboxOrganization;
+		public System.Windows.Forms.TextBox txtOrganization;
 		private System.Windows.Forms.GroupBox grpboxProjectId;
 		public System.Windows.Forms.TextBox txtProjectId;
 		private System.Windows.Forms.GroupBox grpboxCreated;
@@ -216,7 +216,7 @@ namespace FIA_Biosum_Manager
 				this.grpboxDescription.Enabled=false;
 				this.grpboxProjectDirectory.Enabled=false;
 				this.grpboxProjectId.Enabled=false;
-				this.grpboxCompany.Enabled=false;
+				this.grpboxOrganization.Enabled=false;
 				this.grpboxCreated.Enabled=false;
 				this.btnEdit.Enabled=true;
 				this.btnCancel.Enabled=false;
@@ -309,7 +309,7 @@ namespace FIA_Biosum_Manager
 				this.grpboxDescription.Enabled = false;
 				this.grpboxProjectDirectory.Enabled = false;
 				this.grpboxProjectId.Enabled = false;
-				this.grpboxCompany.Enabled = false;
+				this.grpboxOrganization.Enabled = false;
 				this.grpboxCreated.Enabled = false;
 				this.btnEdit.Enabled = true;
 				this.btnCancel.Enabled = false;
@@ -331,8 +331,8 @@ namespace FIA_Biosum_Manager
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.grpboxDescription = new System.Windows.Forms.GroupBox();
             this.txtDescription = new System.Windows.Forms.TextBox();
-            this.grpboxCompany = new System.Windows.Forms.GroupBox();
-            this.txtCompany = new System.Windows.Forms.TextBox();
+            this.grpboxOrganization = new System.Windows.Forms.GroupBox();
+            this.txtOrganization = new System.Windows.Forms.TextBox();
             this.grpboxProjectId = new System.Windows.Forms.GroupBox();
             this.txtProjectId = new System.Windows.Forms.TextBox();
             this.grpboxCreated = new System.Windows.Forms.GroupBox();
@@ -356,7 +356,7 @@ namespace FIA_Biosum_Manager
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.grpboxDescription.SuspendLayout();
-            this.grpboxCompany.SuspendLayout();
+            this.grpboxOrganization.SuspendLayout();
             this.grpboxProjectId.SuspendLayout();
             this.grpboxCreated.SuspendLayout();
             this.grpboxProjectDirectory.SuspendLayout();
@@ -375,7 +375,7 @@ namespace FIA_Biosum_Manager
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.grpboxDescription);
-            this.groupBox1.Controls.Add(this.grpboxCompany);
+            this.groupBox1.Controls.Add(this.grpboxOrganization);
             this.groupBox1.Controls.Add(this.grpboxProjectId);
             this.groupBox1.Controls.Add(this.grpboxCreated);
             this.groupBox1.Controls.Add(this.grpboxProjectDirectory);
@@ -396,7 +396,7 @@ namespace FIA_Biosum_Manager
             // 
             this.grpboxDescription.Controls.Add(this.txtDescription);
             this.grpboxDescription.Enabled = false;
-            this.grpboxDescription.Location = new System.Drawing.Point(8, 151);
+            this.grpboxDescription.Location = new System.Drawing.Point(8, 209);
             this.grpboxDescription.Name = "grpboxDescription";
             this.grpboxDescription.Size = new System.Drawing.Size(640, 121);
             this.grpboxDescription.TabIndex = 28;
@@ -413,31 +413,31 @@ namespace FIA_Biosum_Manager
             this.txtDescription.Size = new System.Drawing.Size(624, 96);
             this.txtDescription.TabIndex = 0;
             // 
-            // grpboxCompany
+            // grpboxOrganization
             // 
-            this.grpboxCompany.Controls.Add(this.txtCompany);
-            this.grpboxCompany.Enabled = false;
-            this.grpboxCompany.Location = new System.Drawing.Point(8, 97);
-            this.grpboxCompany.Name = "grpboxCompany";
-            this.grpboxCompany.Size = new System.Drawing.Size(640, 48);
-            this.grpboxCompany.TabIndex = 27;
-            this.grpboxCompany.TabStop = false;
-            this.grpboxCompany.Text = "Company";
+            this.grpboxOrganization.Controls.Add(this.txtOrganization);
+            this.grpboxOrganization.Enabled = false;
+            this.grpboxOrganization.Location = new System.Drawing.Point(8, 157);
+            this.grpboxOrganization.Name = "grpboxOrganization";
+            this.grpboxOrganization.Size = new System.Drawing.Size(640, 48);
+            this.grpboxOrganization.TabIndex = 27;
+            this.grpboxOrganization.TabStop = false;
+            this.grpboxOrganization.Text = "Organization";
             // 
-            // txtCompany
+            // txtOrganization
             // 
-            this.txtCompany.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtCompany.Location = new System.Drawing.Point(8, 14);
-            this.txtCompany.MaxLength = 100;
-            this.txtCompany.Name = "txtCompany";
-            this.txtCompany.Size = new System.Drawing.Size(624, 23);
-            this.txtCompany.TabIndex = 0;
+            this.txtOrganization.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtOrganization.Location = new System.Drawing.Point(8, 14);
+            this.txtOrganization.MaxLength = 100;
+            this.txtOrganization.Name = "txtOrganization";
+            this.txtOrganization.Size = new System.Drawing.Size(624, 23);
+            this.txtOrganization.TabIndex = 0;
             // 
             // grpboxProjectId
             // 
             this.grpboxProjectId.Controls.Add(this.txtProjectId);
             this.grpboxProjectId.Enabled = false;
-            this.grpboxProjectId.Location = new System.Drawing.Point(8, 42);
+            this.grpboxProjectId.Location = new System.Drawing.Point(8, 103);
             this.grpboxProjectId.Name = "grpboxProjectId";
             this.grpboxProjectId.Size = new System.Drawing.Size(184, 48);
             this.grpboxProjectId.TabIndex = 0;
@@ -461,7 +461,7 @@ namespace FIA_Biosum_Manager
             this.grpboxCreated.Controls.Add(this.txtName);
             this.grpboxCreated.Controls.Add(this.lblName);
             this.grpboxCreated.Enabled = false;
-            this.grpboxCreated.Location = new System.Drawing.Point(200, 42);
+            this.grpboxCreated.Location = new System.Drawing.Point(200, 103);
             this.grpboxCreated.Name = "grpboxCreated";
             this.grpboxCreated.Size = new System.Drawing.Size(450, 48);
             this.grpboxCreated.TabIndex = 1;
@@ -471,7 +471,7 @@ namespace FIA_Biosum_Manager
             // txtDate
             // 
             this.txtDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtDate.Location = new System.Drawing.Point(296, 16);
+            this.txtDate.Location = new System.Drawing.Point(336, 16);
             this.txtDate.MaxLength = 8;
             this.txtDate.Name = "txtDate";
             this.txtDate.Size = new System.Drawing.Size(144, 23);
@@ -481,26 +481,26 @@ namespace FIA_Biosum_Manager
             // 
             this.lblDate.Location = new System.Drawing.Point(264, 21);
             this.lblDate.Name = "lblDate";
-            this.lblDate.Size = new System.Drawing.Size(32, 16);
+            this.lblDate.Size = new System.Drawing.Size(72, 16);
             this.lblDate.TabIndex = 2;
-            this.lblDate.Text = "Date";
+            this.lblDate.Text = "Date Created";
             // 
             // txtName
             // 
             this.txtName.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtName.Location = new System.Drawing.Point(42, 15);
+            this.txtName.Location = new System.Drawing.Point(82, 15);
             this.txtName.MaxLength = 30;
             this.txtName.Name = "txtName";
-            this.txtName.Size = new System.Drawing.Size(222, 23);
+            this.txtName.Size = new System.Drawing.Size(182, 23);
             this.txtName.TabIndex = 1;
             // 
             // lblName
             // 
             this.lblName.Location = new System.Drawing.Point(7, 21);
             this.lblName.Name = "lblName";
-            this.lblName.Size = new System.Drawing.Size(40, 16);
+            this.lblName.Size = new System.Drawing.Size(80, 16);
             this.lblName.TabIndex = 0;
-            this.lblName.Text = "Name";
+            this.lblName.Text = "Analyst Name";
             // 
             // grpboxProjectDirectory
             // 
@@ -508,9 +508,9 @@ namespace FIA_Biosum_Manager
             this.grpboxProjectDirectory.Controls.Add(this.btnRootDirectory);
             this.grpboxProjectDirectory.Controls.Add(this.lblRootDirectory);
             this.grpboxProjectDirectory.Controls.Add(this.txtRootDirectory);
-            this.grpboxProjectDirectory.Location = new System.Drawing.Point(8, 280);
+            this.grpboxProjectDirectory.Location = new System.Drawing.Point(8, 42);
             this.grpboxProjectDirectory.Name = "grpboxProjectDirectory";
-            this.grpboxProjectDirectory.Size = new System.Drawing.Size(640, 160);
+            this.grpboxProjectDirectory.Size = new System.Drawing.Size(640, 60);
             this.grpboxProjectDirectory.TabIndex = 29;
             this.grpboxProjectDirectory.TabStop = false;
             this.grpboxProjectDirectory.Text = "Project Directory";
@@ -620,8 +620,8 @@ namespace FIA_Biosum_Manager
             this.groupBox1.ResumeLayout(false);
             this.grpboxDescription.ResumeLayout(false);
             this.grpboxDescription.PerformLayout();
-            this.grpboxCompany.ResumeLayout(false);
-            this.grpboxCompany.PerformLayout();
+            this.grpboxOrganization.ResumeLayout(false);
+            this.grpboxOrganization.PerformLayout();
             this.grpboxProjectId.ResumeLayout(false);
             this.grpboxProjectId.PerformLayout();
             this.grpboxCreated.ResumeLayout(false);
@@ -639,7 +639,7 @@ namespace FIA_Biosum_Manager
 			this.txtDate.Enabled=false;
 
 			this.grpboxCreated.Enabled=true;
-			this.grpboxCompany.Enabled=true;
+			this.grpboxOrganization.Enabled=true;
 			this.grpboxDescription.Enabled=true;
 			this.btnSave.Enabled=true;
 			this.btnCancel.Enabled=true;
@@ -655,7 +655,7 @@ namespace FIA_Biosum_Manager
 			this.grpboxProjectId.Enabled=false;
 			this.grpboxProjectDirectory.Enabled=false;
 			this.grpboxCreated.Enabled=false;
-			this.grpboxCompany.Enabled=false;
+			this.grpboxOrganization.Enabled=false;
 			this.grpboxDescription.Enabled=false;
 			this.btnSave.Enabled=false;
 			this.btnCancel.Enabled=false;
@@ -1010,7 +1010,7 @@ namespace FIA_Biosum_Manager
 						"'" + this.txtProjectId.Text.Trim() + "', " +
 						"'" + this.txtName.Text.Trim() + "', " +
 						"'" + this.txtDate.Text + "', " +
-						"'" + this.txtCompany.Text.Trim() + "', " +
+						"'" + this.txtOrganization.Text.Trim() + "', " +
 						"'" + strDesc + "', " +
 						"'" + this.txtRootDirectory.Text.Trim() + "', " +
 						"'" + frmMain.g_strAppVer + "')";
@@ -1150,7 +1150,7 @@ namespace FIA_Biosum_Manager
 				p_dataMgr.m_strSQL = "UPDATE project " +
 					"SET created_by = '" + this.txtName.Text + "', " +
 					"proj_id = '" + this.txtProjectId.Text.Trim() + "', " +
-					"company = '" + this.txtCompany.Text + "', " +
+					"company = '" + this.txtOrganization.Text + "', " +
 					"description = '" + strDesc + "', " +
 					"project_root_directory = '" + this.txtRootDirectory.Text + "'";
 				p_dataMgr.SqlNonQuery(strConn, p_dataMgr.m_strSQL);
@@ -1164,7 +1164,7 @@ namespace FIA_Biosum_Manager
 			this.btnEdit.Enabled=true;
 			this.grpboxProjectDirectory.Enabled=false;
 			this.grpboxCreated.Enabled=false;
-			this.grpboxCompany.Enabled=false;
+			this.grpboxOrganization.Enabled=false;
 			this.grpboxDescription.Enabled=false;
 			this.grpboxProjectId.Enabled=false;
 			string tempstr = this.txtRootDirectory.Text ;
@@ -1178,7 +1178,7 @@ namespace FIA_Biosum_Manager
 		{
 			this.m_strAction="NEW";
 		    
-            this.txtCompany.Text = "";
+            this.txtOrganization.Text = "";
 			this.txtDate.Text = System.DateTime.Now.ToString();
 			this.txtDescription.Text = "";
 			this.txtName.Text = "";
@@ -1187,7 +1187,7 @@ namespace FIA_Biosum_Manager
 			//this.txtRootDirectory.Text = this.m_oEnv.strAppDir.Substring(0,2) + "\\FIA_Biosum";
 			this.txtProjectId.Enabled=true;
 			this.txtName.Enabled=true;
-			this.txtCompany.Enabled=true;
+			this.txtOrganization.Enabled=true;
 			this.txtDescription.Enabled=true;
 			this.txtDate.Enabled=false;
 			this.btnRootDirectory.Enabled=true;
@@ -1196,7 +1196,7 @@ namespace FIA_Biosum_Manager
 			this.btnCancel.Enabled=true;
 			this.grpboxProjectDirectory.Enabled=true;
 			this.grpboxCreated.Enabled=true;
-			this.grpboxCompany.Enabled=true;
+			this.grpboxOrganization.Enabled=true;
 			this.grpboxDescription.Enabled=true;
 			this.grpboxProjectId.Enabled=true;
 			this.Parent.Visible = true;
@@ -1412,19 +1412,20 @@ namespace FIA_Biosum_Manager
 		{
 			this.btnClose.Top = this.groupBox1.Height - this.btnClose.Height - 5;
 			this.btnClose.Left = this.groupBox1.Width - this.btnClose.Width - 5;
-			this.grpboxProjectId.Top = this.lblTitle.Top + this.lblTitle.Height + 2;
+			this.grpboxProjectDirectory.Top = this.lblTitle.Top + this.lblTitle.Height + 2;
+			this.grpboxProjectId.Top = this.grpboxProjectDirectory.Top + this.grpboxProjectDirectory.Height + 2;
 			this.grpboxCreated.Top = this.grpboxProjectId.Top;
-			this.grpboxCompany.Top = this.grpboxProjectId.Top + this.grpboxProjectId.Height + 2;
-			this.grpboxDescription.Top = this.grpboxCompany.Top + this.grpboxCompany.Height + 2;
-			this.grpboxProjectDirectory.Top = this.grpboxDescription.Top + this.grpboxDescription.Height + 2;
+			this.grpboxOrganization.Top = this.grpboxProjectId.Top + this.grpboxProjectId.Height + 2;
+			this.grpboxDescription.Top = this.grpboxOrganization.Top + this.grpboxOrganization.Height + 2;
 			
 			this.grpboxDescription.Left = 2;
 			this.grpboxProjectDirectory.Left = 2;
 			this.grpboxProjectId.Left = 2;
-			this.grpboxCompany.Left = 2;
+			this.grpboxOrganization.Left = 2;
 			this.grpboxDescription.Width  = this.Width - 4;
 			this.grpboxProjectDirectory.Width = this.grpboxDescription.Width;
-			this.grpboxCompany.Width = this.grpboxDescription.Width;
+			this.grpboxOrganization.Width = this.grpboxDescription.Width;
+			this.grpboxCreated.Width = this.grpboxDescription.Width - this.grpboxProjectId.Left - this.grpboxProjectId.Width - 12;
 			
 
 			this.lblRootDirectory.Left = this.grpboxProjectDirectory.Left + 2;
@@ -1442,13 +1443,11 @@ namespace FIA_Biosum_Manager
 			
 			this.txtDescription.Left = this.grpboxDescription.Left + 2;
 			this.txtDescription.Width = this.grpboxDescription.Width - 8;
-			this.txtCompany.Left = this.grpboxCompany.Left + 2;
-			this.txtCompany.Width = this.grpboxCompany.Width - 8;
+			this.txtOrganization.Left = this.grpboxOrganization.Left + 2;
+			this.txtOrganization.Width = this.grpboxOrganization.Width - 8;
 			
 
-			this.grpboxProjectDirectory.Height = this.btnRootDirectory.Top + this.btnRootDirectory.Height + 4;
-
-			this.btnCancel.Top = this.grpboxProjectDirectory.Top + this.grpboxProjectDirectory.Height + 5;
+			this.btnCancel.Top = this.grpboxDescription.Top + this.grpboxDescription.Height + 5;
 			this.btnCancel.Left = (int) (this.Width * .50) + (int) (this.btnCancel.Width / 2);
 			this.btnSave.Top = this.btnCancel.Top;
 			this.btnSave.Left = this.btnCancel.Left - this.btnCancel.Width;

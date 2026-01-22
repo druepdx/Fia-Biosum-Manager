@@ -71,7 +71,7 @@ namespace FIA_Biosum_Manager
             m_oDatasource = new Datasource();
             m_oDatasource.LoadTableColumnNamesAndDataTypes = false;
             m_oDatasource.LoadTableRecordCount = false;
-            m_oDatasource.m_strDataSourceMDBFile = m_strProjDir + "\\db\\project.mdb";
+            m_oDatasource.m_strDataSourceDBFile = m_strProjDir + "\\db\\project.db";
             m_oDatasource.m_strDataSourceTableName = "datasource";
             m_oDatasource.m_strScenarioId = "";
             m_oDatasource.populate_datasource_array();

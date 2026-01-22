@@ -4209,7 +4209,7 @@ namespace FIA_Biosum_Manager
 
             // Load project data sources table
             m_oProjectDs = new Datasource();
-            m_oProjectDs.m_strDataSourceMDBFile = strReferenceProjectDirectory + "\\db\\project.mdb";
+            m_oProjectDs.m_strDataSourceDBFile = strReferenceProjectDirectory + "\\db\\project.db";
             m_oProjectDs.m_strDataSourceTableName = "datasource";
             m_oProjectDs.m_strScenarioId = "";
             m_oProjectDs.LoadTableColumnNamesAndDataTypes = false;

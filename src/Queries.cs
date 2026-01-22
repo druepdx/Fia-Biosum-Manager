@@ -90,7 +90,7 @@ namespace FIA_Biosum_Manager
 			m_oDataSource = new Datasource();
 			m_oDataSource.LoadTableColumnNamesAndDataTypes=false;
 			m_oDataSource.LoadTableRecordCount=false;
-			m_oDataSource.m_strDataSourceMDBFile = strProjDir.Trim() + "\\db\\project.mdb";
+			m_oDataSource.m_strDataSourceDBFile = strProjDir.Trim() + "\\db\\project.db";
 			m_oDataSource.m_strDataSourceTableName = "datasource";
 			m_oDataSource.m_strScenarioId="";
 			m_oDataSource.populate_datasource_array();
@@ -106,8 +106,8 @@ namespace FIA_Biosum_Manager
 			m_oDataSource.m_strScenarioId=p_strScenarioId.Trim();
 			m_oDataSource.LoadTableRecordCount=false;
             m_oDataSource.m_strDataSourceTableName = "scenario_datasource";
-            m_oDataSource.m_strDataSourceMDBFile = strProjDir.Trim() + "\\" + p_strScenarioType + "\\db\\scenario_" + p_strScenarioType + "_rule_definitions.db";
-            m_oDataSource.populate_datasource_array_sqlite();
+            m_oDataSource.m_strDataSourceDBFile = strProjDir.Trim() + "\\" + p_strScenarioType + "\\db\\scenario_" + p_strScenarioType + "_rule_definitions.db";
+            m_oDataSource.populate_datasource_array();
         }
 		static public string GetInsertSQL(string p_strFields, string p_strValues,string p_strTable)
 		{

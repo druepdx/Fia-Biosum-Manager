@@ -203,12 +203,12 @@ namespace FIA_Biosum_Manager
             string strPrePostSeqNumLink = $@"{Tables.FVS.DefaultFVSPrePostSeqNumTable}_1";
             string strRxPackageAssignLink = $@"{Tables.FVS.DefaultFVSPrePostSeqNumRxPackageAssgnTable}_1";
 
-            oProjectDs.m_strDataSourceMDBFile = ReferenceProjectDirectory.Trim() + "\\db\\project.mdb";
+            oProjectDs.m_strDataSourceDBFile = ReferenceProjectDirectory.Trim() + "\\db\\project.mdb";
             oProjectDs.m_strDataSourceTableName = "datasource";
             oProjectDs.m_strScenarioId = "";
             oProjectDs.LoadTableColumnNamesAndDataTypes = false;
             oProjectDs.LoadTableRecordCount = false;
-            oProjectDs.populate_datasource_array();
+            oProjectDs.populate_datasource_array_access();
             int intSeqNumDefs = oProjectDs.getValidTableNameRow(Datasource.TableTypes.SeqNumDefinitions);
             int intSeqNumRxPkgAssign = oProjectDs.getValidTableNameRow(Datasource.TableTypes.SeqNumRxPackageAssign);
             if (intSeqNumDefs > -1 && intSeqNumRxPkgAssign > -1)
@@ -628,12 +628,12 @@ namespace FIA_Biosum_Manager
                 }
                 // Find path to existing tables
                 oProjectDs = new Datasource();
-                oProjectDs.m_strDataSourceMDBFile = this.ReferenceProjectDirectory + "\\db\\project.mdb";
+                oProjectDs.m_strDataSourceDBFile = this.ReferenceProjectDirectory + "\\db\\project.mdb";
                 oProjectDs.m_strDataSourceTableName = "datasource";
                 oProjectDs.m_strScenarioId = "";
                 oProjectDs.LoadTableColumnNamesAndDataTypes = false;
                 oProjectDs.LoadTableRecordCount = false;
-                oProjectDs.populate_datasource_array();
+                oProjectDs.populate_datasource_array_access();
 
                 // Travel times
                 int intTravelTable = oProjectDs.getTableNameRow(Datasource.TableTypes.TravelTimes);
@@ -775,12 +775,12 @@ namespace FIA_Biosum_Manager
             Datasource oProjectDs = new Datasource();
 
             // Find path to existing tables
-            oProjectDs.m_strDataSourceMDBFile = this.ReferenceProjectDirectory + "\\db\\project.mdb";
+            oProjectDs.m_strDataSourceDBFile = this.ReferenceProjectDirectory + "\\db\\project.mdb";
             oProjectDs.m_strDataSourceTableName = "datasource";
             oProjectDs.m_strScenarioId = "";
             oProjectDs.LoadTableColumnNamesAndDataTypes = false;
             oProjectDs.LoadTableRecordCount = false;
-            oProjectDs.populate_datasource_array();
+            oProjectDs.populate_datasource_array_access();
 
             // gis_travel_times.processing_site
             int intPSitesTable = oProjectDs.getTableNameRow(Datasource.TableTypes.ProcessingSites);
@@ -975,12 +975,12 @@ namespace FIA_Biosum_Manager
 
             Datasource oProjectDs = new Datasource();
             // Find path to existing tables
-            oProjectDs.m_strDataSourceMDBFile = this.ReferenceProjectDirectory + "\\db\\project.mdb";
+            oProjectDs.m_strDataSourceDBFile = this.ReferenceProjectDirectory + "\\db\\project.mdb";
             oProjectDs.m_strDataSourceTableName = "datasource";
             oProjectDs.m_strScenarioId = "";
             oProjectDs.LoadTableColumnNamesAndDataTypes = false;
             oProjectDs.LoadTableRecordCount = false;
-            oProjectDs.populate_datasource_array();
+            oProjectDs.populate_datasource_array_access();
             // FVS PRE-POST SeqNum Definitions. Assuming that all the sequence number tables will be in the same db
             int intSeqNumTable = oProjectDs.getTableNameRow(Datasource.TableTypes.SeqNumDefinitions);
             // Again, assuming that the rx tables are all in the same database
@@ -1087,7 +1087,7 @@ namespace FIA_Biosum_Manager
                     oDataMgr.SqlNonQuery(conn, oDataMgr.m_strSQL);
                 }
                 // Remove obsolete data source definitions
-                using (OleDbConnection deleteConn = new System.Data.OleDb.OleDbConnection(oAdo.getMDBConnString(oProjectDs.m_strDataSourceMDBFile, "", "")))
+                using (OleDbConnection deleteConn = new System.Data.OleDb.OleDbConnection(oAdo.getMDBConnString(oProjectDs.m_strDataSourceDBFile, "", "")))
                 {
                     deleteConn.Open();
                     oAdo.m_strSQL = $@"DELETE FROM {oProjectDs.m_strDataSourceTableName} WHERE TABLE_TYPE IN 
@@ -1282,12 +1282,12 @@ namespace FIA_Biosum_Manager
 
             Datasource oProjectDs = new Datasource();
             // Find path to existing tables
-            oProjectDs.m_strDataSourceMDBFile = this.ReferenceProjectDirectory + "\\db\\project.mdb";
+            oProjectDs.m_strDataSourceDBFile = this.ReferenceProjectDirectory + "\\db\\project.mdb";
             oProjectDs.m_strDataSourceTableName = "datasource";
             oProjectDs.m_strScenarioId = "";
             oProjectDs.LoadTableColumnNamesAndDataTypes = false;
             oProjectDs.LoadTableRecordCount = false;
-            oProjectDs.populate_datasource_array();
+            oProjectDs.populate_datasource_array_access();
             // plot
             int intPlotTable = oProjectDs.getTableNameRow(Datasource.TableTypes.Plot);
             // cond
@@ -1414,7 +1414,7 @@ namespace FIA_Biosum_Manager
             }
 
             // Update project datasources; tree_species, fvs_tree_species, and fiadb_fvs_variant have been eliminated; fia_tree_species_ref has moved
-            string strDsConn = oAdo.getMDBConnString(oProjectDs.m_strDataSourceMDBFile, "", "");
+            string strDsConn = oAdo.getMDBConnString(oProjectDs.m_strDataSourceDBFile, "", "");
             using (OleDbConnection copyConn = new System.Data.OleDb.OleDbConnection(strDsConn))
             {
                 copyConn.Open();
