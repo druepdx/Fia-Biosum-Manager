@@ -2789,7 +2789,7 @@ namespace FIA_Biosum_Manager
                     frmMain.g_oDelegate.ExecuteControlMethod((System.Windows.Forms.Control)this.m_frmTherm.lblMsg, "Refresh");
                     if (oDataMgr.TableExist(conn, Tables.VolumeAndBiomass.BiosumVolumesInputTable))
                         oDataMgr.SqlNonQuery(conn, "DROP TABLE " + Tables.VolumeAndBiomass.BiosumVolumesInputTable);
-                    frmMain.g_oTables.m_oFvs.CreateSQLiteInputBiosumVolumesTable(oDataMgr, conn, Tables.VolumeAndBiomass.BiosumVolumesInputTable);
+                    frmMain.g_oTables.m_oFvs.CreateInputBiosumVolumesTable(oDataMgr, conn, Tables.VolumeAndBiomass.BiosumVolumesInputTable);
                     oDataMgr.m_strSQL = Queries.VolumeAndBiomass.FVSOut.BuildInputSQLiteTableForVolumeCalculation_Step1(
                                        Tables.VolumeAndBiomass.BiosumVolumesInputTable,
                                        strFvsTreeTable, p_strPackage, p_strVariant);

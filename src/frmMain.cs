@@ -1645,7 +1645,7 @@ namespace FIA_Biosum_Manager
                             this.m_frmDataSource.BackColor = System.Drawing.SystemColors.Control;
                             this.m_frmDataSource.Text = "Database: Project Data Sources";
                             this.m_frmDataSource.MdiParent = this;
-                            FIA_Biosum_Manager.uc_datasource p_uc = new uc_datasource(this.frmProject.uc_project1.txtRootDirectory.Text.Trim() + "\\db\\project.mdb");
+                            FIA_Biosum_Manager.uc_datasource p_uc = new uc_datasource(this.frmProject.uc_project1.txtRootDirectory.Text.Trim() + "\\db\\project.db");
                             this.m_frmDataSource.Controls.Add(p_uc);
                             p_uc.Dock = System.Windows.Forms.DockStyle.Fill;
 
@@ -1686,7 +1686,7 @@ namespace FIA_Biosum_Manager
                             }
 
 
-                            p_uc.populate_listview_grid();
+                            p_uc.LoadValues();
                             p_uc.Dock = System.Windows.Forms.DockStyle.Fill;
                             this.m_frmDataSource.Left = 0;
                             this.m_frmDataSource.Top = 0;
