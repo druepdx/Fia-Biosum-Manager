@@ -12,21 +12,18 @@ namespace FIA_Biosum_Manager
 {
     public partial class uc_tree_volume_export : UserControl
     {
-        private GisTools m_oGisTools = new GisTools();
         private env m_oEnv;
         private Help m_oHelp;
         private string m_xpsFile = Help.DefaultTreatmentOptimizerFile;
-        string m_strMasterDb;
-        string m_strSourceField;
         public bool bTerminateLoad = false;
-
+        private frmFCSTreeVolumeEdit m_frmParent;
         public uc_tree_volume_export(frmFCSTreeVolumeEdit frmTreeVolume)
         {
             InitializeComponent();
             this.m_oEnv = new env();
+            this.m_frmParent = frmTreeVolume;
             load_values();
         }
-
         private void BtnCancel_Click(object sender, EventArgs e)
         {
             ((frmDialog)ParentForm).ParentControl.Enabled = true;
@@ -92,9 +89,9 @@ namespace FIA_Biosum_Manager
             //
             SQLite.ADO.DataMgr dataMgr = new SQLite.ADO.DataMgr();
             string strFile = $@"{this.txtRootDirectory.Text}\{Tables.VolumeAndBiomass.ExportBiosumVolumesDatabase}";
+            string strConn = dataMgr.GetConnectionString(strFile);
             if (System.IO.File.Exists(strFile))
             {
-                string strConn = dataMgr.GetConnectionString(strFile);
                 using (System.Data.SQLite.SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection(strConn))
                 {
                     conn.Open();
@@ -123,6 +120,107 @@ namespace FIA_Biosum_Manager
                     return;
                 }
             }
+            // First create the copied table
+            string strSourceTable = m_frmParent.GridTableSource;
+            string strCreateTableSql = "";
+            using (System.Data.SQLite.SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection(dataMgr.GetConnectionString(m_frmParent.GridDatabaseSource)))
+            {
+                conn.Open();
+                dataMgr.SqlQueryReader(conn, $"SELECT sql FROM sqlite_master WHERE type='table' AND name='{strSourceTable}'");
+                if (dataMgr.m_DataReader.HasRows)
+                {
+                    while (dataMgr.m_DataReader.Read())
+                    {
+                        string strSql = Convert.ToString(dataMgr.m_DataReader["sql"]);
+                        string strRenameTableSql = strSql.Replace(strSourceTable, txtTableName.Text.Trim());
+                        //@ToDo: Put this in to handle field name translation from FICS. Can remove when we disable FICS
+                        strCreateTableSql = strRenameTableSql.Replace("_calc", "");
+                    }
+                    dataMgr.m_DataReader.Close();
+                }
+            }
+            frmMain.g_oFrmMain.ActivateStandByAnimation(
+                frmMain.g_oFrmMain.WindowState,
+                frmMain.g_oFrmMain.Left,
+                frmMain.g_oFrmMain.Height,
+                frmMain.g_oFrmMain.Width,
+                frmMain.g_oFrmMain.Top);
+            frmMain.g_sbpInfo.Text = "Exporting Tree Data...Stand by";
+            btnExport.Enabled = false;
+            BtnCancel.Enabled = false;
+
+            using (System.Data.SQLite.SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection(strConn))
+            {
+                conn.Open();
+                if (!string.IsNullOrEmpty(strCreateTableSql))
+                {
+                    dataMgr.SqlNonQuery(conn, strCreateTableSql);
+                }
+
+                // 1. Query the destination table to get its structure
+               string selectQuery = $"SELECT * FROM {txtTableName.Text.Trim()} WHERE 1=0"; // WHERE 1=0 returns schema, no rows
+               using (System.Data.SQLite.SQLiteDataAdapter adapter = new System.Data.SQLite.SQLiteDataAdapter(selectQuery, conn))
+                {
+                    using (System.Data.SQLite.SQLiteCommandBuilder commandBuilder = new System.Data.SQLite.SQLiteCommandBuilder(adapter))
+                    {
+                        // Ensure proper quoting for SQLite table/column names
+                        commandBuilder.QuotePrefix = "[";
+                        commandBuilder.QuoteSuffix = "]";
+
+                        // Get the auto-generated INSERT command
+                        //adapter.GetInsertCommand();
+
+                        // 2. Create an empty "destination" DataTable
+                        DataTable destinationTable = new DataTable();
+                        adapter.Fill(destinationTable);
+
+                        // 3. Adapt the destination table with data from your source DataTable
+                        IList<object> lstItem = new List<object>();
+                        IList<string> sourceColumnNames = new List<string>();
+                        for (int i = 0; i < m_frmParent.GridDataTable.Columns.Count; i++)
+                        {
+                            sourceColumnNames.Add(m_frmParent.GridDataTable.Columns[i].ColumnName.ToUpper());
+                        }
+                        
+                        System.Data.SQLite.SQLiteTransaction destTransaction = conn.BeginTransaction();
+                        foreach (DataRow row in m_frmParent.GridDataTable.Rows)
+                        {
+                            DataRow destinationRow = destinationTable.NewRow();
+                            // Add field values to a list from which we will create a new object array
+                            lstItem.Clear();
+                            for (int i = 0; i < destinationTable.Columns.Count; i++)
+                            {
+                                if (sourceColumnNames.Contains(destinationTable.Columns[i].ColumnName.ToUpper()))
+                                {
+                                    lstItem.Add(row[destinationTable.Columns[i].ColumnName]);
+                                }
+                                else
+                                {
+                                    lstItem.Add(null);
+                                }
+                            }
+                            object[] rowArray = lstItem.ToArray();
+                            destinationRow.ItemArray = rowArray;
+                            destinationTable.Rows.Add(destinationRow);
+                        }
+
+                        // 4. Wrap the update in a transaction for performance and integrity
+                        // The Update() method handles individual row inserts in a batch within an implicit transaction
+                        // Alternatively, you can manage an explicit transaction using connection.BeginTransaction()
+                        adapter.Update(destinationTable);
+                        destTransaction.Commit();
+                        destTransaction = null;
+                        // The connection can be closed after the update is complete
+                    }
+                }
+
+            }
+            frmMain.g_sbpInfo.Text = "Ready";
+            frmMain.g_oFrmMain.DeactivateStandByAnimation();
+            MessageBox.Show("Grid data successfully exported to table!", "FIA Biosum");
+            btnExport.Enabled = true;
+            BtnCancel.Enabled = true;
+
         }
         private void txtTableName_TextChanged(object sender, EventArgs e)
         {

@@ -1124,6 +1124,8 @@ namespace FIA_Biosum_Manager
                 {
                     return new string []
                     {
+                        "wood_sg_adj",
+                        "bark_sg_adj",
                         "volcfgrs",
                         "volcfnet",
                         "volcfsnd",
@@ -1184,6 +1186,7 @@ namespace FIA_Biosum_Manager
             static public string DefaultFVSTreeTableName { get { return "FVS_Tree"; } }
             static public string DefaultFVSCutTreeTableName { get { return "FVS_CutTree"; } }
             static public string DefaultFVSInForestTreeTableName { get { return "FVS_InForestTree"; } }
+            static public string DefaultFVSCutTreeTvbcTableName { get { return "FVS_CutTreeTvbc"; } }
             static public string DefaultFVSTreeListDbFile { get { return @"\fvs\data\FVSOUT_TREE_LIST.db"; } }
             static public string DefaultFVSOutDbFile { get { return @"\fvs\data\FVSOut.db"; } }
             static public string DefaultFVSOutBiosumDbFile { get { return @"\fvs\data\FVSOut_BioSum.db"; } }
@@ -1208,7 +1211,6 @@ namespace FIA_Biosum_Manager
             public FVS()
             {
             }
-
             public void CreateFVSOutTreeTable(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
             {
                 p_oDataMgr.SqlNonQuery(p_oConn, CreateFVSOutTreeTableSQL(p_strTableName));
@@ -1303,6 +1305,70 @@ namespace FIA_Biosum_Manager
                     "volcfnet DOUBLE," +
                     "volcsgrs DOUBLE," +
                     "voltsgrs DOUBLE," +
+                    "fvs_tree_id CHAR(10)," +
+                    "FvsCreatedTree_YN CHAR(1) DEFAULT 'N'," +
+                    "DateTimeCreated DATE)";
+            }
+
+            public void CreateFVSOutTreeTvbcTable(SQLite.ADO.DataMgr p_oDataMgr, System.Data.SQLite.SQLiteConnection p_oConn, string p_strTableName)
+            {
+                p_oDataMgr.SqlNonQuery(p_oConn, CreateFVSOutTreeTvbcTableSQL(p_strTableName));
+                CreateFVSOutTreeTableIndexes(p_oDataMgr, p_oConn, p_strTableName);
+            }
+
+            // Note: When fields are added here, they also need to be added in CreateFVSPostAuditCutlistERROR_OUTPUTtableSQL,
+            // CreateFVSPostAuditCutlistNOTFOUND_ERRORtableSQL
+            // and the code that decides whether to use that SQL to rebuild the table also needs to be updated.
+            public string CreateFVSOutTreeTvbcTableSQL(string p_strTableName)
+            {
+                return "CREATE TABLE " + p_strTableName + " (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "biosum_cond_id CHAR(25)," +
+                    "rxpackage CHAR(3)," +
+                    "rx CHAR(3)," +
+                    "rxcycle CHAR(1)," +
+                    "rxyear CHAR(4)," +
+                    "fvs_variant CHAR(2)," +
+                    "fvs_species CHAR(6)," +
+                    "tpa DOUBLE," +
+                    "dbh DOUBLE," +
+                    "ht DOUBLE," +
+                    "estht DOUBLE," +
+                    "pctcr DOUBLE," +
+                    "treeval INTEGER," +
+                    "mortpa DOUBLE," +
+                    "mdefect INTEGER," +
+                    "bapctile DOUBLE," +
+                    "htg DOUBLE," +
+                    "dg DOUBLE," +
+                    "statuscd INTEGER," +
+                    "decaycd INTEGER," +
+                    "wood_sg_adj INTEGER," +
+                    "bark_sg_adj INTEGER," +
+                    "standing_dead_cd INTEGER," +
+                    "drybio_bole double," +
+                    "volcfsnd double," +
+                    "volcfgrs DOUBLE," +
+                    "volcfnet DOUBLE," +
+                    "volcsgrs DOUBLE," +
+                    "voltsgrs DOUBLE," +
+                    "voltsgrs_bark DOUBLE," +
+                    "volcfgrs_bark DOUBLE," +
+                    "volcfsnd_bark DOUBLE," +
+                    "volcfnet_bark DOUBLE," +
+                    "volcsgrs_bark DOUBLE," +
+                    "volbsnet DOUBLE," +
+                    "drybio_stem DOUBLE," +
+                    "drybio_stem_bark DOUBLE," +
+                    "drybio_stump DOUBLE," +
+                    "drybio_stump_bark DOUBLE," +                    
+                    "drybio_bole_bark  DOUBLE," +
+                    "drybio_branch DOUBLE," +
+                    "drybio_foliage DOUBLE," +
+                    "drybio_ag  DOUBLE," +
+                    "drybio_bg DOUBLE," +
+                    "carbon_ag DOUBLE," +
+                    "carbon_bg DOUBLE," +
                     "fvs_tree_id CHAR(10)," +
                     "FvsCreatedTree_YN CHAR(1) DEFAULT 'N'," +
                     "DateTimeCreated DATE)";

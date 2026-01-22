@@ -142,6 +142,7 @@
             this.txtTableName.Size = new System.Drawing.Size(166, 26);
             this.txtTableName.TabIndex = 75;
             this.txtTableName.TextChanged += new System.EventHandler(this.txtTableName_TextChanged);
+
             // 
             // uc_tree_volume_export
             // 
