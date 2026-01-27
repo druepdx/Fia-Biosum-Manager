@@ -109,7 +109,6 @@ namespace FIA_Biosum_Manager
 
         private FVSPrePostSeqNumItem_Collection m_oFVSPrePostSeqNumItemCollection = null;
         private FVSPrePostSeqNumItem m_oFVSPrePostSeqNumItem = null;
-        private DbFileItem_Collection m_oPrePostDbFileItem_Collection = null;
         private Button btnPostAppendAuditDb;
 
         // Mapping of sqlite column types to Access column names. Add new exception entries here.
@@ -1094,66 +1093,8 @@ namespace FIA_Biosum_Manager
 			}			
 		}
 
-        private void GetPrePostTableLinkItems(DbFileItem_Collection p_oCollection, 
-                                       string p_strDbFileName,
-                                       string p_strFVSOutTableName,
-                                       ref string p_strSeqNumMtxTableLink,
-                                       ref string p_strFVSSummarySeqNumMtxTableLink,
-                                       ref string p_strFVSOutTableLink)
-        {
-             int x, y;
-            p_strSeqNumMtxTableLink="";
-            p_strFVSOutTableLink="";
-            for (x = 0; x <= p_oCollection.Count - 1; x++)
-            {
-                if (p_oCollection.Item(x).DbFileName.Trim().ToUpper() == p_strDbFileName.Trim().ToUpper())
-                {
-                    for (y = 0; y <= p_oCollection.Item(x).TableLinkCollection.Count - 1; y++)
-                    {
-                        if (p_oCollection.Item(x).TableLinkCollection.Item(y).FVSOutputSeqNumMatrixTable &&
-                            p_oCollection.Item(x).TableLinkCollection.Item(y).FVSOutputTableName=="FVS_SUMMARY")
-                        {
-                            p_strFVSSummarySeqNumMtxTableLink=p_oCollection.Item(x).TableLinkCollection.Item(y).LinkedTableName;
-                        }
-                        if (p_oCollection.Item(x).TableLinkCollection.Item(y).FVSOutputSeqNumMatrixTable &&
-                            p_oCollection.Item(x).TableLinkCollection.Item(y).FVSOutputTableName!="FVS_SUMMARY")
-                        {
-                            p_strSeqNumMtxTableLink = p_oCollection.Item(x).TableLinkCollection.Item(y).LinkedTableName;
-                        }
-                        if (p_oCollection.Item(x).TableLinkCollection.Item(y).FVSOutputTable && 
-                            p_oCollection.Item(x).TableLinkCollection.Item(y).FVSOutputTableName==p_strFVSOutTableName)
-                        {
-                            p_strFVSOutTableLink=p_oCollection.Item(x).TableLinkCollection.Item(y).LinkedTableName;
-                        }
-
-                    }
-                    break;
-                }
-            }
-        }
-        private void GetTableLinkItems(DbFileItem_Collection p_oCollection, string p_strDbFileName,string p_strTableName, ref int p_intDbFileItem, ref int p_intTableLinkItem)
-        {
-            int x, y;
-            
-            for (x = 0; x <= p_oCollection.Count - 1; x++)
-            {
-                if (p_oCollection.Item(x).DbFileName.Trim().ToUpper() == p_strDbFileName.Trim().ToUpper())
-                {
-                    for (y = 0; y <= p_oCollection.Item(x).TableLinkCollection.Count - 1; y++)
-                    {
-                        if (p_oCollection.Item(x).TableLinkCollection.Item(y).TableName.Trim().ToUpper() == p_strTableName.Trim().ToUpper())
-                        {
-                            p_intDbFileItem = x;
-                            p_intTableLinkItem = y;
-                            return;
-                        }
-                    }
-                }
-            }
-            p_intDbFileItem = -1;
-            p_intTableLinkItem = -1;
-        }
-
+        
+        
         private void RunAppend_UpdatePrePostTable(string p_strTempDb, string p_strPackage, string p_strVariant, string p_strRx1, string p_strRx2, string p_strRx3, string p_strRx4, bool p_bUpdatePreTableWithVariant,
             int p_intListViewItem, ref int p_intError, ref string p_strError, string p_strRunTitle)
         {

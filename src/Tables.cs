@@ -33,11 +33,7 @@ namespace FIA_Biosum_Manager
 
         public class Project
         {
-            public string DefaultProjectTableDbFile { get { return @"db\project.mdb"; } }
             static public string DefaultProjectTableName { get { return "project"; } }
-            public string DefaultProjectNotesTableDbFile { get { return @"db\project.mdb"; } }
-            public string DefaultProjectUserConfigTableDbFile { get { return @"db\project.mdb"; } }
-            static public string DefaultProjectDatasourceTableDbFile { get { return @"db\project.mdb"; } }
             static public string DefaultProjectDatasourceTableName { get { return "datasource"; } }
             public Project()
             {

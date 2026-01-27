@@ -9,6 +9,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
+using SQLite.ADO;
 
 
 namespace FIA_Biosum_Manager
@@ -26,7 +27,6 @@ namespace FIA_Biosum_Manager
 
         private Datasource m_DataSource;
         private string m_strProjDir;
-        public string m_strTempMDBFile;
         private frmTherm m_frmTherm;
         private System.Data.DataTable m_dt;
 
@@ -136,7 +136,7 @@ namespace FIA_Biosum_Manager
         /// </summary>
         private void UpdateFvsInSqliteConfigurationTable()
         {
-            SQLite.ADO.DataMgr oDataMgr = new SQLite.ADO.DataMgr();
+            DataMgr oDataMgr = new DataMgr();
             string strFvsInPathFile = m_strProjDir + "/fvs/data/" + Tables.FIA2FVS.DefaultFvsInputFile;
             using (System.Data.SQLite.SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection(oDataMgr.GetConnectionString(strFvsInPathFile)))
             {
@@ -458,13 +458,6 @@ namespace FIA_Biosum_Manager
             }
         }
 
-
-        /// <summary>
-        /// full directory path and file name to the fvsin mdb file
-        /// </summary>
-        /// <returns>string name of the Input MDB File</returns>
-
-
         public void DebugLogMessage(string strMessage)
         {
             if (frmMain.g_bDebug)
@@ -492,7 +485,7 @@ namespace FIA_Biosum_Manager
         /// Set the DWM behavior in the FVS_StandInit creation process.
         /// Use the Enum 
         /// </summary>
-        /// <returns>string name of the Input MDB File</returns>
+        /// <returns>string name of the Input DB File</returns>
         public int intDWMOption
         {
             set
@@ -612,7 +605,7 @@ namespace FIA_Biosum_Manager
             string _strCCHabitatTypeCd;
             IDictionary<String, String> _dictSiteIdxEq;
             string _strDebugFile;
-            SQLite.ADO.DataMgr _oDataMgr;
+            DataMgr _oDataMgr;
             System.Data.SQLite.SQLiteConnection _tempConn;
             string _strProjDir = "";
 
@@ -2361,7 +2354,7 @@ namespace FIA_Biosum_Manager
         {
             //instantiate the dictionary so we can add equation records
             IDictionary<String, String> _dictSiteIdxEq = new Dictionary<String, String>();
-            SQLite.ADO.DataMgr oDataMgr = new SQLite.ADO.DataMgr();
+            DataMgr oDataMgr = new DataMgr();
             //create env object so we can get the appDir
             env pEnv = new env();
             //open the reference db file
@@ -2777,7 +2770,7 @@ namespace FIA_Biosum_Manager
 
         public void CreateFVSInputTables(System.Data.SQLite.SQLiteConnection p_Conn)
         {
-            SQLite.ADO.DataMgr oDataMgr = new SQLite.ADO.DataMgr();
+            DataMgr oDataMgr = new DataMgr();
 
             string strSql = "ATTACH DATABASE '" + m_strSourceFiaDb + "' AS source";
             DebugLogSQL(strSql);
@@ -2830,7 +2823,7 @@ namespace FIA_Biosum_Manager
 
         public void AddFIADBIndexes(System.Data.SQLite.SQLiteConnection p_Conn)
         {
-            SQLite.ADO.DataMgr oDataMgr = new SQLite.ADO.DataMgr();
+            DataMgr oDataMgr = new DataMgr();
 
             string[] arrStandIndexNames = new string[] { "FVS_STANDINIT_COND_STAND_CN_IDX", "FVS_STANDINIT_COND_STAND_ID_IDX" };
             string[] arrStandIndexColumns = new string[] { "STAND_CN", "STAND_ID" };

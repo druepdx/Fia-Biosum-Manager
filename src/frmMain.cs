@@ -1630,9 +1630,6 @@ namespace FIA_Biosum_Manager
 
 
                         break;
-                    case "WOOD PROCESSING SITES":
-                        StartPSiteDialog(this);
-                        break;
 
                     case "PROJECT DATA SOURCES":
                         //check to see if the form has already been loaded
@@ -1704,11 +1701,6 @@ namespace FIA_Biosum_Manager
                             this.m_frmDataSource.Focus();
 
                         }
-                        break;
-
-                    case "GENERATE TRAVEL TIMES":
-                        FIA_Biosum_Travel_Times_Generator.generate_travel_times p_trvltm = new FIA_Biosum_Travel_Times_Generator.generate_travel_times(this);
-                        p_trvltm.create_travel_times();
                         break;
 
                 }
@@ -1971,84 +1963,7 @@ namespace FIA_Biosum_Manager
             }
 
         }
-        public void StartPSiteDialog(Control p_oParentControl)
-        {
-            //check to see if the form has already been loaded
-            if (this.IsChildWindowVisible("Database: Wood Processing Sites") == false)
-            {
-                frmMain.g_sbpInfo.Text = "Loading Wood Processing Sites...Stand By";
-                this.m_frmPSite = new frmDialog(this);
-                this.m_frmPSite.MaximizeBox = true;
-                this.m_frmPSite.BackColor = System.Drawing.SystemColors.Control;
-                this.m_frmPSite.Text = "Database: Wood Processing Sites";
-                FIA_Biosum_Manager.uc_gis_psite p_uc = new uc_gis_psite(this.frmProject.uc_project1.txtRootDirectory.Text.Trim());
-                if (p_uc.m_intError < 0)
-                {
-                    this.m_frmPSite.Dispose();
-                    return;
-                }
-                this.m_frmPSite.Controls.Add(p_uc);
-                this.m_frmPSite.ProcessingSiteUserControl = p_uc;
-                this.m_frmPSite.Height = 0;
-                this.m_frmPSite.Width = 0;
-                if (p_uc.Top + p_uc.Height > this.m_frmPSite.ClientSize.Height + 2)
-                {
-                    for (int x = 1; ; x++)
-                    {
-                        this.m_frmPSite.Height = x;
-                        if (p_uc.Top +
-                            p_uc.Height <
-                            this.m_frmPSite.ClientSize.Height)
-                        {
-                            break;
-                        }
-                    }
-
-                }
-                if (p_uc.Left + p_uc.Width > this.m_frmPSite.ClientSize.Width + 2)
-                {
-                    for (int x = 1; ; x++)
-                    {
-                        this.m_frmPSite.Width = x;
-                        if (p_uc.Left +
-                            p_uc.Width <
-                            this.m_frmPSite.ClientSize.Width)
-                        {
-                            break;
-                        }
-                    }
-
-                }
-                p_uc.Dock = System.Windows.Forms.DockStyle.Fill;
-                p_uc.loadvalues();
-
-
-                this.m_frmPSite.Left = 0;
-                this.m_frmPSite.Top = 0;
-                this.m_frmPSite.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
-                this.m_frmPSite.DisposeOfFormWhenClosing = true;
-                this.m_frmPSite.MinimizeMainForm = true;
-                this.m_frmPSite.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-                frmMain.g_sbpInfo.Text = "Ready";
-                p_oParentControl.Enabled = false;
-                m_frmPSite.ParentControl = p_oParentControl;
-                this.m_frmPSite.Show();
-
-            }
-            else
-            {
-                if (this.m_frmPSite.WindowState == System.Windows.Forms.FormWindowState.Minimized)
-                    this.m_frmPSite.WindowState = System.Windows.Forms.FormWindowState.Normal;
-
-                this.m_frmPSite.Focus();
-
-            }
-
-						
-
-
-
-        }
+        
         public void StartBiosumProcessorDialog()
         {
             System.Text.StringBuilder strFullPath;
@@ -3088,14 +3003,6 @@ namespace FIA_Biosum_Manager
 			this.m_btnDbPlotData.Location = this.btnMain1.Location;
 			this.m_btnDbPlotData.Text = "Plot Data";
 
-			//processing sites
-            // Hide button in v5.11.0. No longer needed
-			//this.m_btnDbPSite = new btnMainForm(this);
-			//this.m_pnlDb.Controls.Add(this.m_btnDbPSite);
-			//this.m_btnDbPSite.Size = this.btnMain1.Size;
-			//this.m_btnDbPSite.Left = this.m_btnDbPlotData.Left;
-			//this.m_btnDbPSite.Top = this.m_btnDbPlotData.Top + this.m_btnDbPlotData.Height + 5;
-			//this.m_btnDbPSite.Text = "Wood Processing Sites";
 
 			//project data sources
 			this.m_btnDbDataSource = new btnMainForm(this);
@@ -3112,15 +3019,6 @@ namespace FIA_Biosum_Manager
             this.m_btnSQLiteTableMgmt.Left = this.m_btnDbPlotData.Left;
             this.m_btnSQLiteTableMgmt.Top = this.m_btnDbDataSource.Top + this.m_btnDbDataSource.Height + 5;
             this.m_btnSQLiteTableMgmt.Text = "Manage Tables";
-			//generate travel times
-			this.m_btnDbRandomTravelTimes = new btnMainForm(this);
-			this.m_pnlDb.Controls.Add(this.m_btnDbRandomTravelTimes);
-			this.m_btnDbRandomTravelTimes.Size = this.btnMain1.Size;
-			this.m_btnDbRandomTravelTimes.Left  = this.m_btnDbPlotData.Left;
-			this.m_btnDbRandomTravelTimes.Top = this.m_btnSQLiteTableMgmt.Top + this.m_btnSQLiteTableMgmt.Height + 5;
-			this.m_btnDbRandomTravelTimes.Text = "Generate Random Travel Times";
-			this.m_btnDbRandomTravelTimes.Enabled=true;
-			this.m_btnDbRandomTravelTimes.Visible=false;
 
 			//FRCS PANEL
 			this.m_pnlFrcs = new Panel();

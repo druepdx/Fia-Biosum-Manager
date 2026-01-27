@@ -196,7 +196,6 @@ namespace FIA_Biosum_Manager
         private ComboBox cmbFiadbPlotGeomTable;
         private Label label16;
     
-        public FIA_Biosum_Manager.ado_data_access MSAccess { get; set; }
 
         public frmDialog ReferenceFormDialog { set; get; } = null;
 
@@ -2639,7 +2638,6 @@ namespace FIA_Biosum_Manager
 	    /// <summary>
         /// Return the record count of the table if it exists 
         /// </summary>
-        /// <param name="p_ado"></param>
         /// <param name="p_conn"></param>
         /// <param name="table"></param>
         /// <returns></returns>
@@ -2673,7 +2671,7 @@ namespace FIA_Biosum_Manager
         }
 
 	    /// <summary>
-	    /// Delete records from strTableNames in the database p_ado is currently connected to using the strDeleteFilter.
+	    /// Delete records from strTableNames in the database p_dataMgr is currently connected to using the strDeleteFilter.
 	    /// </summary>
 	    /// <param name="strTableName">An array of table names to delete</param>
 	    /// <param name="strDeleteFilter">A WHERE clause for the delete query</param>

@@ -43,7 +43,6 @@ namespace FIA_Biosum_Manager
         public FIA_Biosum_Manager.uc_fvs_output uc_fvs_output1;
 		public FIA_Biosum_Manager.uc_processor_tree_spc uc_processor_tree_spc1;
 		public FIA_Biosum_Manager.uc_processor_tree_spc_edit uc_processor_tree_spc_edit1;
-		public FIA_Biosum_Manager.uc_gis_psite uc_gis_psite1;
         public FIA_Biosum_Manager.uc_db uc_db_1;
         //public FIA_Biosum_Manager.uc_scenario_harvest_cost_column_list uc_scenario_harvest_cost_column_list1;
         public FIA_Biosum_Manager.uc_scenario_harvest_cost_column_edit uc_scenario_harvest_cost_column_edit1;
@@ -264,7 +263,6 @@ namespace FIA_Biosum_Manager
                 if (this.ProcessorTreeSpcUserControl != null) this.ParentControl.Enabled = true;
                 if (this.uc_rx_package_list1 != null) this.ParentControl.Enabled=true;
                 if (this.uc_rx_list1 != null) this.ParentControl.Enabled = true;
-                if (this.uc_gis_psite1 != null) this.ParentControl.Enabled = true;
                 if (this.uc_plot_input1 != null) this.ParentControl.Enabled = true;
                 if (this.uc_delete_conditions != null) this.ParentControl.Enabled = true;
                 if (this.uc_delete_packages != null) this.ParentControl.Enabled = true;
@@ -625,17 +623,6 @@ namespace FIA_Biosum_Manager
 			get
 			{
 				return this.uc_processor_tree_spc_edit1;
-			}
-		}
-		public FIA_Biosum_Manager.uc_gis_psite ProcessingSiteUserControl
-		{
-			set
-			{
-				this.uc_gis_psite1 = value;
-			}
-			get
-			{
-				return this.uc_gis_psite1;
 			}
 		}
 		

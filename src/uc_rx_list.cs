@@ -885,18 +885,6 @@ namespace FIA_Biosum_Manager
 		{
 		}
 
-		//public void LoadAllRxItemsFromTableIntoRxCollection(string p_strDbFile,Queries p_oQueries,RxItem_Collection p_oRxItemCollection)
-		//{
-		//	ado_data_access oAdo = new ado_data_access();
-		//	oAdo.OpenConnection(oAdo.getMDBConnString(p_strDbFile,"",""));
-		//	if (oAdo.m_intError==0)
-		//	{ 
-  //              this.LoadAllRxItemsFromTableIntoRxCollection(p_oQueries, p_oRxItemCollection);
-		//	}
-		//	m_intError=oAdo.m_intError;
-		//	oAdo.CloseConnection(oAdo.m_OleDbConnection);
-		//	oAdo=null;
-		//}
 
         public void LoadAllRxItemsFromTableIntoRxCollection(Queries p_oQueries, RxItem_Collection p_oRxItemCollection)
         {
@@ -1273,10 +1261,6 @@ namespace FIA_Biosum_Manager
 
 		}
 
-		public string GetListOfFVSVariantsInPlotTable(ado_data_access p_oAdo,System.Data.OleDb.OleDbConnection p_oConn,string p_strPlotTable)
-		{
-			return p_oAdo.CreateCommaDelimitedList(p_oConn,"SELECT DISTINCT fvs_variant FROM " +  p_strPlotTable +  " WHERE fvs_variant IS NOT NULL","");
-		}
 
         public static bool ValidFVSTable(string p_strTableName)
         {
@@ -2259,12 +2243,12 @@ namespace FIA_Biosum_Manager
                         p_strSourceTableName.Trim().ToUpper().IndexOf("FVS_POTFIRE", 0) >= 0)
                     {
                         //STANDID + YEAR = ONE RECORD
-                        dataMgr.m_strSQL = Queries.FVS.SqliteFVSOutputTable_AuditPrePostGenericSQL("", p_strTempTable, false);
+                        dataMgr.m_strSQL = Queries.FVS.FVSOutputTable_AuditPrePostGenericSQL("", p_strTempTable, false);
                     }
                     else
                     {
                         //STANDID + YEAR = MULTIPLE RECORDS
-                        dataMgr.m_strSQL = Queries.FVS.SqliteFVSOutputTable_AuditPrePostGenericSQL("", p_strTempTable, false);
+                        dataMgr.m_strSQL = Queries.FVS.FVSOutputTable_AuditPrePostGenericSQL("", p_strTempTable, false);
                     }
                     dataMgr.m_strSQL = "INSERT INTO " + strPrePostSeqNumMatrixTable + " " +
                                       dataMgr.m_strSQL;
@@ -2275,7 +2259,7 @@ namespace FIA_Biosum_Manager
                     if (p_bDebug && frmMain.g_intDebugLevel > 2)
                         frmMain.g_oUtils.WriteText(p_strDebugFile, "DONE: " + System.DateTime.Now.ToString() + "\r\n");
 
-                    dataMgr.m_strSQL = Queries.FVS.SqliteFVSOutputTable_AuditUpdatePrePostGenericSQL(
+                    dataMgr.m_strSQL = Queries.FVS.FVSOutputTable_AuditUpdatePrePostGenericSQL(
                         p_oItem, strPrePostSeqNumMatrixTable, strVariant, strRxPackage);
 
                     if (p_bDebug && frmMain.g_intDebugLevel > 2)
@@ -2297,7 +2281,7 @@ namespace FIA_Biosum_Manager
                                 if (p_bDebug && frmMain.g_intDebugLevel > 2)
                                     frmMain.g_oUtils.WriteText(p_strDebugFile, "DONE: " + System.DateTime.Now.ToString() + "\r\n");
                             }
-                            dataMgr.m_strSQL = Queries.FVS.SqliteFVSOutputTable_AuditSelectIntoPrePostSeqNumCountSqlite
+                            dataMgr.m_strSQL = Queries.FVS.FVSOutputTable_AuditSelectIntoPrePostSeqNumCount
                                 (p_oItem, strAuditPrePostSeqNumCountsTable, strPrePostSeqNumMatrixTable, p_strRunTitle);
 
                             if (p_bDebug && frmMain.g_intDebugLevel > 2)
@@ -2332,7 +2316,7 @@ namespace FIA_Biosum_Manager
                             if (p_bDebug && frmMain.g_intDebugLevel > 2)
                                 frmMain.g_oUtils.WriteText(p_strDebugFile, "DONE: " + System.DateTime.Now.ToString() + "\r\n");
 
-                            dataMgr.m_strSQL = Queries.FVS.FVSOutputTable_PrePostGenericSQLite(
+                            dataMgr.m_strSQL = Queries.FVS.FVSOutputTable_PrePostGenericSQL(
                                strAuditYearCountsTable, tmpTableName, false, p_strRunTitle, lstExtraColumns);
                             if (p_bDebug && frmMain.g_intDebugLevel > 2)
                                 frmMain.g_oUtils.WriteText(p_strDebugFile, "START: " + System.DateTime.Now.ToString() + "\r\n" + dataMgr.m_strSQL + "\r\n");
@@ -2360,7 +2344,7 @@ namespace FIA_Biosum_Manager
                                         frmMain.g_oUtils.WriteText(p_strDebugFile, "DONE: " + System.DateTime.Now.ToString() + "\r\n");
                                 }
 
-                                dataMgr.m_strSQL = Queries.FVS.SqliteFVSOutputTable_AuditSelectIntoPrePostSeqNumCountSqlite
+                                dataMgr.m_strSQL = Queries.FVS.FVSOutputTable_AuditSelectIntoPrePostSeqNumCount
                                   (p_oItem, strAuditPrePostSeqNumCountsTable, strPrePostSeqNumMatrixTable, p_strRunTitle);
                                 if (p_bDebug && frmMain.g_intDebugLevel > 2)
                                     frmMain.g_oUtils.WriteText(p_strDebugFile, "START: " + System.DateTime.Now.ToString() + "\r\n" + dataMgr.m_strSQL + "\r\n");
@@ -2455,16 +2439,16 @@ namespace FIA_Biosum_Manager
                 {
                     if (p_oItem.UseSummaryTableSeqNumYN == "N")
                     {
-                        dataMgr.m_strSQL = Queries.FVS.SqliteFVSOutputTable_AuditPrePostStrClassSQL("", p_strTempTable, false);
+                        dataMgr.m_strSQL = Queries.FVS.FVSOutputTable_AuditPrePostStrClassSQL("", p_strTempTable, false);
                     }
                     else
                     {
-                        strSQLArray = Queries.FVS.SqliteFVSOutputTable_AuditPrePostFvsStrClassUsingFVSSummarySQL("", p_strTempTable, false, p_strRunTitle);
+                        strSQLArray = Queries.FVS.FVSOutputTable_AuditPrePostFvsStrClassUsingFVSSummarySQL("", p_strTempTable, false, p_strRunTitle);
                     }
                 }
                 else
                 {
-                    dataMgr.m_strSQL = Queries.FVS.SqliteFVSOutputTable_AuditPrePostGenericSQL("", p_strTempTable, false);
+                    dataMgr.m_strSQL = Queries.FVS.FVSOutputTable_AuditPrePostGenericSQL("", p_strTempTable, false);
                 }
 
                 if (p_oItem.TableName.Trim().ToUpper() == "FVS_STRCLASS")
@@ -2493,7 +2477,7 @@ namespace FIA_Biosum_Manager
                             frmMain.g_oUtils.WriteText(p_strDebugFile, "DONE: " + System.DateTime.Now.ToString() + "\r\n");
                     }
 
-                    dataMgr.m_strSQL = Queries.FVS.SqliteFVSOutputTable_AuditUpdatePrePostStrClassSQL(
+                    dataMgr.m_strSQL = Queries.FVS.FVSOutputTable_AuditUpdatePrePostStrClassSQL(
                        p_oItem, strPrePostSeqNumMatrixTable, strVariant, strRxPackage);
 
                     if (p_bDebug && frmMain.g_intDebugLevel > 2)
@@ -2513,7 +2497,7 @@ namespace FIA_Biosum_Manager
                     if (p_bDebug && frmMain.g_intDebugLevel > 2)
                         frmMain.g_oUtils.WriteText(p_strDebugFile, "DONE: " + System.DateTime.Now.ToString() + "\r\n");
 
-                    dataMgr.m_strSQL = Queries.FVS.SqliteFVSOutputTable_AuditUpdatePrePostGenericSQL(p_oItem, strPrePostSeqNumMatrixTable,
+                    dataMgr.m_strSQL = Queries.FVS.FVSOutputTable_AuditUpdatePrePostGenericSQL(p_oItem, strPrePostSeqNumMatrixTable,
                         strVariant, strRxPackage);
                     if (p_bDebug && frmMain.g_intDebugLevel > 2)
                         frmMain.g_oUtils.WriteText(p_strDebugFile, "START: " + System.DateTime.Now.ToString() + "\r\n" + dataMgr.m_strSQL + "\r\n");
@@ -2534,7 +2518,7 @@ namespace FIA_Biosum_Manager
                         if (p_bDebug && frmMain.g_intDebugLevel > 2)
                             frmMain.g_oUtils.WriteText(p_strDebugFile, "DONE: " + System.DateTime.Now.ToString() + "\r\n");
                     }
-                    dataMgr.m_strSQL = Queries.FVS.SqliteFVSOutputTable_AuditSelectIntoPrePostSeqNumCountSqlite
+                    dataMgr.m_strSQL = Queries.FVS.FVSOutputTable_AuditSelectIntoPrePostSeqNumCount
                       (p_oItem, strAuditPrePostSeqNumCountsTable, strPrePostSeqNumMatrixTable, p_strRunTitle);
 
                     if (p_bDebug && frmMain.g_intDebugLevel > 2)
