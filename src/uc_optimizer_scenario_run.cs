@@ -1736,14 +1736,18 @@ namespace FIA_Biosum_Manager
             using (System.Data.SQLite.SQLiteConnection oConn = new System.Data.SQLite.SQLiteConnection(strConn))
             {
                 oConn.Open();
-                if (!oDataMgr.TableExist(oConn, Tables.Audit.DefaultCondAuditTableName))
+                if (oDataMgr.TableExist(oConn, Tables.Audit.DefaultCondAuditTableName))
                 {
-                    frmMain.g_oTables.m_oAudit.CreateCondAuditTable(oDataMgr, oConn, Tables.Audit.DefaultCondAuditTableName);
+                    oDataMgr.m_strSQL = "DROP TABLE " + Tables.Audit.DefaultCondAuditTableName;
+                    oDataMgr.SqlNonQuery(oConn, oDataMgr.m_strSQL);
                 }
-                if (!oDataMgr.TableExist(oConn, Tables.Audit.DefaultCondRxAuditTableName))
+                frmMain.g_oTables.m_oAudit.CreateCondAuditTable(oDataMgr, oConn, Tables.Audit.DefaultCondAuditTableName);
+                if (oDataMgr.TableExist(oConn, Tables.Audit.DefaultCondRxAuditTableName))
                 {
-                    frmMain.g_oTables.m_oAudit.CreatePlotCondRxAuditTable(oDataMgr, oConn, Tables.Audit.DefaultCondRxAuditTableName);
+                    oDataMgr.m_strSQL = "DROP TABLE " + Tables.Audit.DefaultCondRxAuditTableName;
+                    oDataMgr.SqlNonQuery(oConn, oDataMgr.m_strSQL);
                 }
+                frmMain.g_oTables.m_oAudit.CreatePlotCondRxAuditTable(oDataMgr, oConn, Tables.Audit.DefaultCondRxAuditTableName);
             }
             oDataMgr = null;
         }
