@@ -4552,7 +4552,7 @@ namespace FIA_Biosum_Manager
                     " (biosum_cond_id,rxpackage,rx,rxcycle,chip_vol_cf," +
                     "chip_wt_gt,chip_wt_bdt,chip_val_dpa,merch_vol_cf," +
                     "merch_wt_gt,merch_wt_bdt,merch_val_dpa,wood4_vol_cf,wood4_wt_gt," +
-                    "wood5_wt_bdt,wood4_val_dpa,wood5_vol_cf,wood5_wt_gt,wood5_wt_bdt,wood5_val_dpa," +
+                    "wood4_wt_bdt,wood4_val_dpa,wood5_vol_cf,wood5_wt_gt,wood5_wt_bdt,wood5_val_dpa," +
                     "wood6_vol_cf,wood6_wt_gt,wood6_wt_bdt,wood6_val_dpa,place_holder) " +
                     "SELECT s.biosum_cond_id, " +
                     "s.rxpackage,s.rx,s.rxcycle," +
