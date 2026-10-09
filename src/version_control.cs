@@ -19,7 +19,7 @@ namespace FIA_Biosum_Manager
 		private string m_strProjectVersion="1.0.0";
 		private string[] m_strProjectVersionArray=null;
 		private string _strProjDir="";
-        private int m_intError = 0;
+        public int m_intError = 0;
 		public version_control()
 		{
 			//
@@ -160,6 +160,10 @@ namespace FIA_Biosum_Manager
                         Convert.ToInt16(m_strProjectVersionArray[APP_VERSION_MINOR2]) == 1))
                     {
                         UpdateDatasources_5_13_0();
+                        if (m_intError < 0)
+                        {
+                            return;
+                        }
                         UpdateDatasources_5_13_1(frmMain.g_oFrmMain.frmProject.uc_project1.m_strProjectDirectory);
                         UpdateProjectVersionFile(strProjVersionFile);
                         bPerformCheck = false;

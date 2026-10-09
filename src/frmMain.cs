@@ -2283,8 +2283,11 @@ namespace FIA_Biosum_Manager
                     }
                     oVersCtl.PerformVersionCheck();
 				}
+                if (oVersCtl.m_intError < 0)
+                {
+                    return;
+                }
               
-
 				btnDB.ForeColor = Color.Red;
 				this.btnOptimizer.Enabled = true;
 				this.btnDB.Enabled=false;
