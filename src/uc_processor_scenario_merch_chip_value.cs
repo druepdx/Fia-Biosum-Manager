@@ -542,8 +542,12 @@ namespace FIA_Biosum_Manager
             m_intError = oDataMgr.m_intError;
 
             oDataMgr.CloseConnection(oDataMgr.m_Connection);
-            oDataMgr = null;			
-		}
+            oDataMgr = null;
+
+            // Reset ProcessorScenarioItem variables
+            ReferenceProcessorScenarioForm.m_oProcessorScenarioTools.LoadSpeciesAndDiameterGroupDollarValues(strScenarioDB,
+                ReferenceProcessorScenarioForm.m_oProcessorScenarioItem);
+        }
 		public frmProcessorScenario ReferenceProcessorScenarioForm
 		{
 			get {return this._frmProcessorScenario;}
