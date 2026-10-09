@@ -6615,84 +6615,52 @@ namespace FIA_Biosum_Manager
                 }
 
                 // Set merch and middle wood use flags based on haul cost recovery and analyst flags
-                if (ReferenceUserControlScenarioRun.ReferenceOptimizerScenarioForm.uc_scenario_costs1.PreventMerchEconomicDowngrade == false)
-                {
-                    if (ReferenceUserControlScenarioRun.ReferenceOptimizerScenarioForm.uc_scenario_costs1.PreventMerchNoFacilityDowngrade)
-                    {
-                        p_dataMgr.m_strSQL = "UPDATE " + m_strEconByRxWorkTableName +
-                            " SET usemerch = 'R' WHERE usemerch = 'H' OR (usemerch = 'U' AND merch_hcr_dpa < 0)";
-                    }
-                    else
-                    {
-                        p_dataMgr.m_strSQL = "UPDATE " + m_strEconByRxWorkTableName +
-                            " SET usemerch = 'H' WHERE usemerch = 'U' AND merch_hcr_dpa < 0";
-                    }
-                    p_dataMgr.SqlNonQuery(workConn, p_dataMgr.m_strSQL);
-                }
-                else if (ReferenceUserControlScenarioRun.ReferenceOptimizerScenarioForm.uc_scenario_costs1.PreventMerchNoFacilityDowngrade)
+                if (ReferenceUserControlScenarioRun.ReferenceOptimizerScenarioForm.uc_scenario_costs1.PreventMerchNoFacilityDowngrade)
                 {
                     p_dataMgr.m_strSQL = "UPDATE " + m_strEconByRxWorkTableName +
                         " SET usemerch = 'R' WHERE usemerch = 'H'";
                     p_dataMgr.SqlNonQuery(workConn, p_dataMgr.m_strSQL);
                 }
-                if (ReferenceUserControlScenarioRun.ReferenceOptimizerScenarioForm.uc_scenario_costs1.PreventWood4EconomicDowngrade == false)
+                if (ReferenceUserControlScenarioRun.ReferenceOptimizerScenarioForm.uc_scenario_costs1.PreventMerchEconomicDowngrade == false)
                 {
-                    if (ReferenceUserControlScenarioRun.ReferenceOptimizerScenarioForm.uc_scenario_costs1.PreventWood4NoFacilityDowngrade)
-                    {
-                        p_dataMgr.m_strSQL = "UPDATE " + m_strEconByRxWorkTableName +
-                            " SET usewood4 = 'R' WHERE usewood4 = 'H' OR (usewood4 = 'U' AND wood4_hcr_dpa < 0)";
-                    }
-                    else
-                    {
-                        p_dataMgr.m_strSQL = "UPDATE " + m_strEconByRxWorkTableName +
-                            " SET usewood4 = 'H' WHERE usewood4 = 'U' AND wood4_hcr_dpa < 0";
-                    }
+                    p_dataMgr.m_strSQL = "UPDATE " + m_strEconByRxWorkTableName +
+                            " SET usemerch = 'H' WHERE usemerch = 'U' AND merch_hcr_dpa < 0";
                     p_dataMgr.SqlNonQuery(workConn, p_dataMgr.m_strSQL);
                 }
-                else if (ReferenceUserControlScenarioRun.ReferenceOptimizerScenarioForm.uc_scenario_costs1.PreventWood4NoFacilityDowngrade)
+                if (ReferenceUserControlScenarioRun.ReferenceOptimizerScenarioForm.uc_scenario_costs1.PreventWood4NoFacilityDowngrade)
                 {
                     p_dataMgr.m_strSQL = "UPDATE " + m_strEconByRxWorkTableName +
                         " SET usewood4 = 'R' WHERE usewood4 = 'H'";
                     p_dataMgr.SqlNonQuery(workConn, p_dataMgr.m_strSQL);
                 }
-                if (ReferenceUserControlScenarioRun.ReferenceOptimizerScenarioForm.uc_scenario_costs1.PreventWood5EconomicDowngrade == false)
+                if (ReferenceUserControlScenarioRun.ReferenceOptimizerScenarioForm.uc_scenario_costs1.PreventWood4EconomicDowngrade == false)
                 {
-                    if (ReferenceUserControlScenarioRun.ReferenceOptimizerScenarioForm.uc_scenario_costs1.PreventWood5NoFacilityDowngrade)
-                    {
-                        p_dataMgr.m_strSQL = "UPDATE " + m_strEconByRxWorkTableName +
-                            " SET usewood5 = 'R' WHERE usewood5 = 'H' OR (usewood5 = 'U' AND wood5_hcr_dpa < 0)";
-                    }
-                    else
-                    {
-                        p_dataMgr.m_strSQL = "UPDATE " + m_strEconByRxWorkTableName +
-                            " SET usewood5 = 'H' WHERE usewood5 = 'U' AND wood5_hcr_dpa < 0";
-                    }
+                    p_dataMgr.m_strSQL = "UPDATE " + m_strEconByRxWorkTableName +
+                            " SET usewood4 = 'H' WHERE usewood4 = 'U' AND wood4_hcr_dpa < 0";
                     p_dataMgr.SqlNonQuery(workConn, p_dataMgr.m_strSQL);
                 }
-                else if (ReferenceUserControlScenarioRun.ReferenceOptimizerScenarioForm.uc_scenario_costs1.PreventWood5NoFacilityDowngrade)
+                if (ReferenceUserControlScenarioRun.ReferenceOptimizerScenarioForm.uc_scenario_costs1.PreventWood5NoFacilityDowngrade)
                 {
                     p_dataMgr.m_strSQL = "UPDATE " + m_strEconByRxWorkTableName +
                         " SET usewood5 = 'R' WHERE usewood5 = 'H'";
                     p_dataMgr.SqlNonQuery(workConn, p_dataMgr.m_strSQL);
                 }
-                if (ReferenceUserControlScenarioRun.ReferenceOptimizerScenarioForm.uc_scenario_costs1.PreventWood6EconomicDowngrade == false)
+                if (ReferenceUserControlScenarioRun.ReferenceOptimizerScenarioForm.uc_scenario_costs1.PreventWood5EconomicDowngrade == false)
                 {
-                    if (ReferenceUserControlScenarioRun.ReferenceOptimizerScenarioForm.uc_scenario_costs1.PreventWood6NoFacilityDowngrade)
-                    {
-                        p_dataMgr.m_strSQL = "UPDATE " + m_strEconByRxWorkTableName +
-                            " SET usewood6 = 'R' WHERE usewood6 = 'H' OR (usewood6 = 'U' AND wood6_hcr_dpa < 0)";
-                    }
-                    else
-                    {
-                        p_dataMgr.m_strSQL = "UPDATE " + m_strEconByRxWorkTableName +
-                            " SET usewood6 = 'H' WHERE usewood6 = 'U' AND wood6_hcr_dpa < 0";
-                    }
+                    p_dataMgr.m_strSQL = "UPDATE " + m_strEconByRxWorkTableName +
+                        " SET usewood5 = 'H' WHERE usewood5 = 'U' AND wood5_hcr_dpa < 0";
                     p_dataMgr.SqlNonQuery(workConn, p_dataMgr.m_strSQL);
                 }
-                else if (ReferenceUserControlScenarioRun.ReferenceOptimizerScenarioForm.uc_scenario_costs1.PreventWood6NoFacilityDowngrade)
+                if (ReferenceUserControlScenarioRun.ReferenceOptimizerScenarioForm.uc_scenario_costs1.PreventWood6NoFacilityDowngrade)
                 {
                     p_dataMgr.m_strSQL = "UPDATE " + m_strEconByRxWorkTableName +
                         " SET usewood6 = 'R' WHERE usewood6 = 'H'";
+                    p_dataMgr.SqlNonQuery(workConn, p_dataMgr.m_strSQL);
+                }
+                if (ReferenceUserControlScenarioRun.ReferenceOptimizerScenarioForm.uc_scenario_costs1.PreventWood6EconomicDowngrade == false)
+                {
+                    p_dataMgr.m_strSQL = "UPDATE " + m_strEconByRxWorkTableName +
+                            " SET usewood6 = 'H' WHERE usewood6 = 'U' AND wood6_hcr_dpa < 0";
                     p_dataMgr.SqlNonQuery(workConn, p_dataMgr.m_strSQL);
                 }
 
